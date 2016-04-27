@@ -51,7 +51,7 @@
         public static function getAllFilaments() {
             $pdo = new PDO_MYSQL();
             $stmt = $pdo->queryMulti("SELECT fID FROM print3d_filamenttypes");
-            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID()")
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID()");
         }
 
         /**
@@ -60,7 +60,7 @@
         public static function getAllAvailableFilaments() {
             $pdo = new PDO_MYSQL();
             $stmt = $pdo->queryMulti("SELECT fID FROM print3d_filamenttypes WHERE available = 1");
-            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID()")
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID()");
         }
 
         /**
