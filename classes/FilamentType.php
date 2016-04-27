@@ -38,7 +38,7 @@
         public static function fromFID($fID) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_filamenttypes WHERE fID = :fid", [":fid" => $fID]);
-            return new FilamentType($res->diameter, $res->colorname, $res->colorcode, $res->price, $res->salesprice, $res->available)
+            return new FilamentType($res->diameter, $res->colorname, $res->colorcode, $res->price, $res->salesprice, $res->available);
         }
 
         /**
