@@ -19,7 +19,7 @@
         /**
          * FilamentType constructor.
          *
-         * @param int $diameter
+         * @param float $diameter
          * @param string $colorname
          * @param string  $colorcode
          * @param int $price
@@ -35,6 +35,10 @@
             $this->available = $available == 1;
         }
 
+        /**
+         * @param int $fID
+         * @return FilamentType
+         */
         public static function fromFID($fID) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_filamenttypes WHERE fID = :fid", [":fid" => $fID]);
@@ -42,70 +46,88 @@
         }
 
         /**
-         * @return mixed
+         * @return FilamentType[]
+         */
+        public static function getAllFilaments() {
+            $pdo = new PDO_MYSQL();
+            $stmt = $pdo->queryMulti("SELECT fID FROM print3d_filamenttypes");
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID()")
+        }
+
+        /**
+         * @return FilamentType[]
+         */
+        public static function getAllAvailableFilaments() {
+            $pdo = new PDO_MYSQL();
+            $stmt = $pdo->queryMulti("SELECT fID FROM print3d_filamenttypes WHERE available = 1");
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID()")
+        }
+
+        /**
+         * @return float
          */
         public function getDiameter() {
             return $this->diameter;
         }
 
         /**
-         * @param mixed $diameter
+         * @param float $diameter
          */
         public function setDiameter($diameter) {
             $this->diameter = $diameter;
         }
 
         /**
-         * @return mixed
+         * @return string
          */
         public function getColorname() {
             return $this->colorname;
         }
 
         /**
-         * @param mixed $colorname
+         * @param string $colorname
          */
         public function setColorname($colorname) {
             $this->colorname = $colorname;
         }
 
         /**
-         * @return mixed
+         * @return string
          */
         public function getColorcode() {
             return $this->colorcode;
         }
 
         /**
-         * @param mixed $colorcode
+         * @param string $colorcode
          */
         public function setColorcode($colorcode) {
             $this->colorcode = $colorcode;
         }
 
         /**
-         * @return mixed
+         * @return int
          */
         public function getPrice() {
             return $this->price;
         }
 
         /**
-         * @param mixed $price
+         * @param int $price
          */
         public function setPrice($price) {
             $this->price = $price;
         }
 
         /**
-         * @return mixed
+         * @return int
          */
         public function getSaleprice() {
             return $this->saleprice;
         }
 
         /**
-         * @param mixed $saleprice
+         * @param int $saleprice
          */
         public function setSaleprice($saleprice) {
             $this->saleprice = $saleprice;
