@@ -12,6 +12,7 @@
 <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="lib/md5.js"></script>
     <script type="text/javascript" src="lib/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="js/login.js"></script>
 
@@ -19,7 +20,7 @@
         <nav class="orange">
             <div class="nav-wrapper">
                 <a href="#!" class="brand-logo hide-on-med-and-down">Yannicks 3D Drucke</a>
-                <a href="#!" class="brand-logo show-on-medium-and-down">3D Drucke</a>
+                <a href="#!" class="brand-logo hide-on-large-only">3D Drucke</a>
                 <ul class="right">
                     <li id="btnToRegister"><a class="waves-effect waves-light" onclick="switchToRegister()">Registrieren</a></li>
                     <li id="btnToLogin">   <a class="waves-effect waves-light" onclick="switchToLogin()">Login</a></li>
@@ -31,23 +32,23 @@
         <div class="row">
             <form id="login">
                 <div class="input-field col s12">
-                    <input id="usrname" type="text">
-                    <label for="usrname">Benutzername</label>
+                    <input id="l_usrname" type="text">
+                    <label for="l_usrname">Benutzername</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="passwd" type="password">
-                    <label for="passwd">Passwort</label>
+                    <input id="l_passwd" type="password">
+                    <label for="l_passwd">Passwort</label>
                 </div>
                 <button class="btn orange waves-effect waves-light col s12" type="button">
                     Login
                 </button>
             </form>
             <form id="register">
-                <div class="input-field col s12">
-                    <input id="usrname" type="text">
-                    <label for="usrname">Benutzername</label>
+                <div class="input-field col s12 m6">
+                    <input id="usrname" type="text" onkeyup="checkUsrname()">
+                    <label for="usrname" data-error="Vergeben" data-success="Frei">Benutzername</label>
                 </div>
-                <div class="input-field col s12">
+                <div class="input-field col s12 m6">
                     <input id="realname" type="text">
                     <label for="realname">Vor- und Nachname</label>
                 </div>
@@ -55,15 +56,15 @@
                     <input id="email" type="email">
                     <label for="email">E-Mail Adresse</label>
                 </div>
-                <div class="input-field col s12">
+                <div class="input-field col s12 m6">
                     <input id="passwd" type="password">
                     <label for="passwd">Passwort</label>
                 </div>
-                <div class="input-field col s12">
+                <div class="input-field col s12 m6">
                     <input id="passwd2" type="password">
                     <label for="passwd2">Passwort wiederholen</label>
                 </div>
-                <button class="btn orange waves-effect waves-light col s12" type="button">
+                <button class="btn orange waves-effect waves-light col s12" onclick="register()" type="button">
                     Registrieren
                 </button>
             </form>
