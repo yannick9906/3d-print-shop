@@ -108,7 +108,7 @@
         public static function createUser($username, $email, $passwdhash, $realname) {
             $pdo = new PDO_MYSQL();
             $pdo->query("INSERT INTO print3d_user(username, email, passwd, realname) VALUES (:Username, :Email, :Passwd, :Realname)",
-                [":Username" => $username, ":Email" => $email, ":Passwd" => md5($passwdhash), ":Realname" => $realname]);
+                [":Username" => $username, ":Email" => $email, ":Passwd" => $passwdhash, ":Realname" => $realname]);
             return self::fromUName($username);
         }
 

@@ -25,17 +25,19 @@ function login() {
         usrname: usrname,
         passwd: passwd
     };
-    $.post("users.php?action=login", data, function(data) {
+    $.post("userLogin.php?action=login", data, function(data) {
         data = JSON.parse(data);
         var field = $("#usrname");
         if(data["success"] == 1) {
             Materialize.toast('Login erfolgreich', 2000, 'green');
         } else if(data["errorcode"] == 4) {
-            Materialize.toast('Der Benutzername existiert nicht.', 2000, 'red');
+            Materialize.toast('Der Benutzername existiert nicht.', 4000, 'red');
         } else if(data["errorcode"] == 3) {
-            Materialize.toast('Passwort falsch', 2000, 'red');
+            Materialize.toast('Passwort falsch', 4000, 'red');
+        } else if(data["errorcode"] == 5) {
+            Materialize.toast('Der Account ist noch nicht freigeschalten.', 4000, 'red');
         } else {
-            Materialize.toast('Es ist ein Fehler aufgetreten. Das tut uns leid :/', 2000, 'red');
+            Materialize.toast('Es ist ein Fehler aufgetreten. Das tut uns leid :/', 4000, 'red');
         }
 
     });
@@ -56,11 +58,12 @@ function register() {
             email: email,
             realname: realname
         };
-        $.post("users.php?action=register", data, function(data) {
+        $.post("userLogin.php?action=register", data, function(data) {
             data = JSON.parse(data);
             var field = $("#usrname");
             if(data["success"] == 1) {
                 Materialize.toast('Registrierung erfolgreich', 2000, 'green');
+                Materialize.toast('Sobald dein Account aktiviert wurde,<br/>kannst du dich anmelden.', 10000, 'green');
                 switchToLogin();
                 field.removeClass("invalid");
                 field.removeClass("valid");
@@ -82,7 +85,7 @@ function register() {
 
 function checkUsrname() {
     var field = $("#usrname");
-    $.getJSON("users.php?action=validateUsername&username="+field.val(), null, function(data) {
+    $.getJSON("userLogin.php?action=validateUsername&username="+field.val(), null, function(data) {
         if(field.val() == "") {
             field.removeClass("invalid");
             field.removeClass("valid");

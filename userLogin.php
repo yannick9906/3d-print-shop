@@ -23,7 +23,14 @@
         } elseif($username != null and $passwd != null) {
             $user = \print3d\User::fromUName($username);
             if($user->comparePassWDHash($passwd)) {
-                $jsonarray["success"] = 1;
+                if($user->getRole() > 0) {
+                    $jsonarray["success"] = 1;
+                    session_start();
+                    $_SESSION["uID"] = $user->getUID();
+                } else {
+                    $jsonarray["errorcode"] = 5;
+                    $jsonarray["errormsg"] = "Noch nicht freigeschalten.";
+                }
             } else {
                 $jsonarray["errorcode"] = 3;
                 $jsonarray["errormsg"] = "Kennwort falsch";
