@@ -30,6 +30,7 @@ function login() {
         var field = $("#usrname");
         if(data["success"] == 1) {
             Materialize.toast('Login erfolgreich', 2000, 'green');
+            window.location(data["forwardTo"]);
         } else if(data["errorcode"] == 4) {
             Materialize.toast('Der Benutzername existiert nicht.', 4000, 'red');
         } else if(data["errorcode"] == 3) {

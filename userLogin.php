@@ -5,7 +5,6 @@
      * Date: 28.04.2016
      * Time: 17:12
      */
-    error_reporting(E_ALL);
 
     require_once "classes/PDO_MYSQL.php";
     require_once "classes/User.php";

@@ -113,6 +113,35 @@
         }
 
         /**
+         * @return bool|User
+         */
+        public static function checkSession() {
+            session_start();
+            if(!isset($_SESSION["uID"])) {
+                self::forwardTo("appLogin.html");
+                exit;
+            } else {
+                $user = User::fromUID($_SESSION["uID"]);
+                if($_GET["m"] == "debug") {
+                    echo "<pre style='display: block; position: absolute'>\n";
+                    echo "[0] Perm Array Information:\n";
+                    var_dump($user->getPermAsArray());
+                    echo "\n[1] Permission Information:\n";
+                    self::printPermission($user);
+                    echo "\n[2] User Information:\n";
+                    echo $user->toString();
+                    echo "\n[3] Client Information:\n";
+                    echo "    Arguments: ".$_SERVER["REQUEST_URI"]."\n";
+                    echo "    Req Time : ".$_SERVER["REQUEST_TIME"]."ns\n";
+                    echo "    Remote IP: ".$_SERVER["REMOTE_ADDR"]."\n";
+                    echo "    Usr Agent: ".$_SERVER["HTTP_USER_AGENT"]."\n";
+                    echo "</pre>\n";
+                }
+                return $user;
+            }
+        }
+
+        /**
          * @return int
          */
         public function getUID() {

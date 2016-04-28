@@ -82,12 +82,46 @@
         }
 
         /**
+         * @param User $user
+         * @return Order[]
+         *
+         * TODO States
+         */
+        public static function getAllOldOrdersPerUser($user) {
+            $pdo = new PDO_MYSQL();
+            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE uID = :uid", [":uid" => $user->getUID()]);
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID()");
+        }
+
+        /**
          * @return Order[]
          */
         public static function getAllOpenOrders() {
             $pdo = new PDO_MYSQL();
             $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE state < 10");
             return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID()");
+        }
+
+        public function asArray() {
+            return [
+                "oID" => $this->oID,
+                "uID" => $this->uID,
+                "realname" => User::fromUID($this->uID)->getRealname(),
+                "order_name" => $this->order_name,
+                "order_link" => $this->order_link,
+                "date_created" => $this->date_created,
+                "date_confirmed" => $this->date_confirmed,
+                "date_completed" => $this->date_completed,
+                "printtime" => $this->print_time,
+                "comment" => $this->comment,
+                "filamentcolorname" => FilamentType::fromFID($this->filamentType)->getColorname(),
+                "filamentcolorcode" => FilamentType::fromFID($this->filamentType)->getColorcode(),
+                "complete_price" => $this,
+                "material_price" => $this,
+                "energy_cost" => $this,
+                "material_weight" => $this->material_weight,
+                "material_length" => $this->material_length
+            ];
         }
 
         /**
