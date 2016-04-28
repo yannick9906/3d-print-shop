@@ -17,7 +17,28 @@ function switchToLogin() {
 }
 
 function login() {
+    var usrname  = $("#l_usrname").val();
+    var passwd1  = $("#l_passwd").val();
 
+    var passwd = md5(passwd1);
+    data = {
+        usrname: usrname,
+        passwd: passwd
+    };
+    $.post("users.php?action=login", data, function(data) {
+        data = JSON.parse(data);
+        var field = $("#usrname");
+        if(data["success"] == 1) {
+            Materialize.toast('Login erfolgreich', 2000, 'green');
+        } else if(data["errorcode"] == 4) {
+            Materialize.toast('Der Benutzername existiert nicht.', 2000, 'red');
+        } else if(data["errorcode"] == 3) {
+            Materialize.toast('Passwort falsch', 2000, 'red');
+        } else {
+            Materialize.toast('Es ist ein Fehler aufgetreten. Das tut uns leid :/', 2000, 'red');
+        }
+
+    });
 }
 
 function register() {

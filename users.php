@@ -13,7 +13,26 @@
     $action = $_GET["action"];
 
     if($action == "login") {
+        $jsonarray = ["success" => 0];
+        $username  = $_POST["usrname"];
+        $passwd    = $_POST["passwd"];
 
+        if(!\print3d\User::doesUserNameExist($username)) {
+            $jsonarray["errorcode"] = 4;
+            $jsonarray["errormsg"] = "Der Benutzername existiert nicht";
+        } elseif($username != null and $passwd != null) {
+            $user = \print3d\User::fromUName($username);
+            if($user->comparePassWDHash($passwd)) {
+                $jsonarray["success"] = 1;
+            } else {
+                $jsonarray["errorcode"] = 3;
+                $jsonarray["errormsg"] = "Kennwort falsch";
+            }
+        } else {
+            $jsonarray["errorcode"] = 2;
+            $jsonarray["errormsg"] = "Das Formular muss komplett ausgefüllt sein";
+        }
+        echo json_encode($jsonarray);
     } elseif($action == "register") {
         $jsonarray = ["success" => 0];
         $username  = $_POST["usrname"];
