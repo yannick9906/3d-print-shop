@@ -29,10 +29,10 @@
          */
         public function __construct($uID, $username, $passwdHash, $email, $realname, $role) {
             $this->uID = $uID;
-            $this->username = $username;
-            $this->passwdHash = $passwdHash;
-            $this->email = $email;
-            $this->realname = $realname;
+            $this->username = utf8_encode($username);
+            $this->passwdHash = utf8_encode($passwdHash);
+            $this->email = utf8_encode($email);
+            $this->realname = utf8_encode($realname);
             $this->role = $role;
         }
 

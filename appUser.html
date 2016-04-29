@@ -6,6 +6,7 @@
 
     <link type="text/css" rel="stylesheet" href="lib/materialize/css/materialize.css"  media="screen,projection"/>
     <link rel="stylesheet" href="lib/mdi/css/materialdesignicons.min.css" media="all" type="text/css" />
+    <link rel="stylesheet" href="css/style.css" media="all" type="text/css" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -15,6 +16,7 @@
 <script type="text/javascript" src="lib/md5.js"></script>
 <script type="text/javascript" src="lib/materialize/js/materialize.min.js"></script>
 <script type="text/javascript" src="js/appUser.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
 
 <!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
@@ -31,13 +33,13 @@
             <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Account<i class="mddi mddi-chevron-down right"></i></a></li>
         </ul>
         <ul class="side-nav fixed" id="slide-out">
-            <li><a href="#!">Mein Account</a></li>
+            <li id="sidenav-account"><a onclick="toUserSettings()">Mein Account</a></li>
             <li class="divider"></li>
-            <li class="no-padding bold"><a href="#!">Bestellungen</a></li>
+            <li class="no-padding bold"><a href="">Bestellungen</a></li>
             <li class="divider padding"></li>
-            <li><a href="index.php">Ausstehend</a></li>
+            <li id="sidenav-new" class="active"><a onclick="toNew()">Ausstehend</a></li>
             <li class="divider padding"></li>
-            <li><a href="index.php?all=1">Abgeschlossen</a></li>
+            <li id="sidenav-olds" ><a onclick="toOlds()">Abgeschlossen</a></li>
             <li class="divider"></li>
         </ul>
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="mddi mddi-menu"></i></a>
@@ -51,6 +53,8 @@
 <main>
     <div class="container">
         <div class="row">
+            <div class="col s12" id="orders">
+            </div>
         </div>
     </div>
 </main>

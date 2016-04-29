@@ -5,7 +5,7 @@
      * Date: 28.04.2016
      * Time: 21:54
      */
-
+    //error_reporting(E_ALL);
 
     require_once "classes/PDO_MYSQL.php";
     require_once "classes/User.php";
@@ -17,14 +17,14 @@
 
     if($action == "getOwnOrders") {
         $orders = \print3d\Order::getAllOrdersPerUser($user);
-        $json_array = []
+        $json_array = ["orders" => []];
         foreach($orders as $order) {
             array_push($json_array["orders"], $order->asArray());
         }
         echo json_encode($json_array);
     } else if($action == "getOwnOldOrders") {
         $orders = \print3d\Order::getAllOldOrdersPerUser($user);
-        $json_array = []
+        $json_array = ["orders" => []];
         foreach($orders as $order) {
             array_push($json_array["orders"], $order->asArray());
         }
@@ -32,7 +32,16 @@
     } else if($action == "newOrder") {
 
     } else if($action == "orderDetails") {
+        $oid = $_GET["oID"];
+        $json_array = [];
+        if(is_numeric($oid)) {
+            $order = \print3d\Order::fromOID($oid);
+            $json_array["order"] = $order->asArray();
+        } else {
+            $json_array["error"] = true;
+        }
 
+        echo json_encode($json_array);
     } else if($action == "getFilaments") {
 
     }

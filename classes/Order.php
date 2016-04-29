@@ -10,12 +10,17 @@
 
 
     class Order {
+        public $STATEICON  = ["plus","coin","bookmark-check","printer-3d","cube","cube-send","check","delete","cached",  -1 => "printer-alert", -2 => "auto-fix"];
+        public $STATECOLOR = ["blue","blue","green","green","green","green","green","red","orange", -1 => "red", -2 => "red darken-2"];
+        public $STATETEXT  = ["Erstellt","Preisangebot","Bestellt","Druckt...","Druck fertig","Zugestellt","Abgeschlossen","Gelöscht","Garantiefall", -1 => "Technisches Problem", -2 => "Nicht druckbar"];
+
         private $oID, $uID, $filamentType;
         private $date_created, $date_confirmed, $date_completed;
         private $state, $comment, $precision;
         private $order_name, $order_link;
         private $material_length, $material_weight;
         private $print_time;
+        private $total_cost, $material_cost, $energy_cost, $cost = 40;
 
         /**
          * Order constructor.
@@ -50,6 +55,9 @@
             $this->material_length = $material_length;
             $this->material_weight = $material_weight;
             $this->print_time = $print_time;
+            $this->material_cost = FilamentType::fromFID($filamentType)->getPriceFor($material_length);
+            $this->energy_cost = FilamentType::fromFID($filamentType)->getEnergyPrice($print_time);
+            $this->total_cost = $this->energy_cost + $this->material_cost + $this->cost;
         }
 
         /**
@@ -59,7 +67,7 @@
         public static function fromOID($oid) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_orders WHERE oID = :oid",[":oid" => $oid]);
-            return new Order($res->oID, $res->uID, $res->filamentType, $res->date_created, $res->date_confirmed, $res->date_completed, $res->state, $res->comment, $res->precision, $res->order_name, $res->order_link, $res->material_length, $res->material_weight, $res->print_time);
+            return new Order($res->oID, $res->uID, $res->filamenttype, $res->date_created, $res->date_confirmed, $res->date_completed, $res->state, $res->comment, $res->precision, $res->order_name, $res->order_link, $res->material_length, $res->material_weight, $res->print_time);
         }
 
         /**
@@ -68,7 +76,7 @@
         public static function getAllOrders() {
             $pdo = new PDO_MYSQL();
             $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders");
-            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID()");
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID");
         }
 
         /**
@@ -77,8 +85,8 @@
          */
         public static function getAllOrdersPerUser($user) {
             $pdo = new PDO_MYSQL();
-            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE uID = :uid AND state < 10", [":uid" => $user->getUID()]);
-            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID()");
+            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE uID = :uid AND state BETWEEN 0 AND 5", [":uid" => $user->getUID()]);
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID");
         }
 
         /**
@@ -89,8 +97,8 @@
          */
         public static function getAllOldOrdersPerUser($user) {
             $pdo = new PDO_MYSQL();
-            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE uID = :uid", [":uid" => $user->getUID()]);
-            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID()");
+            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE uID = :uid AND state NOT BETWEEN 0 AND 5", [":uid" => $user->getUID()]);
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID");
         }
 
         /**
@@ -98,30 +106,54 @@
          */
         public static function getAllOpenOrders() {
             $pdo = new PDO_MYSQL();
-            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE state < 10");
-            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID()");
+            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE state BETWEEN 0 AND 5");
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID");
         }
 
         public function asArray() {
+            $printing = "";
+            $style = "";
+            $style2 = "";
+            if($this->state == 3) $printing = "<div class=\"progress\"><div class=\"indeterminate\"></div></div>";
+            if($this->state == 4) $printing = "<div class=\"progress\"><div class=\"determinate\" style=\"width: 100%;\"></div></div>";
+            if($this->state == -2) {$style = "collection"; $style2 = "grey lighten-3";} else $style = "collection z-depth-1";
+            setlocale(LC_MONETARY, "de_DE");
+
             return [
                 "oID" => $this->oID,
                 "uID" => $this->uID,
                 "realname" => User::fromUID($this->uID)->getRealname(),
                 "order_name" => $this->order_name,
                 "order_link" => $this->order_link,
-                "date_created" => $this->date_created,
-                "date_confirmed" => $this->date_confirmed,
-                "date_completed" => $this->date_completed,
+                "date_created"   => date("d. M Y - H:i:s",$this->date_created),
+                "date_confirmed" => date("d. M Y - H:i:s",$this->date_confirmed),
+                "date_completed" => date("d. M Y",$this->date_completed),
                 "printtime" => $this->print_time,
                 "comment" => $this->comment,
+                "precision" => $this->precision,
                 "filamentcolorname" => FilamentType::fromFID($this->filamentType)->getColorname(),
                 "filamentcolorcode" => FilamentType::fromFID($this->filamentType)->getColorcode(),
-                "complete_price" => $this,
-                "material_price" => $this,
-                "energy_cost" => $this,
+                "complete_price" => money_format("%i", $this->total_cost/100),
+                "material_price" => money_format("%i", $this->material_cost/100),
+                "energy_cost" => money_format("%i", $this->energy_cost/100),
                 "material_weight" => $this->material_weight,
-                "material_length" => $this->material_length
+                "material_length" => $this->material_length,
+                "state" => $this->state,
+                "stateicon" => $this->STATEICON[$this->state],
+                "statecolor" => $this->STATECOLOR[$this->state],
+                "statetext" => $this->STATETEXT[$this->state],
+                "style" => $style,
+                "style2" => $style2,
+                "printing" => $printing
             ];
+        }
+
+        /**
+         * @param int|float $price
+         * @return float
+         */
+        private static function cutPrice($price) {
+            return (intval($price * 100) / 100);
         }
 
         /**

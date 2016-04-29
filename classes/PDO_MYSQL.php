@@ -30,7 +30,9 @@
          */
         protected function connect() {
             $this->pass = getMysqlPasskey();
-            return new PDO('mysql:host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->dbname, $this->user, $this->pass);
+            $pdo = new PDO('mysql:host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->dbname, $this->user, $this->pass);
+            $pdo->exec("set names utf8");
+            return $pdo;
         }
 
         public function query($query, $array = []) {

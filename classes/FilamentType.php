@@ -15,6 +15,7 @@
         private $price;
         private $saleprice;
         private $available;
+        private $weight = 0.00125;
 
         /**
          * FilamentType constructor.
@@ -61,6 +62,27 @@
             $pdo = new PDO_MYSQL();
             $stmt = $pdo->queryMulti("SELECT fID FROM print3d_filamenttypes WHERE available = 1");
             return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID()");
+        }
+
+        public function getWeightFor($length) {
+            $radius       = $this->diameter / 2;
+            $area         = $radius * $radius * 3.1415926535897932384626433832795;
+            return $area * $length * $this->weight;
+        }
+
+        public function getPriceFor($length) {
+            if($this->saleprice != 0) {
+                return (($this->getWeightFor($length)/1000) * $this->saleprice);
+
+            } else {
+                return (($this->getWeightFor($length)/1000) * $this->price);
+            }
+        }
+
+        public function getEnergyPrice($time) {
+            $time = $time / 60 / 60;
+            $kWh = (200 * $time) / 1000;
+            return 25 * $kWh;
         }
 
         /**
