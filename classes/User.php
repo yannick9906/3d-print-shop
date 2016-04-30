@@ -16,6 +16,7 @@
         private $email;
         private $realname;
         private $role;
+        private $emails;
 
         /**
          * User constructor.
@@ -26,14 +27,16 @@
          * @param string $email
          * @param string $realname
          * @param int    $role
+         * @param int    $emails
          */
-        public function __construct($uID, $username, $passwdHash, $email, $realname, $role) {
+        public function __construct($uID, $username, $passwdHash, $email, $realname, $role, $emails) {
             $this->uID = $uID;
-            $this->username = utf8_encode($username);
-            $this->passwdHash = utf8_encode($passwdHash);
-            $this->email = utf8_encode($email);
-            $this->realname = utf8_encode($realname);
+            $this->username = $username;
+            $this->passwdHash = $passwdHash;
+            $this->email = $email;
+            $this->realname = $realname;
             $this->role = $role;
+            $this->emails = $emails == 1;
         }
 
         /**
@@ -43,7 +46,7 @@
         public static function fromUID($uID) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_user WHERE uID = :uid", [":uid" => $uID]);
-            return new User($res->uID, $res->username, $res->passwd, $res->email, $res->realname, $res->level);
+            return new User($res->uID, $res->username, $res->passwd, $res->email, $res->realname, $res->level, $res->emails);
         }
 
         /**
@@ -93,8 +96,8 @@
          */
         public function saveChanges() {
             $pdo = new PDO_MYSQL();
-            $pdo->query("UPDATE print3d_user SET email = :Email, passwd = :Passwd, username = :Username, level = :lvl, realname = :Realname WHERE uID = :uID LIMIT 1",
-                [":Email" => $this->email, ":Passwd" => $this->passwdHash, ":Username" => $this->username, ":uID" => $this->uID, ":lvl" => $this->role, ":Realname" => $this->realname]);
+            $pdo->query("UPDATE print3d_user SET email = :Email, passwd = :Passwd, username = :Username, level = :lvl, realname = :Realname, emails = :emails WHERE uID = :uID LIMIT 1",
+                [":Email" => $this->email, ":Passwd" => $this->passwdHash, ":Username" => $this->username, ":uID" => $this->uID, ":lvl" => $this->role, ":Realname" => $this->realname, ":emails" => $this->emails?1:0]);
         }
 
         /**
@@ -125,9 +128,9 @@
                 if($_GET["m"] == "debug") {
                     echo "<pre style='display: block; position: absolute'>\n";
                     echo "[0] Perm Array Information:\n";
-                    var_dump($user->getPermAsArray());
+                    echo "Not available on this platform";
                     echo "\n[1] Permission Information:\n";
-                    self::printPermission($user);
+                    echo "Not available on this platform";
                     echo "\n[2] User Information:\n";
                     echo $user->toString();
                     echo "\n[3] Client Information:\n";
@@ -139,6 +142,21 @@
                 }
                 return $user;
             }
+        }
+
+        public function asArray() {
+            return [
+                "uID" => $this->uID,
+                "usrname" => $this->username,
+                "email" => $this->email,
+                "role" => $this->role,
+                "realname" => $this->realname,
+                "emails" => $this->emails
+            ];
+        }
+
+        public function toString() {
+            return json_encode(self::asArray());
         }
 
         /**
@@ -194,11 +212,8 @@
         /**
          * @param string $passwdHash
          */
-        public function setPasswdHash($old, $new) {
-            if($this->comparePassWDHash($old)) {
-                $this->passwdHash = $new;
-                return true;
-            } else return false;
+        public function setPasswdHash($new) {
+            $this->passwdHash = $new;
         }
 
         /**
@@ -220,5 +235,19 @@
          */
         public function setRole($role) {
             $this->role = $role;
+        }
+
+        /**
+         * @return bool
+         */
+        public function canReceiveEmails() {
+            return $this->emails;
+        }
+
+        /**
+         * @param $emails
+         */
+        public function setReceivingEmails($emails) {
+            $this->emails = $emails;
         }
     }

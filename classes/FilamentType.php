@@ -71,12 +71,7 @@
         }
 
         public function getPriceFor($length) {
-            if($this->saleprice != 0) {
-                return (($this->getWeightFor($length)/1000) * $this->saleprice);
-
-            } else {
-                return (($this->getWeightFor($length)/1000) * $this->price);
-            }
+                return (($this->getWeightFor($length)/1000) * $this->getPrice());
         }
 
         public function getEnergyPrice($time) {
@@ -131,7 +126,8 @@
          * @return int
          */
         public function getPrice() {
-            return $this->price;
+            if($this->saleprice != 0) return $this->saleprice;
+            else return$this->price;
         }
 
         /**

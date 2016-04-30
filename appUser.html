@@ -68,15 +68,71 @@
                     <span class="card-title activator grey-text text-darken-4"><span class="detail-title"></span><i class="mddi mddi-dots-vertical right"></i></span>
                     <p><a href="" id="detail_link">Objekt</a></p>
                 </div>
-                <div class="card-reveal">
+                <div class="card-reveal row">
                     <span class="card-title grey-text text-darken-4"><span class="detail-title"></span><i class="mddi mddi-close right"></i></span>
-                    <p id="detail-content"></p>
+                    <span id="detail-content" class="col s12"></span><br/>
+                    <p class="col s6">
+                        <i class="mddi mddi-information-outline grey-text text-darken-1"></i>   <span id="detail-state"></span><br/>
+                        <i class="mddi mddi-altimeter grey-text text-darken-1">          </i> 0,<span id="detail-precision"></span> mm<br/>
+                        <i class="mddi mddi-format-color-fill grey-text text-darken-1">  </i>   <span id="detail-color"></span><br/>
+                        <i class="mddi mddi-clock-in  grey-text text-darken-1">          </i>   <span id="detail-date-created"></span><br/>
+                        <i class="mddi mddi-clock-out grey-text text-darken-1">          </i>   <span id="detail-date-confirmed"></span><br/>
+                        <i class="mddi mddi-clock-fast grey-text text-darken-1">         </i>   <span id="detail-date-completed"></span><br/>
+                    </p>
+                    <p class="col s6">
+                        <i class="mddi mddi-ruler grey-text text-darken-1">   </i>   <span id="detail-length"></span> mm<br/>
+                        <i class="mddi mddi-weight grey-text text-darken-1">  </i>   <span id="detail-weight"></span> g<br/>
+                        <i class="mddi mddi-coin  grey-text text-darken-1">   </i>   <span id="detail-per-kg"></span> €/kg<br/>
+                        <i class="mddi mddi-flash grey-text text-darken-1">   </i>   <span id="detail-energy-cost"></span> €<br/>
+                        <i class="mddi mddi-cube grey-text text-darken-1">    </i>   <span id="detail-material-cost"></span> €<br/>
+                        <i class="mddi mddi-equal grey-text text-darken-1">   </i>   <span id="detail-total-cost"></span> €<br/>
+
+                    </p>
                 </div>
             </div>
 
         </div>
     </div>
-    <div id="cache" style="display: none;"></div>
+    <div class="container" id="userSettings">
+        <form class="row card-panel">
+            <div class="input-field col s12 m6">
+                <input id="usrname" type="text" disabled>
+                <label for="usrname">Benutzername</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input id="realname" type="text" disabled>
+                <label for="realname">Vor- und Nachname</label>
+            </div>
+            <div class="input-field col s12 m5">
+                <input id="passwd1" type="password">
+                <label for="passwd1">neues Passwort</label>
+            </div>
+            <div class="input-field col s12 m5">
+                <input id="passwd2" type="password">
+                <label for="passwd2">Passwort wiederholen</label>
+            </div>
+            <button class="btn orange waves-effect waves-light col s12 m2" onclick="updatePasswd()" type="button" style="margin-top: 12px;">
+                <i class="mddi mddi-check"></i>
+            </button>
+            <div class="input-field col s10 m8">
+                <input id="email" type="email">
+                <label for="email">Email Adresse</label>
+            </div>
+            <div class="switch col s2 m2" style="margin-top: 17px;">
+                <label>
+                    <input type="checkbox" id="recv-emails">
+                    <span class="lever"></span>
+                    <p class="hide-on-med-and-down">Emails erhalten</p>
+                </label>
+            </div>
+            <button class="hide-on-med-and-down btn orange waves-effect waves-light col s12 m2 offset-m2" onclick="updateEmail()" type="button" style="margin-top: -50px;">
+                <i class="mddi mddi-check"></i>
+            </button>
+            <button class="hide-on-large-only btn orange waves-effect waves-light col s12" onclick="updateEmail()" type="button">
+                <i class="mddi mddi-check"></i>
+            </button>
+        </form>
+    </div>
 </main>
 </body>
 <script>
@@ -84,9 +140,10 @@
         $(".dropdown-button").dropdown();
 
         // Initialize collapse button
-        $('.button-collapse').sideNav({ closeOnClick: true });
+        $('.button-collapse').sideNav();
         $("#menu-back").hide();
         $("#showDetail").hide();
+        $("#userSettings").hide();
     });
 </script>
 </html>
