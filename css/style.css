@@ -15,3 +15,7 @@ header, main, footer {
     left: 0;
     position: fixed;
 }
+
+body, html {
+    cursor: url(../svg/cursor-default.svg), auto;
+}
