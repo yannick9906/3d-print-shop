@@ -44,4 +44,19 @@
         echo json_encode($json_array);
     } else if($action == "getFilaments") {
 
+    } else if($action == "getThingiverseImg") {
+        $link = $_GET["link"];
+        $html = file_get_contents($link);
+
+        $doc = new DOMDocument();
+        @$doc->loadHTML($html);
+
+        $tags = $doc->getElementsByTagName('img');
+
+        foreach ($tags as $tag) {
+            if(strpos($tag->getAttribute('src'), "renders") && !(strpos($tag->getAttribute('src'), "thumb_small"))) {
+                echo json_encode(["link" => $tag->getAttribute("src")]);
+                exit;
+            }
+        }
     }

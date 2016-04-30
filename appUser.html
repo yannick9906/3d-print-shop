@@ -33,16 +33,17 @@
             <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Account<i class="mddi mddi-chevron-down right"></i></a></li>
         </ul>
         <ul class="side-nav fixed" id="slide-out">
-            <li id="sidenav-account"><a onclick="toUserSettings()">Mein Account</a></li>
+            <li id="sidenav-account"><a href="#" onclick="toUserSettings()">Mein Account</a></li>
             <li class="divider"></li>
-            <li class="no-padding bold"><a href="">Bestellungen</a></li>
+            <li class="no-padding bold"><a>Bestellungen</a></li>
             <li class="divider padding"></li>
-            <li id="sidenav-new" class="active"><a onclick="toNew()">Ausstehend</a></li>
+            <li id="sidenav-new" class="active"><a href="#" onclick="toNew()">Ausstehend</a></li>
             <li class="divider padding"></li>
-            <li id="sidenav-olds" ><a onclick="toOlds()">Abgeschlossen</a></li>
+            <li id="sidenav-olds" ><a href="#" onclick="toOlds()">Abgeschlossen</a></li>
             <li class="divider"></li>
         </ul>
-        <a href="#" data-activates="slide-out" class="button-collapse"><i class="mddi mddi-menu"></i></a>
+        <a id="menu-norm" href="#" data-activates="slide-out" class="button-collapse"><i class="mddi mddi-menu"></i></a>
+        <a id="menu-back" href="#" onclick="back()" class="button-back"><i class="mddi mddi-backburger"></i></a>
     </div>
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
         <a href="new.php" class="btn-floating btn-large green tooltipped"  data-position="left" data-delay="50" data-tooltip="Neuen Auftrag erstellen">
@@ -51,12 +52,31 @@
     </div>
 </nav>
 <main>
-    <div class="container">
+    <div class="container" id="lists">
         <div class="row">
             <div class="col s12" id="orders">
             </div>
         </div>
     </div>
+    <div class="container" id="showDetail">
+        <div class="row">
+            <div class="card col s12">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img class="activator" src="images/office.jpg" id="detail_img">
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator grey-text text-darken-4"><span class="detail-title"></span><i class="mddi mddi-dots-vertical right"></i></span>
+                    <p><a href="" id="detail_link">Objekt</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4"><span class="detail-title"></span><i class="mddi mddi-close right"></i></span>
+                    <p id="detail-content"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="cache" style="display: none;"></div>
 </main>
 </body>
 <script>
@@ -65,6 +85,8 @@
 
         // Initialize collapse button
         $('.button-collapse').sideNav({ closeOnClick: true });
+        $("#menu-back").hide();
+        $("#showDetail").hide();
     });
 </script>
 </html>
