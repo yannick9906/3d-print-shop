@@ -10,6 +10,7 @@
 
 
     class FilamentType {
+        private $fID;
         private $diameter;
         private $colorname, $colorcode;
         private $price;
@@ -27,7 +28,8 @@
          * @param int $saleprice
          * @param int $available
          */
-        public function __construct($diameter, $colorname, $colorcode, $price, $saleprice, $available) {
+        public function __construct($fID, $diameter, $colorname, $colorcode, $price, $saleprice, $available) {
+            $this->fID = $fID;
             $this->diameter = $diameter;
             $this->colorname = $colorname;
             $this->colorcode = $colorcode;
@@ -43,7 +45,7 @@
         public static function fromFID($fID) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_filamenttypes WHERE fID = :fid", [":fid" => $fID]);
-            return new FilamentType($res->diameter, $res->colorname, $res->colorcode, $res->price, $res->salesprice, $res->available);
+            return new FilamentType($res->fID, $res->diameter, $res->colorname, $res->colorcode, $res->price, $res->salesprice, $res->available);
         }
 
         /**
@@ -52,7 +54,7 @@
         public static function getAllFilaments() {
             $pdo = new PDO_MYSQL();
             $stmt = $pdo->queryMulti("SELECT fID FROM print3d_filamenttypes");
-            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID()");
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID");
         }
 
         /**
@@ -61,7 +63,7 @@
         public static function getAllAvailableFilaments() {
             $pdo = new PDO_MYSQL();
             $stmt = $pdo->queryMulti("SELECT fID FROM print3d_filamenttypes WHERE available = 1");
-            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID()");
+            return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID");
         }
 
         public function getWeightFor($length) {
@@ -78,6 +80,15 @@
             $time = $time / 60 / 60;
             $kWh = (200 * $time) / 1000;
             return 25 * $kWh;
+        }
+
+        public function asArray() {
+            return [
+                "fID" => $this->fID,
+                "filamentcolorname" => $this->getColorname(),
+                "filamentcolorcode" => str_replace("#", "", $this->getColorcode()),
+                "price" => money_format("%i", $this->getPrice()/100)
+            ];
         }
 
         /**

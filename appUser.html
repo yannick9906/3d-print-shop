@@ -16,6 +16,10 @@
 <script type="text/javascript" src="lib/md5.js"></script>
 <script type="text/javascript" src="lib/materialize/js/materialize.min.js"></script>
 <script type="text/javascript" src="js/appUser.js"></script>
+<script type="text/javascript" src="js/appUserSettings.js"></script>
+<script type="text/javascript" src="js/appUserLists.js"></script>
+<script type="text/javascript" src="js/appUserNew.js"></script>
+<script type="text/javascript" src="js/appUserDetails.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
 
 <!-- Dropdown Structure -->
@@ -46,7 +50,7 @@
         <a id="menu-back" href="#" onclick="back()" class="button-back"><i class="mddi mddi-backburger"></i></a>
     </div>
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-        <a href="new.php" class="btn-floating btn-large green tooltipped"  data-position="left" data-delay="50" data-tooltip="Neuen Auftrag erstellen">
+        <a href="#" class="btn-floating btn-large green tooltipped" onclick="toNewOrder()" data-position="left" data-delay="50" data-tooltip="Neuen Auftrag erstellen">
             <i class="large mddi mddi-plus"></i>
         </a>
     </div>
@@ -141,6 +145,34 @@
             </button>
         </form>
     </div>
+    <div class="container" id="new">
+        <form class="row card-panel">
+            <div class="input-field col s12 m6">
+                <input id="newordertitle" type="text">
+                <label for="newordertitle">Bestellungstitel</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <select class="icons" id="neworderfilament">
+                    <option value="" disabled selected>Wähle ein Material</option>
+                </select>
+                <label for="neworderfilament">Material</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="neworderurl" type="url" onkeyup="updatePreview()">
+                <label for="neworderurl">Link zum Objekt (z.B Thingiverse)</label>
+            </div>
+            <div class="col s12 center">
+                <img src="#" height="100px" id="preview"/>
+            </div>
+            <div class="input-field col s12">
+                <textarea id="newordercomment" class="materialize-textarea"></textarea>
+                <label for="newordercomment">Kommentar</label>
+            </div>
+            <button class="btn orange waves-effect waves-light col s12" onclick="submitNew()" type="button">
+                <i class="mddi mddi-basket-fill"></i>
+            </button>
+        </form>
+    </div>
 </main>
 </body>
 <script>
@@ -152,6 +184,7 @@
         $("#menu-back").hide();
         $("#showDetail").hide();
         $("#userSettings").hide();
+        $("#new").hide();
     });
 </script>
 </html>

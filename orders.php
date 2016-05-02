@@ -43,13 +43,18 @@
 
         echo json_encode($json_array);
     } else if($action == "getFilaments") {
-
+        $filaments = \print3d\FilamentType::getAllAvailableFilaments();
+        $json_array = ["filaments" => []] ;
+        foreach ($filaments as $filament) {
+            array_push($json_array["filaments"], $filament->asArray());
+        }
+        echo json_encode($json_array);
     } else if($action == "getThingiverseImg") {
         $link = $_GET["link"];
         $html = file_get_contents($link);
 
         $doc = new DOMDocument();
-        @$doc->loadHTML($html);
+        $doc->loadHTML($html);
 
         $tags = $doc->getElementsByTagName('img');
 
