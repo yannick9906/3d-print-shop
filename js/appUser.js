@@ -14,8 +14,7 @@ $(document).ready(function () {
                 <i class="circle mddi mddi-{{{stateicon}}} {{statecolor}}"></i>
                 <span class="title"><b>{{order_name}}</b></span>
                 <p>
-                    <i class="mddi mddi-information-outline grey-text text-darken-1"></i> {{statetext}}<br/>
-                    <i class="mddi mddi-altimeter grey-text text-darken-1"></i> 0,{{precision}} mm<br/>
+                    <i class="mddi mddi-altimeter grey-text text-darken-1"></i> 0,{{precision}} mm<br/><span class="bg badge {{statecolor}}">{{statetext}}</span>
                     <i class="mddi mddi-format-color-fill grey-text text-darken-1"></i> {{filamentcolorname}}<br/>
                     <i class="mddi mddi-weight grey-text text-darken-1"></i> {{material_weight}} g<br/>
                     <i class="mddi mddi-clock-out  grey-text text-darken-1"></i> {{date_confirmed}}<br/>
