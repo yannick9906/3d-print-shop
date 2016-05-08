@@ -109,6 +109,7 @@ function toNewOrder() {
     $("#sidenav-account").removeClass("active");
     $("#menu-back").fadeIn();
     $("#menu-norm").fadeOut();
+    $("#newOrderBtn").fadeOut();
 
     $("#userSettings").fadeOut("fast");
     $("#showDetail").fadeOut("fast");
@@ -130,6 +131,8 @@ function toNewOrder() {
 }
 
 function back() {
+    if(mode == "NewOrder") $("#newOrderBtn").fadeIn();
+
     if(lastmode == "UserSettings") {
         toUserSettings();
     } else if(lastmode == "NewOrders") {

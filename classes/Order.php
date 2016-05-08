@@ -80,7 +80,7 @@
          */
         public static function getAllOrders() {
             $pdo = new PDO_MYSQL();
-            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders");
+            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders ORDER BY date_created DESC");
             return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID");
         }
 
@@ -90,7 +90,7 @@
          */
         public static function getAllOrdersPerUser($user) {
             $pdo = new PDO_MYSQL();
-            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE uID = :uid AND state BETWEEN 0 AND 5", [":uid" => $user->getUID()]);
+            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE uID = :uid AND state BETWEEN 0 AND 5 ORDER BY date_created DESC", [":uid" => $user->getUID()]);
             return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID");
         }
 
@@ -102,7 +102,7 @@
          */
         public static function getAllOldOrdersPerUser($user) {
             $pdo = new PDO_MYSQL();
-            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE uID = :uid AND state NOT BETWEEN 0 AND 5", [":uid" => $user->getUID()]);
+            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE uID = :uid AND state NOT BETWEEN 0 AND 5 ORDER BY date_created DESC", [":uid" => $user->getUID()]);
             return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID");
         }
 
@@ -111,7 +111,7 @@
          */
         public static function getAllOpenOrders() {
             $pdo = new PDO_MYSQL();
-            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE state BETWEEN 0 AND 5");
+            $stmt = $pdo->queryMulti("SELECT oID FROM print3d_orders WHERE state BETWEEN 0 AND 5 ORDER BY date_created DESC");
             return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID");
         }
 
