@@ -15,11 +15,11 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="lib/md5.js"></script>
 <script type="text/javascript" src="lib/materialize/js/materialize.min.js"></script>
-<script type="text/javascript" src="js/appUser.js"></script>
-<script type="text/javascript" src="js/appUserSettings.js"></script>
-<script type="text/javascript" src="js/appUserLists.js"></script>
-<script type="text/javascript" src="js/appUserNew.js"></script>
-<script type="text/javascript" src="js/appUserDetails.js"></script>
+<script type="text/javascript" src="js/appAdmin.js"></script>
+<script type="text/javascript" src="js/appAdminSettings.js"></script>
+<script type="text/javascript" src="js/appAdminLists.js"></script>
+<script type="text/javascript" src="js/appAdminNew.js"></script>
+<script type="text/javascript" src="js/appAdminDetails.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
 
 <!-- Dropdown Structure -->
@@ -39,11 +39,17 @@
         <ul class="side-nav fixed" id="slide-out">
             <li id="sidenav-account"><a href="#" onclick="toUserSettings()">Mein Account</a></li>
             <li class="divider"></li>
-            <li class="no-padding bold"><a>Bestellungen</a></li>
+            <li class="no-padding bold"><a>Meine Bestellungen</a></li>
             <li class="divider padding"></li>
             <li id="sidenav-new" class="active"><a href="#" onclick="toNew()">Ausstehend</a></li>
             <li class="divider padding"></li>
             <li id="sidenav-olds" ><a href="#" onclick="toOlds()">Abgeschlossen</a></li>
+            <li class="divider"></li>
+            <li class="no-padding bold"><a>Alle Bestellungen</a></li>
+            <li class="divider padding"></li>
+            <li id="sidenav-allnew"><a href="#" onclick="toAllNew()">Ausstehend</a></li>
+            <li class="divider padding"></li>
+            <li id="sidenav-allolds" ><a href="#" onclick="toAllOlds()">Abgeschlossen</a></li>
             <li class="divider"></li>
         </ul>
         <a id="menu-norm" href="#" data-activates="slide-out" class="button-collapse"><i class="mddi mddi-menu"></i></a>
@@ -187,8 +193,8 @@
         $("#new").hide();
 
         $.getJSON("users.php?action=getOwnUserData", null, function(data) {
-            if(data["user"]["role"] == 2) {
-                window.location.href = "appAdmin.html";
+            if(data["user"]["role"] == 1) {
+                window.location.href = "appUser.html";
             } else if(data["user"]["role"] == 0) {
                 window.location.href = "appLogin.html";
             }
