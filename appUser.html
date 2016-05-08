@@ -187,7 +187,8 @@
         $("#new").hide();
 
         $.getJSON("users.php?action=getOwnUserData", null, function(data) {
-            if(data["user"]["role"] == 2) {
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else if(data["user"]["role"] == 2) {
                 window.location.href = "appAdmin.html";
             } else if(data["user"]["role"] == 0) {
                 window.location.href = "appLogin.html";

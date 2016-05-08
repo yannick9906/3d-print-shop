@@ -13,38 +13,44 @@ function showDetail(oid) {
     $("#lists").fadeOut("fast", function() {
         $("#showDetail").fadeIn("fast");
         $.getJSON("orders.php?action=orderDetails&oID="+oid, null, function(data) {
-            $(".detail-title")         .html(data["order"]["order_name"]);
-            $("#detail-content")       .html(data["order"]["comment"]);
-            $("#detail-state")         .html(data["order"]["statetext"]);
-            $("#detail-precision")     .html(data["order"]["precision"]);
-            $("#detail-color")         .html(data["order"]["filamentcolorname"]);
-            $("#detail-weight")        .html(data["order"]["material_weight"]);
-            $("#detail-printtime")     .html(data["order"]["printtime"]);
-            $("#detail-date-created")  .html(data["order"]["date_created"]);
-            $("#detail-date-confirmed").html(data["order"]["date_confirmed"]);
-            $("#detail-date-completed").html(data["order"]["date_completed"]);
-            $("#detail-material-cost") .html(data["order"]["material_price"]);
-            $("#detail-energy-cost")   .html(data["order"]["energy_price"]);
-            $("#detail-length")        .html(data["order"]["material_length"]);
-            $("#detail-per-kg")        .html(data["order"]["filamentprice"]);
-            $("#detail-total-cost")    .html(data["order"]["complete_price"]);
-            setButtonsForState(parseInt(data["order"]["state"]));
-            var link = data["order"]["order_link"];
-            if(link.contains("thingiverse")) {
-                detail_link = $("#detail_link");
-                detail_link.html("Thingiverse");
-                detail_link.attr("href", link);
-                $.getJSON("orders.php?action=getThingiverseImg", {link: link}, function(data) {
-                    $("#detail_img").fadeOut(400, function() {
-                        $("#detail_img").attr("src", data["link"]).css("padding", "0");
-                    }).fadeIn(400);
-                });
-            } else {
-                $("#detail_img").attr("src", "http://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg");
-                $("#detail_img").css("padding", "0");
-                detail_link = $("#detail_link");
-                detail_link.html("Link zum Objekt");
-                detail_link.attr("href", link);
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else {
+                $(".detail-title").html(data["order"]["order_name"]);
+                $("#detail-content").html(data["order"]["comment"]);
+                $("#detail-state").html(data["order"]["statetext"]);
+                $("#detail-precision").html(data["order"]["precision"]);
+                $("#detail-color").html(data["order"]["filamentcolorname"]);
+                $("#detail-weight").html(data["order"]["material_weight"]);
+                $("#detail-printtime").html(data["order"]["printtime"]);
+                $("#detail-date-created").html(data["order"]["date_created"]);
+                $("#detail-date-confirmed").html(data["order"]["date_confirmed"]);
+                $("#detail-date-completed").html(data["order"]["date_completed"]);
+                $("#detail-material-cost").html(data["order"]["material_price"]);
+                $("#detail-energy-cost").html(data["order"]["energy_price"]);
+                $("#detail-length").html(data["order"]["material_length"]);
+                $("#detail-per-kg").html(data["order"]["filamentprice"]);
+                $("#detail-total-cost").html(data["order"]["complete_price"]);
+                setButtonsForState(parseInt(data["order"]["state"]));
+                var link = data["order"]["order_link"];
+                if (link.contains("thingiverse")) {
+                    detail_link = $("#detail_link");
+                    detail_link.html("Thingiverse");
+                    detail_link.attr("href", link);
+                    $.getJSON("orders.php?action=getThingiverseImg", {link: link}, function (data) {
+                        if (data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                        else {
+                            $("#detail_img").fadeOut(400, function () {
+                                $("#detail_img").attr("src", data["link"]).css("padding", "0");
+                            }).fadeIn(400);
+                        }
+                    });
+                } else {
+                    $("#detail_img").attr("src", "http://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg");
+                    $("#detail_img").css("padding", "0");
+                    detail_link = $("#detail_link");
+                    detail_link.html("Link zum Objekt");
+                    detail_link.attr("href", link);
+                }
             }
         });
     });

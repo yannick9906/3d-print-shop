@@ -89,13 +89,16 @@ function toUserSettings() {
         $("#userSettings").fadeIn("fast");
 
         $.getJSON("users.php?action=getOwnUserData", null, function(data) {
-            var user = data["user"];
-            $("#usrname").val(user["usrname"]);
-            $("#realname").val(user["realname"]);
-            $("#email").val(user["email"]);
-            $("#recv-emails").prop("checked", user["emails"]);
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else {
+                var user = data["user"];
+                $("#usrname").val(user["usrname"]);
+                $("#realname").val(user["realname"]);
+                $("#email").val(user["email"]);
+                $("#recv-emails").prop("checked", user["emails"]);
 
-            Materialize.updateTextFields();
+                Materialize.updateTextFields();
+            }
         });
     });
 }
@@ -118,14 +121,17 @@ function toNewOrder() {
         $("#new").fadeIn("fast");
 
         $.getJSON("orders.php?action=getFilaments", null, function(data) {
-            var filaments = data["filaments"];
-            console.log(data);
-            $("#neworderfilament").html("<option value='' disabled selected>Wähle ein Material</option>");
-            filaments.forEach(function(element, index, array) {
-                $("#neworderfilament").append(filaTmplt(element));
-            });
-            Materialize.updateTextFields();
-            $('select').material_select();
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else {
+                var filaments = data["filaments"];
+                console.log(data);
+                $("#neworderfilament").html("<option value='' disabled selected>Wähle ein Material</option>");
+                filaments.forEach(function (element, index, array) {
+                    $("#neworderfilament").append(filaTmplt(element));
+                });
+                Materialize.updateTextFields();
+                $('select').material_select();
+            }
         });
     });
 }

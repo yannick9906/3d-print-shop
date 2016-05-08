@@ -7,7 +7,8 @@ function updatePreview() {
     if(link.contains("thingiverse")) {
         $("#preview").attr("src", "http://www.the-irf.com/assets/content/animation/loading2.gif");
         $.getJSON("orders.php?action=getThingiverseImg", {link: link}, function (data) {
-            $("#preview").attr("src", data["link"]);
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else $("#preview").attr("src", data["link"]);
         });
     } else {
         $("#preview").attr("src", "http://www.the-irf.com/assets/content/animation/loading2.gif");
@@ -30,7 +31,8 @@ function sendNewOrder() {
                     toNew();
                     $("#newOrderBtn").fadeIn();
                 } else {
-
+                    if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                    else Materialize.toast("Es ist ein Fehler aufgetreten. Das tut uns leid :/", 5000, "red");
                 }
             });
         } else {

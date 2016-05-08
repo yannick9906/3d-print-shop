@@ -121,7 +121,7 @@
         public static function checkSession() {
             session_start();
             if(!isset($_SESSION["uID"])) {
-                self::forwardTo("appLogin.html");
+                echo json_encode(["success" => false, "error" => "NoLogin"]);
                 exit;
             } else {
                 $user = User::fromUID($_SESSION["uID"]);

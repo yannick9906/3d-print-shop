@@ -5,22 +5,30 @@
 function update() {
     if(mode == "NewOrders") {
         $.getJSON("orders.php?action=getOwnOrders",null,function(data) {
-            if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#orders").html("");
                 data["orders"].forEach(function (element, index, array) {
-                    html = listTmplt(element);
-                    $("#orders").append(html);
+                    if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                    else {
+                        html = listTmplt(element);
+                        $("#orders").append(html);
+                    }
                 });
                 oldData = data;
             }
         });
     } else if(mode == "OldOrders") {
         $.getJSON("orders.php?action=getOwnOldOrders",null,function(data) {
-            if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#orders").html("");
                 data["orders"].forEach(function (element, index, array) {
-                    html = listTmplt(element);
-                    $("#orders").append(html);
+                    if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                    else {
+                        html = listTmplt(element);
+                        $("#orders").append(html);
+                    }
                 });
                 oldData = data;
             }

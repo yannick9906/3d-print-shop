@@ -16,10 +16,10 @@ function updatePasswd() {
             if(data["success"] == true) {
                 Materialize.toast("Gespeichert", 2000, "green");
                 toUserSettings();
-            } else if(data["errorcode"] == 2) {
-                Materialize.toast('Es müssen alle Felder ausgefüllt sein', 2000, 'red');
-            } else {
-                Materialize.toast('Es ist ein Fehler aufgetreten. Das tut uns leid :/', 2000, 'red');
+            } else if(data["errorcode"] == 2) Materialize.toast('Es müssen alle Felder ausgefüllt sein', 2000, 'red');
+            else {
+                if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                else Materialize.toast('Es ist ein Fehler aufgetreten. Das tut uns leid :/', 2000, 'red');
             }
         });
     } else {
@@ -40,10 +40,10 @@ function updateEmail() {
         if(data["success"] == true) {
             Materialize.toast("Gespeichert", 2000, "green");
             toUserSettings();
-        } else if(data["errorcode"] == 2) {
-            Materialize.toast('Es müssen alle Felder ausgefüllt sein', 2000, 'red');
-        } else {
-            Materialize.toast('Es ist ein Fehler aufgetreten. Das tut uns leid :/', 2000, 'red');
+        } else if(data["errorcode"] == 2) Materialize.toast('Es müssen alle Felder ausgefüllt sein', 2000, 'red');
+        else {
+            if (data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else Materialize.toast('Es ist ein Fehler aufgetreten. Das tut uns leid :/', 2000, 'red');
         }
     });
 }
