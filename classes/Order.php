@@ -45,15 +45,20 @@
             $this->uID = $uID;
             $this->filamentType = $filamentType;
             $this->date_created = strtotime($date_created);
-            $this->date_confirmed = strtotime($date_confirmed);
-            $this->date_completed = strtotime($date_completed);
+            if($date_confirmed != "0000-00-00 00:00:00") $this->date_confirmed = strtotime($date_confirmed);
+            else $this->date_confirmed = 0;
+            if($date_completed != "0000-00-00 00:00:00") $this->date_completed = strtotime($date_completed);
+            else $this->date_completed = 0;
             $this->state = $state;
             $this->comment = $comment;
-            $this->precision = $precision;
+            if($precision != null) $this->precision = $precision;
+            else $this->precision = 0;
             $this->order_name = $order_name;
             $this->order_link = $order_link;
-            $this->material_length = $material_length;
-            $this->material_weight = $material_weight;
+            if($material_length != null) $this->material_length = $material_length;
+            else $this->material_length = 0;
+            if($material_weight != null) $this->material_weight = $material_weight;
+            else $this->material_weight = 0;
             $this->print_time = $print_time;
             $this->material_cost = FilamentType::fromFID($filamentType)->getPriceFor($material_length);
             $this->energy_cost = FilamentType::fromFID($filamentType)->getEnergyPrice($print_time);
@@ -110,6 +115,19 @@
             return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\Order::fromOID");
         }
 
+        /**
+         * @param User $user
+         * @param $title
+         * @param $fID
+         * @param $url
+         * @param $comment
+         */
+        public static function createNew($user, $title, $fID, $url, $comment) {
+            $pdo = new PDO_MYSQL();
+            $pdo->query("INSERT INTO print3d_orders(uID, date_created, state, filamenttype, order_name, order_link, comment) VALUES (:uid, :date, 0, :fila, :title, :url, :comment)",
+                [":uid" => $user->getUID(),":date" => date("Y-m-d H:i:s"),":fila" => $fID, ":title" => $title, ":url" => $url, ":comment" => $comment]);
+        }
+
         public function asArray() {
             $printing = "";
             $style = "";
@@ -118,6 +136,16 @@
             if($this->state == 4) $printing = "<div class=\"progress\"><div class=\"determinate\" style=\"width: 100%;\"></div></div>";
             if($this->state == -2) {$style = "collection"; $style2 = "grey lighten-3";} else $style = "collection z-depth-1";
             setlocale(LC_MONETARY, "de_DE");
+            if($this->date_confirmed != 0 && $this->date_completed != 0) {
+                $date_confirmed = date("d. M Y - H:i:s",$this->date_confirmed);
+                $date_completed = date("d. M Y - H:i:s",$this->date_completed);
+            } elseif($this->date_confirmed == 0 && $this->date_completed == 0) {
+                $date_confirmed = "Warte auf Annahme";
+                $date_completed = "Warte auf Annahme";
+            } elseif($this->date_confirmed != 0 && $this->date_completed == 0) {
+                $date_confirmed = date("d. M Y - H:i:s",$this->date_confirmed);
+                $date_completed = "Warte auf Einschätzung";
+            }
 
             return [
                 "oID" => $this->oID,
@@ -126,8 +154,8 @@
                 "order_name" => $this->order_name,
                 "order_link" => $this->order_link,
                 "date_created"   => date("d. M Y - H:i:s",$this->date_created),
-                "date_confirmed" => date("d. M Y - H:i:s",$this->date_confirmed),
-                "date_completed" => date("d. M Y",$this->date_completed),
+                "date_confirmed" => $date_confirmed,
+                "date_completed" => $date_completed,
                 "printtime" => gmdate("H\h i\m s\s", $this->print_time),
                 "comment" => $this->comment,
                 "precision" => $this->precision,

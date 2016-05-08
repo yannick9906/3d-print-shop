@@ -30,7 +30,8 @@
         }
         echo json_encode($json_array);
     } else if($action == "newOrder") {
-
+        \print3d\Order::createNew($user, $_POST["title"], $_POST["fila"], $_POST["url"], $_POST["comment"]);
+        echo json_encode(["success" => true]);
     } else if($action == "orderDetails") {
         $oid = $_GET["oID"];
         $json_array = [];

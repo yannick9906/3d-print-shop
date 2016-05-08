@@ -96,3 +96,29 @@ function setButton(deleteBtn, order, reorder, arrived, warranty) {
     if(arrived == 1)   $("#btn-arrived").show();  else $("#btn-arrived").hide();
     if(warranty == 1)  $("#btn-warranty").show(); else $("#btn-warranty").hide();
 }
+
+function sendNewOrder() {
+    title = $("#newordertitle").val();
+    fila = $("#neworderfilament").val();
+    url = $("#neworderurl").val();
+    comment = $("#newordercomment").val();
+    data = {title: title, fila: fila, url: url, comment: comment};
+    console.log(data);
+    if(fila != null) {
+        if(title != "" && url != "" && comment != "") {
+            $.post("orders.php?action=newOrder", data, function(data) {
+                json = JSON.parse(data);
+                if(json["success"]) {
+                    Materialize.toast("Deine Bestellung wurde abgeschickt<br/>Du erhälst eine Email, sobald ein Preisvorschlag verfügbar ist", 5000, "green")
+                    toNew();
+                } else {
+                    
+                }
+            });
+        } else {
+            Materialize.toast("Bitte fülle alle Felder aus", 2000, "red");
+        }
+    } else {
+        Materialize.toast("Bitte wähle ein Material", 2000, "red");
+    }
+}

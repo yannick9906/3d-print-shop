@@ -39,6 +39,7 @@
             $db = $this->connect();
             $stmt = $db->prepare($query);
             if (!empty($array)) $stmt->execute($array); else $stmt->execute();
+            //var_dump($stmt->errorInfo());
             return $stmt->fetchObject();
         }
 
