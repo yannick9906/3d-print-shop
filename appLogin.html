@@ -75,6 +75,10 @@
     $(document).ready(function() {
         $("#btnToLogin").hide();
         $("#register").hide();
+
+        if(window.location.hash.substr(1) == "Logout") {
+            doLogout();
+        }
     });
 </script>
 </html>

@@ -60,4 +60,8 @@
         echo json_encode($jsonarray);
     } elseif($action == "validateUsername") {
         echo json_encode(["success" => \print3d\User::doesUserNameExist($_GET["username"]) ? 0:1]);
+    } elseif($action == "logout") {
+        session_start();
+        session_destroy();
+        echo json_encode(["success" => true]);
     }

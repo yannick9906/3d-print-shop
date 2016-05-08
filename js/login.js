@@ -16,6 +16,16 @@ function switchToLogin() {
     $("#register").hide();
 }
 
+function doLogout() {
+    $.getJSON("userLogin.php?action=logout", null, function(data) {
+        if(data["success"]) {
+            Materialize.toast("Logout erfolgreich", 1000, "green");
+        } else {
+            Materialize.toast("Logout fehlgeschlagen", 5000, "red");
+        }
+    });
+}
+
 function login() {
     var usrname  = $("#l_usrname").val();
     var passwd1  = $("#l_passwd").val();

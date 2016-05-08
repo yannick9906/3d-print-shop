@@ -130,6 +130,10 @@ function toNewOrder() {
     });
 }
 
+function toLogout() {
+    window.location.href = "appLogin.html#Logout";
+}
+
 function back() {
     if(mode == "NewOrder") $("#newOrderBtn").fadeIn();
 
