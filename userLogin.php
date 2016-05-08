@@ -26,7 +26,8 @@
                     $jsonarray["success"] = 1;
                     session_start();
                     $_SESSION["uID"] = $user->getUID();
-                    $jsonarray["forwardTo"] = "appUser.html";
+                    if($user->getRole() == 2) $jsonarray["forwardTo"] = "appAdmin.html";
+                    else $jsonarray["forwardTo"] = "appUser.html";
                 } else {
                     $jsonarray["errorcode"] = 5;
                     $jsonarray["errormsg"] = "Noch nicht freigeschalten.";
