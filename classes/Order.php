@@ -20,7 +20,7 @@
         private $order_name, $order_link;
         private $material_length, $material_weight;
         private $print_time;
-        private $total_cost, $material_cost, $energy_cost, $cost = 40;
+        private $total_cost, $material_cost, $energy_cost, $cost;
 
         /**
          * Order constructor.
@@ -39,8 +39,9 @@
          * @param int $material_length
          * @param int $material_weight
          * @param int $print_time
+         * @param int $cost
          */
-        public function __construct($oID, $uID, $filamentType, $date_created, $date_confirmed, $date_completed, $state, $comment, $precision, $order_name, $order_link, $material_length, $material_weight, $print_time) {
+        public function __construct($oID, $uID, $filamentType, $date_created, $date_confirmed, $date_completed, $state, $comment, $precision, $order_name, $order_link, $material_length, $material_weight, $print_time, $cost) {
             $this->oID = $oID;
             $this->uID = $uID;
             $this->filamentType = $filamentType;
@@ -60,6 +61,7 @@
             if($material_weight != null) $this->material_weight = $material_weight;
             else $this->material_weight = 0;
             $this->print_time = $print_time;
+            $this->cost = $cost;
             $this->material_cost = FilamentType::fromFID($filamentType)->getPriceFor($material_length);
             $this->energy_cost = FilamentType::fromFID($filamentType)->getEnergyPrice($print_time);
             $this->total_cost = $this->energy_cost + $this->material_cost + $this->cost;
@@ -72,7 +74,7 @@
         public static function fromOID($oid) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_orders WHERE oID = :oid",[":oid" => $oid]);
-            return new Order($res->oID, $res->uID, $res->filamenttype, $res->date_created, $res->date_confirmed, $res->date_completed, $res->state, $res->comment, $res->precision, $res->order_name, $res->order_link, $res->material_length, $res->material_weight, $res->print_time);
+            return new Order($res->oID, $res->uID, $res->filamenttype, $res->date_created, $res->date_confirmed, $res->date_completed, $res->state, $res->comment, $res->precision, $res->order_name, $res->order_link, $res->material_length, $res->material_weight, $res->print_time, $res->fixprice);
         }
 
         /**
@@ -131,10 +133,11 @@
         public function saveChanges() {
             $pdo = new PDO_MYSQL();
             $this->material_weight = FilamentType::fromFID($this->filamentType)->getWeightFor($this->material_length);
-            if($this->date_confirmed == 0) $date_confirmed = null; else $date_confirmed = $this->date_confirmed;
-            if($this->date_completed == 0) $date_completed = null; else $date_completed = $this->date_completed;
-            $pdo->query("UPDATE print3d_orders SET date_created = :date_created, date_confirmed = :date_confirmed, date_completed = :date_completed, state = :state, filamenttype = :fiD, order_name = :order_name, order_link = :order_link, material_length = :length, material_weight = :weight, print_time = :time, comment = :comment, `precision` = :precision WHERE oID = :oid",
-                [":date_created" => $this->date_created, ":date_confirmed" => $date_confirmed, ":date_completed" => $date_completed, ":state" => $this->state, ":fiD" => $this->filamentType, ":order_name" => $this->order_name, ":order_link" => $this->order_link, ":length" => $this->material_length, ":weight" => $this->material_weight, ":time" => $this->print_time, ":comment" => $this->comment, ":precision" => $this->precision, ":oid" => $this->oID]);
+            $date_created = date("Y-m-d H:i:s", $this->date_created);
+            if($this->date_confirmed == 0) $date_confirmed = null; else $date_confirmed =  date("Y-m-d H:i:s", $this->date_confirmed);
+            if($this->date_completed == 0) $date_completed = null; else $date_completed =  date("Y-m-d H:i:s", $this->date_completed);
+            $pdo->query("UPDATE print3d_orders SET date_created = :date_created, date_confirmed = :date_confirmed, date_completed = :date_completed, state = :state, filamenttype = :fiD, order_name = :order_name, order_link = :order_link, material_length = :length, material_weight = :weight, print_time = :time, comment = :comment, `precision` = :precision, fixprice = :fix WHERE oID = :oid",
+                [":date_created" => $date_created, ":date_confirmed" => $date_confirmed, ":date_completed" => $date_completed, ":state" => $this->state, ":fiD" => $this->filamentType, ":order_name" => $this->order_name, ":order_link" => $this->order_link, ":length" => $this->material_length, ":weight" => $this->material_weight, ":time" => $this->print_time, ":comment" => $this->comment, ":precision" => $this->precision, ":oid" => $this->oID, ":fix" => $this->cost]);
             
         }
 
@@ -175,6 +178,7 @@
                 "complete_price" => money_format("%i", $this->total_cost/100),
                 "material_price" => money_format("%i", $this->material_cost/100),
                 "energy_price" => money_format("%i", $this->energy_cost/100),
+                "fix_price" => money_format("%i", $this->cost/100),
                 "material_weight" => $this->material_weight,
                 "material_length" => $this->material_length,
                 "state" => $this->state,

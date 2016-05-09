@@ -33,6 +33,7 @@ function showDetail(oid) {
                 $("#detail-length").html(data["order"]["material_length"]);
                 $("#detail-per-kg").html(data["order"]["filamentprice"]);
                 $("#detail-total-cost").html(data["order"]["complete_price"]);
+                $("#detail-additional-cost").html(data["order"]["fix_price"]);
                 setButtonsForState(parseInt(data["order"]["state"]));
                 var link = data["order"]["order_link"];
                 if (link.contains("thingiverse")) {
@@ -76,7 +77,7 @@ function setButtonsForState(state) {
             setButton(1, 0, 0, 0, 0);
             break;
         case 1:
-            setButton(1, 0, 1, 0, 0);
+            setButton(1, 1, 1, 0, 0);
             break;
         case 2:
             setButton(0, 0, 1, 0, 0);
