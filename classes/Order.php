@@ -128,6 +128,16 @@
                 [":uid" => $user->getUID(),":date" => date("Y-m-d H:i:s"),":fila" => $fID, ":title" => $title, ":url" => $url, ":comment" => $comment]);
         }
 
+        public function saveChanges() {
+            $pdo = new PDO_MYSQL();
+            $this->material_weight = FilamentType::fromFID($this->filamentType)->getWeightFor($this->material_length);
+            if($this->date_confirmed == 0) $date_confirmed = null; else $date_confirmed = $this->date_confirmed;
+            if($this->date_completed == 0) $date_completed = null; else $date_completed = $this->date_completed;
+            $pdo->query("UPDATE print3d_orders SET date_created = :date_created, date_confirmed = :date_confirmed, date_completed = :date_completed, state = :state, filamenttype = :fiD, order_name = :order_name, order_link = :order_link, material_length = :length, material_weight = :weight, print_time = :time, comment = :comment, `precision` = :precision WHERE oID = :oid",
+                [":date_created" => $this->date_created, ":date_confirmed" => $date_confirmed, ":date_completed" => $date_completed, ":state" => $this->state, ":fiD" => $this->filamentType, ":order_name" => $this->order_name, ":order_link" => $this->order_link, ":length" => $this->material_length, ":weight" => $this->material_weight, ":time" => $this->print_time, ":comment" => $this->comment, ":precision" => $this->precision, ":oid" => $this->oID]);
+            
+        }
+
         public function asArray() {
             $printing = "";
             $style = "";

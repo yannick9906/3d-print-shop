@@ -1,10 +1,13 @@
 /**
  * Created by yanni on 02.05.2016.
  */
+var currDetail = 0;
+
 function showDetail(oid) {
     lastmode = mode;
     mode = "details";
     autoUpdate = false;
+    currDetail = oid;
     $("#menu-back").fadeIn();
     $("#menu-norm").fadeOut();
     $("#detail_img").attr("src", "http://www.the-irf.com/assets/content/animation/loading2.gif");
@@ -101,4 +104,52 @@ function setButton(deleteBtn, order, reorder, arrived, warranty) {
     if(reorder == 1)   $("#btn-reorder").show();  else $("#btn-reorder").hide();
     if(arrived == 1)   $("#btn-arrived").show();  else $("#btn-arrived").hide();
     if(warranty == 1)  $("#btn-warranty").show(); else $("#btn-warranty").hide();
+}
+
+function runAction(action) {
+    $.getJSON("orders.php?action=completeOrderAction&oID="+currDetail+"&todo="+action, null, function (data) {
+        if (data["error"] == "NoLogin") window.location.href = "appLogin.html";
+        else if(data["success"]) {
+            if(action == "order") {
+                Materialize.toast("Bestellt.", 1000, "green");
+                showDetail(currDetail);
+            } else if(action == "arrived") {
+                Materialize.toast("Zustellung angenommen.", 1000, "green");
+                showDetail(currDetail);
+            } else if(action == "warranty") {
+                Materialize.toast("Garantie beansprucht.", 1000, "orange");
+                showDetail(currDetail);
+            } else if(action == "delete") {
+                Materialize.toast("Gelöscht", 1000, "red");
+                toNew();
+            } else if(action == "reorder") {
+                Materialize.toast("Bestellung erneut bestellt", 1000, "green");
+                toNew();
+            } else {
+                Materialize.toast("Keine Aktion ausgeführt", 1000, "red");
+            }
+        } else {
+            Materialize.toast("Es ist ein Fehler aufgetreten<br/>das tut uns leid :/", 3000, "red");
+        }
+    });
+}
+
+function arrived() {
+    runAction("arrived");
+}
+
+function orderCurr() {
+    runAction("order");
+}
+
+function reorderCurr() {
+    runAction("reorder");
+}
+
+function warranty() {
+    runAction("warranty");
+}
+
+function deleteCurr() {
+    runAction("delete");
 }

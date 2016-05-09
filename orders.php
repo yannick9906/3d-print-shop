@@ -83,4 +83,30 @@
             }
             echo json_encode($json_array);
         }
+    } else if($action == "completeOrderAction") {
+        $oid = $_GET["oID"];
+        $order = \print3d\Order::fromOID($oid);
+        $toDo = $_GET["todo"];
+        switch ($toDo) {
+            case "order":
+                $order->setState(2);
+                $order->saveChanges();
+                break;
+            case "reorder":
+                //ToDo Make Reordering function
+                break;
+            case "arrived":
+                $order->setState(6);
+                $order->saveChanges();
+                break;
+            case "warranty":
+                $order->setState(8);
+                $order->saveChanges();
+                break;
+            case "delete":
+                $order->setState(7);
+                $order->saveChanges();
+                break;
+        }
+        echo json_encode(["success" => true]);
     }
