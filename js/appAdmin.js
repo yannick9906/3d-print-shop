@@ -2,6 +2,7 @@
  * Created by yanni on 28.04.2016.
  */
 var listTmplt;
+var listTmpltMore;
 var filaTmplt;
 var mode = "NewOrders";
 var lastmode = "NewOrders";
@@ -34,6 +35,29 @@ $(document).ready(function () {
             </li>
         </ul>
     `);
+    listTmpltMore = Handlebars.compile(`
+        <ul class="{{style}}">
+            <li class="collection-item avatar {{style2}}">
+                <i class="circle mddi mddi-{{{stateicon}}} {{statecolor}}"></i>
+                <span class="title"><b>{{order_name}}</b></span>
+                <p>
+                    <i class="mddi mddi-account grey-text text-darken-1"></i> {{realname}} <br/><span class="bg badge {{statecolor}}">{{statetext}}</span>
+                    <i class="mddi mddi-altimeter grey-text text-darken-1"></i> 0,{{precision}} mm<br/>
+                    <i class="mddi mddi-format-color-fill grey-text text-darken-1"></i> {{filamentcolorname}}<br/>
+                    <i class="mddi mddi-weight grey-text text-darken-1"></i> {{material_weight}} g<br/>
+                    <i class="mddi mddi-clock-out  grey-text text-darken-1"></i> {{date_confirmed}}<br/>
+                    <i class="mddi mddi-clock-fast grey-text text-darken-1"></i> {{date_completed}}<br/>
+                </p>
+                <span class="secondary-content">
+                    <a href="#" onclick="showDetail({{oID}})">
+                        <i class="mddi mddi-information-outline grey-text text-darken-1"></i>
+                    </a>
+                    <span class="grey-text text-darken-1 light-bold" style="font-size: 22px; vertical-align: top; line-height: 26px;">{{complete_price}}<i class="mddi mddi-currency-eur"></i></span>
+                </span>
+                {{printing}}
+            </li>
+        </ul>
+    `);
     String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
     updateSchedueler();
 });
@@ -44,6 +68,8 @@ function toOlds() {
     autoUpdate = true;
     $("#sidenav-olds").addClass("active");
     $("#sidenav-new").removeClass("active");
+    $("#sidenav-allolds").removeClass("active");
+    $("#sidenav-allnew").removeClass("active");
     $("#sidenav-account").removeClass("active");
     $("#menu-back").fadeOut();
     $("#menu-norm").fadeIn();
@@ -61,7 +87,47 @@ function toNew() {
     autoUpdate = true;
     $("#sidenav-olds").removeClass("active");
     $("#sidenav-new").addClass("active");
+    $("#sidenav-allolds").removeClass("active");
+    $("#sidenav-allnew").removeClass("active");
     $("#sidenav-account").removeClass("active");
+    $("#menu-back").fadeOut();
+    $("#menu-norm").fadeIn();
+    $("#userSettings").fadeOut("fast");
+    $("#new").fadeOut("fast");
+    $("#showDetail").fadeOut("fast", function() {
+        update();
+        $("#lists").fadeIn("fast");
+    });
+}
+
+function toAll() {
+    lastmode = mode;
+    mode = "AllOrders";
+    autoUpdate = true;
+    $("#sidenav-olds").removeClass("active");
+    $("#sidenav-new").removeClass("active");
+    $("#sidenav-allolds").addClass("active");
+    $("#sidenav-allnew").removeClass("active");
+    $("#sidenav-account").removeClass("active");
+    $("#menu-back").fadeOut();
+    $("#menu-norm").fadeIn();
+    $("#userSettings").fadeOut("fast");
+    $("#new").fadeOut("fast");
+    $("#showDetail").fadeOut("fast", function() {
+        update();
+        $("#lists").fadeIn("fast");
+    });
+}
+
+function toAllNew() {
+    lastmode = mode;
+    mode = "AllNewOrders";
+    autoUpdate = true;
+    $("#sidenav-olds").removeClass("active");
+    $("#sidenav-new").removeClass("active");
+    $("#sidenav-account").removeClass("active");
+    $("#sidenav-allolds").removeClass("active");
+    $("#sidenav-allnew").addClass("active");
     $("#menu-back").fadeOut();
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
@@ -78,6 +144,8 @@ function toUserSettings() {
     autoUpdate = false;
     $("#sidenav-olds").removeClass("active");
     $("#sidenav-new").removeClass("active");
+    $("#sidenav-allolds").removeClass("active");
+    $("#sidenav-allnew").removeClass("active");
     $("#sidenav-account").addClass("active");
     $("#menu-back").fadeOut();
     $("#menu-norm").fadeIn();
@@ -110,6 +178,8 @@ function toNewOrder() {
     $("#sidenav-olds").removeClass("active");
     $("#sidenav-new").removeClass("active");
     $("#sidenav-account").removeClass("active");
+    $("#sidenav-allolds").removeClass("active");
+    $("#sidenav-allnew").removeClass("active");
     $("#menu-back").fadeIn();
     $("#menu-norm").fadeOut();
     $("#newOrderBtn").fadeOut();

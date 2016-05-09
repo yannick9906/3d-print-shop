@@ -65,4 +65,22 @@
                 exit;
             }
         }
+    } else if($action == "getAllNewOrders") {
+        if($user->getRole() == 2) {
+            $orders = \print3d\Order::getAllOpenOrders();
+            $json_array = ["orders" => []];
+            foreach($orders as $order) {
+                array_push($json_array["orders"], $order->asArray());
+            }
+            echo json_encode($json_array);
+        }
+    } else if($action == "getAllOrders") {
+        if($user->getRole() == 2) {
+            $orders = \print3d\Order::getAllOrders();
+            $json_array = ["orders" => []];
+            foreach($orders as $order) {
+                array_push($json_array["orders"], $order->asArray());
+            }
+            echo json_encode($json_array);
+        }
     }

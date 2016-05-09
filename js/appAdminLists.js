@@ -33,6 +33,36 @@ function update() {
                 oldData = data;
             }
         });
+    } else if(mode == "AllOrders") {
+        $.getJSON("orders.php?action=getAllOrders",null,function(data) {
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
+                $("#orders").html("");
+                data["orders"].forEach(function (element, index, array) {
+                    if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                    else {
+                        html = listTmpltMore(element);
+                        $("#orders").append(html);
+                    }
+                });
+                oldData = data;
+            }
+        });
+    } else if(mode == "AllNewOrders") {
+        $.getJSON("orders.php?action=getAllNewOrders",null,function(data) {
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
+                $("#orders").html("");
+                data["orders"].forEach(function (element, index, array) {
+                    if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                    else {
+                        html = listTmpltMore(element);
+                        $("#orders").append(html);
+                    }
+                });
+                oldData = data;
+            }
+        });
     }
 }
 

@@ -134,7 +134,7 @@
             $style2 = "";
             if($this->state == 3) $printing = "<div class=\"progress\"><div class=\"indeterminate\"></div></div>";
             if($this->state == 4) $printing = "<div class=\"progress\"><div class=\"determinate\" style=\"width: 100%;\"></div></div>";
-            if($this->state == -2) {$style = "collection"; $style2 = "grey lighten-3";} else $style = "collection z-depth-1";
+            if($this->state == -2 or $this->state == 6) {$style = "collection"; $style2 = "grey lighten-3";} else $style = "collection z-depth-1";
             setlocale(LC_MONETARY, "de_DE");
             if($this->date_confirmed != 0 && $this->date_completed != 0) {
                 $date_confirmed = date("d. M Y - H:i:s",$this->date_confirmed);

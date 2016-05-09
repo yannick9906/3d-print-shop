@@ -53,8 +53,6 @@
         }
 
         echo json_encode($json_array);
-    } else if($action == "getFilaments") {
-
     } else if($action == "getThingiverseImg") {
         $link = $_GET["link"];
         $html = file_get_contents($link);
