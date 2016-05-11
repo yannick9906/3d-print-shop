@@ -10,6 +10,7 @@ function showDetail(oid) {
     autoUpdate = false;
     currDetail = oid;
     $("#menu-back").fadeIn();
+    $("#menu-back-d").fadeIn();
     $("#menu-norm").fadeOut();
     $("#detail_img").attr("src", "http://www.the-irf.com/assets/content/animation/loading2.gif");
     $("#detail_img").css("padding", "30%");
@@ -67,6 +68,7 @@ function showAdmDetail(oid) {
     autoUpdate = false;
     currDetail = oid;
     $("#menu-back").fadeIn();
+    $("#menu-back-d").fadeIn();
     $("#menu-norm").fadeOut();
     $("#showDetail").fadeOut("fast");
     $("#userSettings").fadeOut("fast");

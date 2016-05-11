@@ -46,6 +46,7 @@ function toOlds() {
     $("#sidenav-new").removeClass("active");
     $("#sidenav-account").removeClass("active");
     $("#menu-back").fadeOut();
+    $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
@@ -63,6 +64,7 @@ function toNew() {
     $("#sidenav-new").addClass("active");
     $("#sidenav-account").removeClass("active");
     $("#menu-back").fadeOut();
+    $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
@@ -80,6 +82,7 @@ function toUserSettings() {
     $("#sidenav-new").removeClass("active");
     $("#sidenav-account").addClass("active");
     $("#menu-back").fadeOut();
+    $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
 
     $("#new").fadeOut("fast");
@@ -111,6 +114,7 @@ function toNewOrder() {
     $("#sidenav-new").removeClass("active");
     $("#sidenav-account").removeClass("active");
     $("#menu-back").fadeIn();
+    $("#menu-back-d").fadeIn();
     $("#menu-norm").fadeOut();
     $("#newOrderBtn").fadeOut();
 

@@ -8,6 +8,7 @@ function showDetail(oid) {
     mode = "details";
     autoUpdate = false;
     currDetail = oid;
+    $("#menu-back-d").fadeIn();
     $("#menu-back").fadeIn();
     $("#menu-norm").fadeOut();
     $("#detail_img").attr("src", "http://www.the-irf.com/assets/content/animation/loading2.gif");
