@@ -34,7 +34,8 @@
             $this->colorname = $colorname;
             $this->colorcode = $colorcode;
             $this->price = $price;
-            $this->saleprice = $saleprice;
+            if($saleprice == null) $this->saleprice = 0;
+            else $this->saleprice = $saleprice;
             $this->available = $available == 1;
         }
 
@@ -87,7 +88,13 @@
                 "fID" => $this->fID,
                 "filamentcolorname" => $this->getColorname(),
                 "filamentcolorcode" => str_replace("#", "", $this->getColorcode()),
-                "price" => money_format("%i", $this->getPrice()/100)
+                "price" => money_format("%i", $this->getPrice()/100),
+                "priceHTML" => $this->price,
+                "priceSell" => $this->saleprice,
+                "diameter" => $this->diameter,
+                "active" => $this->available,
+                "style" => $this->available ? "collection z-depth-1":"collection",
+                "style2" => $this->available ? "":"grey lighten-1"
             ];
         }
 

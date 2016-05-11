@@ -3,6 +3,7 @@ CACHE MANIFEST
 
 CACHE:
 https://code.jquery.com/jquery-2.1.1.min.js
+https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js
 appAdmin.html
 appUser.html
 appLogin.html

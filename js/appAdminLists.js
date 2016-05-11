@@ -71,6 +71,23 @@ function update() {
             }
             $("#loading").fadeOut(100);
         });
+    } else if(mode == "Filas") {
+        $.getJSON("orders.php?action=getAllFilaments",null,function(data) {
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
+                $("#orders").html("");
+                $("#loading").fadeIn(100);
+                data["filaments"].forEach(function (element, index, array) {
+                    if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                    else {
+                        html = filaListTmplt(element);
+                        $("#orders").append(html);
+                    }
+                });
+                oldData = data;
+            }
+            $("#loading").fadeOut(100);
+        });
     }
 }
 

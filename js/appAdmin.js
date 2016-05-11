@@ -4,6 +4,7 @@
 var listTmplt;
 var listTmpltMore;
 var filaTmplt;
+var filaListTmplt;
 var mode = "AllNewOrders";
 var lastmode = "AllNewOrders";
 var autoUpdate = true;
@@ -13,6 +14,25 @@ $(document).ready(function () {
     filaTmplt = Handlebars.compile(`
         <option value='{{fID}}' class="circle left" data-icon="../new/pics/{{filamentcolorcode}}-1.png">{{price}} €/kg - {{filamentcolorname}}</option>
      `);
+    filaListTmplt = Handlebars.compile(`
+            <ul class="{{style}}">
+                <li class="collection-item avatar {{style2}}">
+                    <i class="circle mddi mddi-format-color-fill " style="background-color: #{{{filamentcolorcode}}};"></i>
+                    <span class="title"><b>{{filamentcolorname}}</b></span>
+                    <p>
+                        <i class="mddi mddi-format-color-fill grey-text text-darken-1"></i> {{filamentcolorcode}}<br/>
+                        <i class="mddi mddi-altimeter grey-text text-darken-1"></i> {{diameter}} mm<br/><span class="bg badge {{statecolor}}">{{statetext}}</span>
+                    </p>
+                    <span class="secondary-content">
+                        <a href="#" onclick="showFila({{fID}})">
+                            <i class="mddi mddi-information-outline grey-text text-darken-1"></i>
+                        </a>
+                        <span class="grey-text text-darken-1 light-bold" style="font-size: 22px; vertical-align: top; line-height: 26px;">{{price}}<i class="mddi mddi-currency-eur"></i></span>
+                    </span>
+                    {{{printing}}}
+                </li>
+            </ul>
+    `);
     listTmplt = Handlebars.compile(`
         <ul class="{{style}}">
             <li class="collection-item avatar {{style2}}">
@@ -73,6 +93,7 @@ function toOlds() {
     $("#sidenav-allolds").removeClass("active");
     $("#sidenav-allnew").removeClass("active");
     $("#sidenav-account").removeClass("active");
+    $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeOut();
     $("#menu-back-d").fadeOut();;
     $("#menu-norm").fadeIn();
@@ -96,6 +117,7 @@ function toNew() {
     $("#sidenav-allolds").removeClass("active");
     $("#sidenav-allnew").removeClass("active");
     $("#sidenav-account").removeClass("active");
+    $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeOut();
     $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
@@ -119,6 +141,7 @@ function toAll() {
     $("#sidenav-allolds").addClass("active");
     $("#sidenav-allnew").removeClass("active");
     $("#sidenav-account").removeClass("active");
+    $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeOut();
     $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
@@ -142,6 +165,7 @@ function toAllNew() {
     $("#sidenav-account").removeClass("active");
     $("#sidenav-allolds").removeClass("active");
     $("#sidenav-allnew").addClass("active");
+    $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeOut();
     $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
@@ -164,6 +188,7 @@ function toUserSettings() {
     $("#sidenav-allolds").removeClass("active");
     $("#sidenav-allnew").removeClass("active");
     $("#sidenav-account").addClass("active");
+    $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeOut();
     $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
@@ -200,6 +225,7 @@ function toNewOrder() {
     $("#sidenav-account").removeClass("active");
     $("#sidenav-allolds").removeClass("active");
     $("#sidenav-allnew").removeClass("active");
+    $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeIn();
     $("#menu-back-d").fadeIn();
     $("#menu-norm").fadeOut();
@@ -228,6 +254,30 @@ function toNewOrder() {
     });
 }
 
+function toFilas() {
+    oldData = [];
+    lastmode = mode;
+    mode = "Filas";
+    autoUpdate = true;
+    startFade();
+    $("#sidenav-olds").removeClass("active");
+    $("#sidenav-new").removeClass("active");
+    $("#sidenav-allolds").removeClass("active");
+    $("#sidenav-allnew").removeClass("active");
+    $("#sidenav-account").removeClass("active");
+    $("#sidenav-filas").addClass("active");
+    $("#menu-back").fadeOut();
+    $("#menu-back-d").fadeOut();
+    $("#menu-norm").fadeIn();
+    $("#userSettings").fadeOut("fast");
+    $("#new").fadeOut("fast");
+    $("#admDetail").fadeOut("fast");
+    $("#showDetail").fadeOut("fast", function() {
+        update();
+        $("#lists").fadeIn("fast", endFade());
+    });   
+}
+
 function toLogout() {
     window.location.href = "appLogin.html#Logout";
 }
@@ -243,6 +293,8 @@ function back() {
         toAll();
     } else if(lastmode == "AllNewOrders") {
         toAllNew();
+    } else if(lastmode == "Filas") {
+        toFilas();
     } else {
         toOlds();
     }

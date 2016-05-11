@@ -138,24 +138,58 @@ function confirmEdit() {
     };
     console.log(data);
     if(fila != null && precision != null && state != null) {
-     if(title != "" && url != "" && comment != "") {
-        $.post("orders.php?action=updateOrder&oid="+currDetail, data, function(data) {
-            json = JSON.parse(data);
-            if(json["success"]) {
-                Materialize.toast("Die Bestellung wurde aktualisiert", 5000, "green");
-                toNew();
-                $("#newOrderBtn").fadeIn();
-            } else {
-                if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
-                else Materialize.toast("Es ist ein Fehler aufgetreten. Das tut uns leid :/", 5000, "red");
-            }
-        });
+        if(title != "" && url != "" && comment != "") {
+            $.post("orders.php?action=updateOrder&oid="+currDetail, data, function(data) {
+                json = JSON.parse(data);
+                if(json["success"]) {
+                    Materialize.toast("Die Bestellung wurde aktualisiert", 5000, "green");
+                    toNew();
+                    $("#newOrderBtn").fadeIn();
+                } else {
+                    if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                    else Materialize.toast("Es ist ein Fehler aufgetreten. Das tut uns leid :/", 5000, "red");
+                }
+            });
         } else {
             Materialize.toast("Bitte fülle alle Felder aus", 2000, "red");
         }
      } else {
         Materialize.toast("Bitte select ausfüllen", 2000, "red");
      }
+}
+
+function showFila(fid) {
+    lastmode = mode;
+    mode = "FilaDetails";
+    autoUpdate = false;
+    currDetail = fid;
+    $("#menu-back").fadeIn();
+    $("#menu-back-d").fadeIn();
+    $("#menu-norm").fadeOut();
+    $("#showDetail").fadeOut("fast");
+    $("#userSettings").fadeOut("fast");
+    $("#admDetail").fadeOut("fast");
+    $("#lists").fadeOut("fast", function() {
+        $("#filaDetail").fadeIn("fast");
+        $.getJSON("orders.php?action=filaDetails&fID="+fid, null, function(data) {
+            if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+            else {
+                thisdata = data;
+                
+                $("#filaColor").val(thisdata["filament"]["filamentcolorcode"]);
+                $("#filaDiameter").val(thisdata["filament"]["diameter"]);
+                $("#filaName").val(thisdata["filament"]["filamentcolorname"]);
+                $("#filaPrice").val(parseInt(thisdata["filament"]["priceHTML"]));
+                $("#filaSellPrice").val(thisdata["filament"]["priceSell"]);
+                $("#filaActive").prop("checked", thisdata["filament"]["active"]);
+                Materialize.updateTextFields();
+            }
+        });
+    });
+}
+
+function confirmFilaEdit() {
+
 }
 
 function setButtonsForState(state) {
