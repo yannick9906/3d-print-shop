@@ -63,6 +63,7 @@ $(document).ready(function () {
 });
 
 function toOlds() {
+    oldData = [];
     lastmode = mode;
     mode = "OldOrders";
     autoUpdate = true;
@@ -82,6 +83,7 @@ function toOlds() {
 }
 
 function toNew() {
+    oldData = [];
     lastmode = mode;
     mode = "NewOrders";
     autoUpdate = true;
@@ -101,6 +103,7 @@ function toNew() {
 }
 
 function toAll() {
+    oldData = [];
     lastmode = mode;
     mode = "AllOrders";
     autoUpdate = true;
@@ -120,6 +123,7 @@ function toAll() {
 }
 
 function toAllNew() {
+    oldData = [];
     lastmode = mode;
     mode = "AllNewOrders";
     autoUpdate = true;
