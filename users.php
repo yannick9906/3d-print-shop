@@ -23,7 +23,7 @@
         $json_array = ["success" => false];
         if($_POST["emails"] != "" and $_POST["email"] != "") {
             $user->setEmail($_POST["email"]);
-            $user->setReceivingEmails($_POST["emails"]);
+            $user->setReceivingEmails($_POST["emails"] == "true");
             $user->saveChanges();
             $json_array["success"] = true;
         } else {

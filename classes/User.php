@@ -96,8 +96,9 @@
          */
         public function saveChanges() {
             $pdo = new PDO_MYSQL();
+            $emails = ($this->emails == true) ? 1 : 0;
             $pdo->query("UPDATE print3d_user SET email = :Email, passwd = :Passwd, username = :Username, level = :lvl, realname = :Realname, emails = :emails WHERE uID = :uID LIMIT 1",
-                [":Email" => $this->email, ":Passwd" => $this->passwdHash, ":Username" => $this->username, ":uID" => $this->uID, ":lvl" => $this->role, ":Realname" => $this->realname, ":emails" => $this->emails?1:0]);
+                [":Email" => $this->email, ":Passwd" => $this->passwdHash, ":Username" => $this->username, ":uID" => $this->uID, ":lvl" => $this->role, ":Realname" => $this->realname, ":emails" => $emails]);
         }
 
         /**
@@ -245,7 +246,7 @@
         }
 
         /**
-         * @param $emails
+         * @param bool $emails
          */
         public function setReceivingEmails($emails) {
             $this->emails = $emails;

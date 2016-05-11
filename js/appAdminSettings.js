@@ -35,6 +35,7 @@ function updateEmail() {
         email: email,
         emails: emails
     };
+    console.log(data);
     $.post("users.php?action=updateEmail", data, function(data) {
         data = JSON.parse(data);
         if(data["success"] == true) {
