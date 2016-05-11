@@ -175,6 +175,7 @@
                 "printtime_plain" => $this->print_time,
                 "comment" => $this->comment,
                 "precision" => $this->precision,
+                "filamentID" => $this->filamentType,
                 "filamentcolorname" => FilamentType::fromFID($this->filamentType)->getColorname(),
                 "filamentcolorcode" => FilamentType::fromFID($this->filamentType)->getColorcode(),
                 "filamentprice" => money_format("%i", FilamentType::fromFID($this->filamentType)->getPrice()/100),

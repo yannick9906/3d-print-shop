@@ -90,9 +90,9 @@ function showAdmDetail(oid) {
                         $('select').material_select('destroy');
                         $("#admordertitle").val(thisdata["order"]["order_name"]);
                         $("#admordercomment").val(thisdata["order"]["comment"]);
-                        document.getElementById("admorderstate").value = thisdata["order"]["statetext"]+"";
-                        document.getElementById("admorderprecision").value = toString(thisdata["order"]["precision"]);
-                        $("#admorderfilament").val(toString(thisdata["order"]["filamentcolorname"]));
+                        $("#admorderstate").val(thisdata["order"]["state"]);
+                        $("#admorderprecision").val(parseInt(thisdata["order"]["precision"]));
+                        $("#admorderfilament").val(thisdata["order"]["filamentID"]);
                         $("#admorder_printtime").val(thisdata["order"]["printtime_plain"]);
                         $("#admorder_date_confirmed").val(thisdata["order"]["date_confirmed_html"]);
                         $("#admorder_date_completed").val(thisdata["order"]["date_completed_html"]);
