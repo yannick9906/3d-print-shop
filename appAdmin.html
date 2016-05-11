@@ -180,11 +180,86 @@
             </button>
         </form>
     </div>
+    <div class="container" id="admDetail">
+        <form class="row card-panel">
+            <div class="input-field col s12 m5">
+                <input id="admordertitle" type="text">
+                <label for="admordertitle">Bestellungstitel</label>
+            </div>
+            <div class="input-field col s12 m5">
+                <select class="icons" id="admorderfilament">
+                    <option value="" disabled selected>Wähle ein Material</option>
+                </select>
+                <label for="admorderfilament">Material</label>
+            </div>
+            <div class="input-field col s12 m2">
+                <select class="icons" id="admorderprecision">
+                    <option value="1">0,1 mm</option>
+                    <option value="15">0,15 mm</option>
+                    <option value="2">0,2 mm</option>
+                    <option value="25">0,25 mm</option>
+                    <option value="3">0,3 mm</option>
+                </select>
+                <label for="admorderprecision">Layerhöhe</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input id="admorderurl" type="url" onkeyup="updateAdminPreview()">
+                <label for="admorderurl">Link zum Objekt (z.B Thingiverse)</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <select class="icons" id="admorderstate">
+                    <option value="-2">Nicht Druckbar</option>
+                    <option value="-1">Tech. Problem</option>
+                    <option value="0">Erstellt</option>
+                    <option value="1">Preisangebot</option>
+                    <option value="2">Bestellt</option>
+                    <option value="3">Druckt...</option>
+                    <option value="4">Druck fertig</option>
+                    <option value="5">Zugestellt</option>
+                    <option value="6">Abgeschlossen</option>
+                    <option value="7">Gelöscht</option>
+                    <option value="8">Garantiefall</option>
+                </select>
+                <label for="admorderstate">Status</label>
+            </div>
+            <div class="col s12 m6">
+                <input id="admorder_date_confirmed" type="datetime-local">
+                <label for="admorder_date_confirmed">Datum Angommen</label>
+            </div>
+            <div class="col s12 m6">
+                <input id="admorder_date_completed" type="datetime-local">
+                <label for="admorder_date_completed">Datum Fertig</label>
+            </div>
+            <div class="col s12 m4">
+                <input id="admorder_printtime" type="number">
+                <label for="admorder_printtime">Druckzeit (s)</label>
+            </div>
+            <div class="col s12 m4">
+                <input id="admorder_length" type="number">
+                <label for="admorder_length">Filamentlength (mm)</label>
+            </div>
+            <div class="col s12 m4">
+                <input id="admorder_add_cost" type="number">
+                <label for="admorder_add_cost">Fixpreis (Cent)</label>
+            </div>
+            <div class="input-field col s12">
+                <textarea id="admordercomment" class="materialize-textarea"></textarea>
+                <label for="admordercomment">Kommentar</label>
+            </div>
+            <div class="col s12 center">
+                <img src="#" height="100px" id="admpreview"/>
+            </div>
+            <button class="btn orange waves-effect waves-light col s12" onclick="confirmEdit()" type="button">
+                <i class="mddi mddi-check"></i>
+            </button>
+        </form>
+    </div>
 </main>
 </body>
 <script>
     $(document).ready(function() {
         $(".dropdown-button").dropdown();
+        $("select").material_select();
 
         // Initialize collapse button
         $('.button-collapse').sideNav();

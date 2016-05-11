@@ -42,3 +42,4 @@ function sendNewOrder() {
         Materialize.toast("Bitte wähle ein Material", 2000, "red");
     }
 }
+
