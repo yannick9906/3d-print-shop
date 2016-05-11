@@ -266,8 +266,12 @@
         $("select").material_select();
 
         // Initialize collapse button
-        $('.button-collapse').sideNav();
-        $("#menu-back").hide();
+        console.log(window.innerWidth);
+        if(window.innerWidth > 992)
+            $('.button-collapse').sideNav({closeOnClick: false});
+        else
+            $('.button-collapse').sideNav({closeOnClick: true});        $("#menu-back").hide();
+        $("#menu-back-d").hide();
         $("#showDetail").hide();
         $("#userSettings").hide();
         $("#new").hide();
@@ -280,6 +284,12 @@
             } else if(data["user"]["role"] == 0) {
                 window.location.href = "appLogin.html";
             }
+        });
+        $(window).on('resize', function(){
+            if(window.innerWidth > 992)
+                $('.button-collapse').sideNav({closeOnClick: false});
+            else
+                $('.button-collapse').sideNav({closeOnClick: true});
         });
     });
 </script>

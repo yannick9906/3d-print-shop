@@ -110,7 +110,6 @@
         }
         echo json_encode(["success" => true]);
     } elseif($action == "updateOrder") {
-        var_dump($_POST);
         $oid = $_GET["oid"];
         if(is_numeric($oid)) {
             $order = \print3d\Order::fromOID($oid);
@@ -126,5 +125,7 @@
             $order->setMaterialLength($_POST["length"]);
             $order->setCost($_POST["addcost"]);
             $order->saveChanges();
-        }
+            echo json_encode(["success" => true]);
+            exit;
+        } echo json_encode(["success" => false]);
     }
