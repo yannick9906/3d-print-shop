@@ -22,17 +22,17 @@
             array_push($json_array["orders"], $order->asArray());
         }
         echo json_encode($json_array);
-    } else if($action == "getOwnOldOrders") {
+    } elseif($action == "getOwnOldOrders") {
         $orders = \print3d\Order::getAllOldOrdersPerUser($user);
         $json_array = ["orders" => []];
         foreach($orders as $order) {
             array_push($json_array["orders"], $order->asArray());
         }
         echo json_encode($json_array);
-    } else if($action == "newOrder") {
+    } elseif($action == "newOrder") {
         \print3d\Order::createNew($user, $_POST["title"], $_POST["fila"], $_POST["url"], $_POST["comment"]);
         echo json_encode(["success" => true]);
-    } else if($action == "orderDetails") {
+    } elseif($action == "orderDetails") {
         $oid = $_GET["oID"];
         $json_array = [];
         if(is_numeric($oid)) {
@@ -43,14 +43,14 @@
         }
 
         echo json_encode($json_array);
-    } else if($action == "getFilaments") {
+    } elseif($action == "getFilaments") {
         $filaments = \print3d\FilamentType::getAllAvailableFilaments();
         $json_array = ["filaments" => []] ;
         foreach ($filaments as $filament) {
             array_push($json_array["filaments"], $filament->asArray());
         }
         echo json_encode($json_array);
-    } else if($action == "getThingiverseImg") {
+    } elseif($action == "getThingiverseImg") {
         $link = $_GET["link"];
         $html = file_get_contents($link);
 
@@ -65,7 +65,7 @@
                 exit;
             }
         }
-    } else if($action == "getAllNewOrders") {
+    } elseif($action == "getAllNewOrders") {
         if($user->getRole() == 2) {
             $orders = \print3d\Order::getAllOpenOrders();
             $json_array = ["orders" => []];
@@ -74,7 +74,7 @@
             }
             echo json_encode($json_array);
         }
-    } else if($action == "getAllOrders") {
+    } elseif($action == "getAllOrders") {
         if($user->getRole() == 2) {
             $orders = \print3d\Order::getAllOrders();
             $json_array = ["orders" => []];
@@ -83,30 +83,48 @@
             }
             echo json_encode($json_array);
         }
-    } else if($action == "completeOrderAction") {
+    } elseif($action == "completeOrderAction") {
         $oid = $_GET["oID"];
         $order = \print3d\Order::fromOID($oid);
         $toDo = $_GET["todo"];
         switch ($toDo) {
             case "order":
-                $order->setState(2);
+                $order->setState(2, $user);
                 $order->saveChanges();
                 break;
             case "reorder":
                 //ToDo Make Reordering function
                 break;
             case "arrived":
-                $order->setState(6);
+                $order->setState(6, $user);
                 $order->saveChanges();
                 break;
             case "warranty":
-                $order->setState(8);
+                $order->setState(8, $user);
                 $order->saveChanges();
                 break;
             case "delete":
-                $order->setState(7);
+                $order->setState(7, $user);
                 $order->saveChanges();
                 break;
         }
         echo json_encode(["success" => true]);
+    } elseif($action == "updateOrder") {
+        var_dump($_POST);
+        $oid = $_GET["oid"];
+        if(is_numeric($oid)) {
+            $order = \print3d\Order::fromOID($oid);
+            $order->setOrderName($_POST["title"]);
+            $order->setFilamentType($_POST["fila"]);
+            $order->setOrderLink($_POST["url"]);
+            $order->setComment($_POST["comment"]);
+            $order->setState($_POST["state"], $user);
+            $order->setPrecision($_POST["precision"]);
+            $order->setPrintTime($_POST["printtime"]);
+            $order->setDateConfirmed($_POST["date_confirmed"]);
+            $order->setDateCompleted($_POST["date_completed"]);
+            $order->setMaterialLength($_POST["length"]);
+            $order->setCost($_POST["addcost"]);
+            $order->saveChanges();
+        }
     }

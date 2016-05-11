@@ -195,6 +195,23 @@
         }
 
         /**
+         * @param int  $oldstate
+         * @param int  $newstate
+         * @param User $user
+         */
+        public function sendEmails($oldstate, $newstate, $user) {
+            if($user->canReceiveEmails()) {
+                if($oldstate == 1 && $newstate == 2) {
+
+                } elseif(($oldstate == 2 || $oldstate == 3) && $newstate == 4) {
+
+                } elseif($newstate == -2) {
+
+                }
+            }
+        }
+
+        /**
          * @param int|float $price
          * @return float
          */
@@ -252,9 +269,11 @@
         }
 
         /**
-         * @param int $state
+         * @param int  $state
+         * @param User $user
          */
-        public function setState($state) {
+        public function setState($state, $user) {
+            $this->sendEmails($this->state, $state, $user);
             $this->state = $state;
         }
 
@@ -368,5 +387,19 @@
          */
         public function getMaterialWeight() {
             return $this->material_weight;
+        }
+
+        /**
+         * @return int
+         */
+        public function getCost() {
+            return $this->cost;
+        }
+
+        /**
+         * @param int $cost
+         */
+        public function setCost($cost) {
+            $this->cost = $cost;
         }
     }

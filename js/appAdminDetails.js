@@ -136,10 +136,10 @@ function confirmEdit() {
     console.log(data);
     if(fila != null && precision != null && state != null) {
      if(title != "" && url != "" && comment != "") {
-        $.post("orders.php?action=updateOrder", data, function(data) {
+        $.post("orders.php?action=updateOrder&oid="+currDetail, data, function(data) {
             json = JSON.parse(data);
             if(json["success"]) {
-                Materialize.toast("Deine Bestellung aktualisiert", 5000, "green")
+                Materialize.toast("Deine Bestellung aktualisiert", 5000, "green");
                 toNew();
                 $("#newOrderBtn").fadeIn();
             } else {
