@@ -67,6 +67,7 @@ function toOlds() {
     lastmode = mode;
     mode = "OldOrders";
     autoUpdate = true;
+    startFade();
     $("#sidenav-olds").addClass("active");
     $("#sidenav-new").removeClass("active");
     $("#sidenav-allolds").removeClass("active");
@@ -79,7 +80,7 @@ function toOlds() {
     $("#admDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
-        $("#lists").fadeIn("fast");
+        $("#lists").fadeIn("fast", endFade());
     });
 }
 
@@ -88,6 +89,7 @@ function toNew() {
     lastmode = mode;
     mode = "NewOrders";
     autoUpdate = true;
+    startFade();
     $("#sidenav-olds").removeClass("active");
     $("#sidenav-new").addClass("active");
     $("#sidenav-allolds").removeClass("active");
@@ -100,7 +102,7 @@ function toNew() {
     $("#admDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
-        $("#lists").fadeIn("fast");
+        $("#lists").fadeIn("fast", endFade());
     });
 }
 
@@ -109,6 +111,7 @@ function toAll() {
     lastmode = mode;
     mode = "AllOrders";
     autoUpdate = true;
+    startFade();
     $("#sidenav-olds").removeClass("active");
     $("#sidenav-new").removeClass("active");
     $("#sidenav-allolds").addClass("active");
@@ -121,7 +124,7 @@ function toAll() {
     $("#admDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
-        $("#lists").fadeIn("fast");
+        $("#lists").fadeIn("fast", endFade());
     });
 }
 
@@ -130,6 +133,7 @@ function toAllNew() {
     lastmode = mode;
     mode = "AllNewOrders";
     autoUpdate = true;
+    startFade();
     $("#sidenav-olds").removeClass("active");
     $("#sidenav-new").removeClass("active");
     $("#sidenav-account").removeClass("active");
@@ -142,7 +146,7 @@ function toAllNew() {
     $("#admDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
-        $("#lists").fadeIn("fast");
+        $("#lists").fadeIn("fast", endFade());
     });
 }
 
@@ -150,6 +154,7 @@ function toUserSettings() {
     lastmode = mode;
     mode = "UserSettings";
     autoUpdate = false;
+    startFade();
     $("#sidenav-olds").removeClass("active");
     $("#sidenav-new").removeClass("active");
     $("#sidenav-allolds").removeClass("active");
@@ -163,7 +168,7 @@ function toUserSettings() {
     $("#admDetail").fadeOut("fast");
     $("#lists").fadeOut("fast", function() {
         update();
-        $("#userSettings").fadeIn("fast");
+        $("#userSettings").fadeIn("fast", endFade());
 
         $.getJSON("users.php?action=getOwnUserData", null, function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
@@ -184,6 +189,7 @@ function toNewOrder() {
     lastmode = mode;
     mode = "NewOrder";
     autoUpdate = false;
+    startFade();
     $("#sidenav-olds").removeClass("active");
     $("#sidenav-new").removeClass("active");
     $("#sidenav-account").removeClass("active");
@@ -198,7 +204,7 @@ function toNewOrder() {
     $("#admDetail").fadeOut("fast");
     $("#lists").fadeOut("fast", function() {
         update();
-        $("#new").fadeIn("fast");
+        $("#new").fadeIn("fast", endFade());
 
         $.getJSON("orders.php?action=getFilaments", null, function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
@@ -234,4 +240,12 @@ function back() {
     } else {
         toOlds();
     }
+}
+
+function startFade() {
+    $("body").css("overflow", "hidden");
+}
+
+function endFade() {
+    $("body").css("overflow", "auto");
 }

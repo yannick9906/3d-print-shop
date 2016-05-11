@@ -7,6 +7,7 @@ function update() {
         $.getJSON("orders.php?action=getOwnOrders",null,function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
+                $("#loading").fadeIn(100);
                 $("#orders").html("");
                 data["orders"].forEach(function (element, index, array) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
@@ -17,11 +18,13 @@ function update() {
                 });
                 oldData = data;
             }
+            $("#loading").fadeOut(100);
         });
     } else if(mode == "OldOrders") {
         $.getJSON("orders.php?action=getOwnOldOrders",null,function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
+                $("#loading").fadeIn(100);
                 $("#orders").html("");
                 data["orders"].forEach(function (element, index, array) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
@@ -32,11 +35,13 @@ function update() {
                 });
                 oldData = data;
             }
+            $("#loading").fadeOut(100);
         });
     } else if(mode == "AllOrders") {
         $.getJSON("orders.php?action=getAllOrders",null,function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
+                $("#loading").fadeIn(100);
                 $("#orders").html("");
                 data["orders"].forEach(function (element, index, array) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
@@ -47,12 +52,14 @@ function update() {
                 });
                 oldData = data;
             }
+            $("#loading").fadeOut(100);
         });
     } else if(mode == "AllNewOrders") {
         $.getJSON("orders.php?action=getAllNewOrders",null,function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#orders").html("");
+                $("#loading").fadeIn(100);
                 data["orders"].forEach(function (element, index, array) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
@@ -62,6 +69,7 @@ function update() {
                 });
                 oldData = data;
             }
+            $("#loading").fadeOut(100);
         });
     }
 }
