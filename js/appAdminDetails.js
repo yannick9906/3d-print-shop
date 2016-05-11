@@ -142,7 +142,7 @@ function confirmEdit() {
         $.post("orders.php?action=updateOrder&oid="+currDetail, data, function(data) {
             json = JSON.parse(data);
             if(json["success"]) {
-                Materialize.toast("Deine Bestellung aktualisiert", 5000, "green");
+                Materialize.toast("Die Bestellung wurde aktualisiert", 5000, "green");
                 toNew();
                 $("#newOrderBtn").fadeIn();
             } else {
