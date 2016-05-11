@@ -76,6 +76,7 @@ function toOlds() {
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
+    $("#admDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
         $("#lists").fadeIn("fast");
@@ -96,6 +97,7 @@ function toNew() {
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
+    $("#admDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
         $("#lists").fadeIn("fast");
@@ -116,6 +118,7 @@ function toAll() {
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
+    $("#admDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
         $("#lists").fadeIn("fast");
@@ -136,6 +139,7 @@ function toAllNew() {
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
+    $("#admDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
         $("#lists").fadeIn("fast");
@@ -156,6 +160,7 @@ function toUserSettings() {
 
     $("#new").fadeOut("fast");
     $("#showDetail").fadeOut("fast");
+    $("#admDetail").fadeOut("fast");
     $("#lists").fadeOut("fast", function() {
         update();
         $("#userSettings").fadeIn("fast");
@@ -190,6 +195,7 @@ function toNewOrder() {
 
     $("#userSettings").fadeOut("fast");
     $("#showDetail").fadeOut("fast");
+    $("#admDetail").fadeOut("fast");
     $("#lists").fadeOut("fast", function() {
         update();
         $("#new").fadeIn("fast");
@@ -221,6 +227,10 @@ function back() {
         toUserSettings();
     } else if(lastmode == "NewOrders") {
         toNew();
+    } else if(lastmode == "AllOrders") {
+        toAll();
+    } else if(lastmode == "AllNewOrders") {
+        toAllNew();
     } else {
         toOlds();
     }

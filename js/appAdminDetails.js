@@ -63,7 +63,7 @@ function showDetail(oid) {
 
 function showAdmDetail(oid) {
     lastmode = mode;
-    mode = "details";
+    mode = "ADMdetails";
     autoUpdate = false;
     currDetail = oid;
     $("#menu-back").fadeIn();
@@ -101,6 +101,7 @@ function showAdmDetail(oid) {
                         $("#admorderurl").val(thisdata["order"]["order_link"]);
                         Materialize.updateTextFields();
                         $('select').material_select();
+                        updateAdminPreview();
                     }
                 });
             }
