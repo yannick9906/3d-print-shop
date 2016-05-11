@@ -30,7 +30,7 @@ $(document).ready(function () {
                     </a>
                     <span class="grey-text text-darken-1 light-bold" style="font-size: 22px; vertical-align: top; line-height: 26px;">{{complete_price}}<i class="mddi mddi-currency-eur"></i></span>
                 </span>
-                {{printing}}
+                {{{printing}}}
             </li>
         </ul>
     `);
