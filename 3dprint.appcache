@@ -1,0 +1,33 @@
+CACHE MANIFEST
+# Version 1
+
+CACHE:
+https://code.jquery.com/jquery-2.1.1.min.js
+appAdmin.html
+appUser.html
+appLogin.html
+js/appAdmin.js
+js/appAdminDetails.js
+js/appAdminLists.js
+js/appAdminNew.js
+js/appAdminSettings.js
+js/appUser.js
+js/appUserDetails.js
+js/appUserLists.js
+js/appUserNew.js
+js/appUserSettings.js
+css/style.css
+lib/materialize/
+lib/mdi/
+pics/
+svg/
+
+FALLBACK:
+# This will enable imagename4.png to be as a replacement for
+# all resources under the images dir when there is no network connectivity.
+
+NETWORK:
+# This will prevent other network resources from being accessed.
+orders.php
+userLogin.php
+users.php

@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+
+  "name": "3D Print",
+  "description": "Yannicks 3D Drucke",
+  "version": "3.0.0b",
+  "icons": [
+    {
+      "src": "printer3d.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "density": "1.0"
+    }
+  ],
+  "start_url": "appLogin.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "default-locale": "de",
+  "developer": "Yannick F&#233;lix",
+  "theme_color": "#ff9800",
+  "background_color": "#ff9800",
+  "chrome": { "navigation": true }
+}
