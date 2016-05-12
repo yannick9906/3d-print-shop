@@ -72,7 +72,7 @@ function update() {
             $("#loading").fadeOut(100);
         });
     } else if(mode == "Filas") {
-        $.getJSON("orders.php?action=getAllFilaments",null,function(data) {
+        $.getJSON("filaments.php?action=getAllFilaments",null,function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#orders").html("");

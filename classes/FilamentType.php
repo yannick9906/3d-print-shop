@@ -67,6 +67,31 @@
             return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID");
         }
 
+        /**
+         * Creates a new Entry in the db
+         *
+         * @param string $colorname
+         * @param string $colorcode
+         * @param int    $price
+         * @param int    $saleprice
+         * @param bool   $active
+         * @param int    $diameter
+         */
+        public static function createNew($colorname, $colorcode, $price, $saleprice, $active, $diameter) {
+            $pdo = new PDO_MYSQL();
+            $pdo->query("INSERT INTO print3d_filamenttypes(diameter, colorname, colorcode, price, salesprice, available) VALUES (:diameter, :colorname, :colorcode, :price, :saleprice, :active)",
+                [":diameter" => $diameter, ":colorcode" => $colorcode, ":colorname" => $colorname, ":price" => $price, ":saleprice" => $saleprice, ":active" => $active?1:0]);
+        }
+
+        /**
+         * Saves this object to the db
+         */
+        public function saveChanges() {
+            $pdo = new PDO_MYSQL();
+            $pdo->query("UPDATE print3d_filamenttypes SET diameter = :diameter, colorname = :colorname, colorcode = :colorcode, price = :price, salesprice = :saleprice, available = :active WHERE fID = :fid",
+                [":diameter" => $this->diameter, ":colorcode" => $this->colorcode, ":colorname" => $this->colorname, ":price" => $this->price, ":saleprice" => $this->saleprice, ":active" => $this->available?1:0, ":fid" => $this->fID]);
+        }
+
         public function getWeightFor($length) {
             $radius       = $this->diameter / 2;
             $area         = $radius * $radius * 3.1415926535897932384626433832795;

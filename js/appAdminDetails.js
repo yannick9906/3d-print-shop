@@ -171,7 +171,7 @@ function showFila(fid) {
     $("#admDetail").fadeOut("fast");
     $("#lists").fadeOut("fast", function() {
         $("#filaDetail").fadeIn("fast");
-        $.getJSON("orders.php?action=filaDetails&fID="+fid, null, function(data) {
+        $.getJSON("filaments.php?action=filaDetails&fID="+fid, null, function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else {
                 thisdata = data;
@@ -189,7 +189,29 @@ function showFila(fid) {
 }
 
 function confirmFilaEdit() {
-
+    data = {
+        diameter: $("#filaDiameter").val(),
+        colorcode: $("#filaColor").val(),
+        colorname: $("#filaName").val(),
+        active: $("#filaActive").is(":checked"),
+        price: $("#filaPrice").val(),
+        saleprice: $("#filaSellPrice").val()
+    };
+    console.log(data);
+    if(data["diameter"] != null && data["colorcode"] != null && data["colorname"] != null && data["price"] != null && data["saleprice"] != null) {
+        $.post("filaments.php?action=updateFila&fid="+currDetail, data, function(data) {
+            json = JSON.parse(data);
+            if(json["success"]) {
+                Materialize.toast("Die Bestellung wurde aktualisiert", 5000, "green");
+                toFilas();
+            } else {
+                if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
+                else Materialize.toast("Es ist ein Fehler aufgetreten. Das tut uns leid :/", 5000, "red");
+            }
+        });
+    } else {
+        Materialize.toast("Bitte fülle alle Felder aus", 2000, "red");
+    }
 }
 
 function setButtonsForState(state) {

@@ -95,13 +95,16 @@ function toOlds() {
     $("#sidenav-account").removeClass("active");
     $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeOut();
-    $("#menu-back-d").fadeOut();;
+    $("#newFilaBtn").fadeOut();
+    $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
     $("#admDetail").fadeOut("fast");
+    $("#filaDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
+        $("#newOrderBtn").fadeIn();
         $("#lists").fadeIn("fast", endFade());
     });
 }
@@ -120,12 +123,15 @@ function toNew() {
     $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeOut();
     $("#menu-back-d").fadeOut();
+    $("#newFilaBtn").fadeOut();
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
     $("#admDetail").fadeOut("fast");
+    $("#filaDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
+        $("#newOrderBtn").fadeIn();
         $("#lists").fadeIn("fast", endFade());
     });
 }
@@ -143,13 +149,16 @@ function toAll() {
     $("#sidenav-account").removeClass("active");
     $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeOut();
+    $("#newFilaBtn").fadeOut();
     $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
     $("#admDetail").fadeOut("fast");
+    $("#filaDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
+        $("#newOrderBtn").fadeIn();
         $("#lists").fadeIn("fast", endFade());
     });
 }
@@ -167,13 +176,16 @@ function toAllNew() {
     $("#sidenav-allnew").addClass("active");
     $("#sidenav-filas").removeClass("active");
     $("#menu-back").fadeOut();
+    $("#newFilaBtn").fadeOut();
     $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
+    $("#filaDetail").fadeOut("fast");
     $("#admDetail").fadeOut("fast");
     $("#showDetail").fadeOut("fast", function() {
         update();
+        $("#newOrderBtn").fadeIn();
         $("#lists").fadeIn("fast", endFade());
     });
 }
@@ -192,12 +204,14 @@ function toUserSettings() {
     $("#menu-back").fadeOut();
     $("#menu-back-d").fadeOut();
     $("#menu-norm").fadeIn();
-
+    $("#newFilaBtn").fadeOut();
+    $("#filaDetail").fadeOut("fast");
     $("#new").fadeOut("fast");
     $("#showDetail").fadeOut("fast");
     $("#admDetail").fadeOut("fast");
     $("#lists").fadeOut("fast", function() {
         update();
+        $("#newOrderBtn").fadeIn();
         $("#userSettings").fadeIn("fast", endFade());
 
         $.getJSON("users.php?action=getOwnUserData", null, function(data) {
@@ -230,7 +244,8 @@ function toNewOrder() {
     $("#menu-back-d").fadeIn();
     $("#menu-norm").fadeOut();
     $("#newOrderBtn").fadeOut();
-
+    $("#newFilaBtn").fadeOut();
+    $("#filaDetail").fadeOut("fast");
     $("#userSettings").fadeOut("fast");
     $("#showDetail").fadeOut("fast");
     $("#admDetail").fadeOut("fast");
@@ -268,11 +283,13 @@ function toFilas() {
     $("#sidenav-filas").addClass("active");
     $("#menu-back").fadeOut();
     $("#menu-back-d").fadeOut();
+    $("#newOrderBtn").fadeOut("fast", function() {$("#newFilaBtn").fadeIn("fast")});
     $("#menu-norm").fadeIn();
     $("#userSettings").fadeOut("fast");
     $("#new").fadeOut("fast");
     $("#admDetail").fadeOut("fast");
-    $("#showDetail").fadeOut("fast", function() {
+    $("#showDetail").fadeOut("fast");
+    $("#filaDetail").fadeOut("fast", function() {
         update();
         $("#lists").fadeIn("fast", endFade());
     });   
@@ -284,6 +301,7 @@ function toLogout() {
 
 function back() {
     if(mode == "NewOrder") $("#newOrderBtn").fadeIn();
+    if(mode == "NewFila") $("#newFilaBtn").fadeIn();
 
     if(lastmode == "UserSettings") {
         toUserSettings();

@@ -50,22 +50,6 @@
             array_push($json_array["filaments"], $filament->asArray());
         }
         echo json_encode($json_array);
-    } elseif($action == "getAllFilaments") {
-        if ($user->getRole() == 2) {
-            $filaments = \print3d\FilamentType::getAllFilaments();
-            $json_array = ["filaments" => []];
-            foreach ($filaments as $filament) {
-                array_push($json_array["filaments"], $filament->asArray());
-            }
-            echo json_encode($json_array);
-        } else echo json_encode(["success" => false]);
-    } elseif($action == "filaDetails") {
-        $fID = $_GET["fID"];
-        if ($user->getRole() == 2 && is_numeric($fID)) {
-            $filament = \print3d\FilamentType::fromFID($fID);
-            $json_array = ["filament" => $filament->asArray()];
-            echo json_encode($json_array);
-        } else echo json_encode(["success" => false]);
     } elseif($action == "getThingiverseImg") {
         $link = $_GET["link"];
         $html = file_get_contents($link);
