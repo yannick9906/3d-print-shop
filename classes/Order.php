@@ -183,6 +183,7 @@
                 "material_price" => money_format("%i", $this->material_cost/100),
                 "energy_price" => money_format("%i", $this->energy_cost/100),
                 "fix_price" => money_format("%i", $this->cost/100),
+                "fix_price_html" => $this->cost,
                 "material_weight" => $this->material_weight,
                 "material_length" => $this->material_length,
                 "state" => $this->state,
@@ -235,28 +236,28 @@
         }
 
         /**
-         * @return date
+         * @return int
          */
         public function getDateConfirmed() {
             return $this->date_confirmed;
         }
 
         /**
-         * @param date $date_confirmed
+         * @param int $date_confirmed
          */
         public function setDateConfirmed($date_confirmed) {
             $this->date_confirmed = $date_confirmed;
         }
 
         /**
-         * @return date
+         * @return int
          */
         public function getDateCompleted() {
             return $this->date_completed;
         }
 
         /**
-         * @param date $date_completed
+         * @param int $date_completed
          */
         public function setDateCompleted($date_completed) {
             $this->date_completed = $date_completed;

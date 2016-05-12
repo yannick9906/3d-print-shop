@@ -54,7 +54,7 @@
          */
         public static function getAllFilaments() {
             $pdo = new PDO_MYSQL();
-            $stmt = $pdo->queryMulti("SELECT fID FROM print3d_filamenttypes");
+            $stmt = $pdo->queryMulti("SELECT fID FROM print3d_filamenttypes ORDER BY available DESC, colorname");
             return $stmt->fetchAll(\PDO::FETCH_FUNC, "\\print3d\\FilamentType::fromFID");
         }
 

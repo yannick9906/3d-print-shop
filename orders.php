@@ -122,8 +122,8 @@
             $order->setState($_POST["state"], $user);
             $order->setPrecision($_POST["precision"]);
             $order->setPrintTime($_POST["printtime"]);
-            $order->setDateConfirmed($_POST["date_confirmed"]);
-            $order->setDateCompleted($_POST["date_completed"]);
+            $order->setDateConfirmed(strtotime($_POST["date_confirmed"]));
+            $order->setDateCompleted(strtotime($_POST["date_completed"]));
             $order->setMaterialLength($_POST["length"]);
             $order->setCost($_POST["addcost"]);
             $order->saveChanges();

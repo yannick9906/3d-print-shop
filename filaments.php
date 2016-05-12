@@ -15,7 +15,10 @@
     $user = \print3d\User::checkSession();
 
     if($action == "newFilament") {
-
+        if ($user->getRole() == 2) {
+            \print3d\FilamentType::createNew($_POST["colorname"], $_POST["colorcode"], $_POST["price"], $_POST["saleprice"], $_POST["active"], $_POST["diameter"]);
+            echo json_encode(["success" => true]);
+        } else echo json_encode(["success" => false]);
     } elseif($action == "getActiveFilaments") {
         $filaments = \print3d\FilamentType::getAllAvailableFilaments();
         $json_array = ["filaments" => []];
@@ -44,7 +47,7 @@
         if ($user->getRole() == 2 && is_numeric($fID)) {
             $filament = \print3d\FilamentType::fromFID($fID);
 
-            $filament->setAvailable($_POST["active"]);
+            $filament->setAvailable($_POST["active"] == "true");
             $filament->setColorcode($_POST["colorcode"]);
             $filament->setColorname($_POST["colorname"]);
             $filament->setPrice($_POST["price"]);

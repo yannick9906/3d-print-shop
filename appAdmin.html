@@ -297,7 +297,10 @@
                 <input id="filaSellPrice" type="number">
                 <label for="filaSellPrice">Sonderpreis pro kg (Cent) (0 = aus)</label>
             </div>
-            <button class="btn orange waves-effect waves-light col s12" onclick="confirmFilaEdit()" type="button">
+            <button id="btnSubmitNewFila" class="btn orange waves-effect waves-light col s12" onclick="sendNewFila()" type="button">
+                <i class="mddi mddi-check"></i>
+            </button>
+            <button id="btnSubmitEditFila" class="btn orange waves-effect waves-light col s12" onclick="confirmFilaEdit()" type="button">
                 <i class="mddi mddi-check"></i>
             </button>
     </div>

@@ -99,7 +99,7 @@ function showAdmDetail(oid) {
                         $("#admorder_date_confirmed").val(thisdata["order"]["date_confirmed_html"]);
                         $("#admorder_date_completed").val(thisdata["order"]["date_completed_html"]);
                         $("#admorder_length").val(thisdata["order"]["material_length"]);
-                        $("#admorder_add_cost").val(thisdata["order"]["fix_price"]);
+                        $("#admorder_add_cost").val(thisdata["order"]["fix_price_html"]);
                         $("#admorderurl").val(thisdata["order"]["order_link"]);
                         Materialize.updateTextFields();
                         $('select').material_select();
@@ -163,6 +163,8 @@ function showFila(fid) {
     mode = "FilaDetails";
     autoUpdate = false;
     currDetail = fid;
+    $("#btnSubmitEditFila").show();
+    $("#btnSubmitNewFila").hide();
     $("#menu-back").fadeIn();
     $("#menu-back-d").fadeIn();
     $("#menu-norm").fadeOut();
@@ -203,7 +205,7 @@ function confirmFilaEdit() {
             json = JSON.parse(data);
             if(json["success"]) {
                 Materialize.toast("Die Bestellung wurde aktualisiert", 5000, "green");
-                toFilas();
+                back();
             } else {
                 if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                 else Materialize.toast("Es ist ein Fehler aufgetreten. Das tut uns leid :/", 5000, "red");
