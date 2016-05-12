@@ -29,6 +29,10 @@ function sendNewOrder() {
                 if(json["success"]) {
                     Materialize.toast("Deine Bestellung wurde abgeschickt<br/>Du erhälst eine Email, sobald ein Preisvorschlag verfügbar ist", 5000, "green");
                     back();
+                    $("#newordertitle").val("");
+                    $("#neworderfilament").val("");
+                    $("#neworderurl").val("");
+                    $("#newordercomment").val("");
                 } else {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else Materialize.toast("Es ist ein Fehler aufgetreten. Das tut uns leid :/", 5000, "red");
