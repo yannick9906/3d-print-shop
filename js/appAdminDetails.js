@@ -143,8 +143,7 @@ function confirmEdit() {
                 json = JSON.parse(data);
                 if(json["success"]) {
                     Materialize.toast("Die Bestellung wurde aktualisiert", 5000, "green");
-                    toNew();
-                    $("#newOrderBtn").fadeIn();
+                    back();
                 } else {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else Materialize.toast("Es ist ein Fehler aufgetreten. Das tut uns leid :/", 5000, "red");
@@ -322,4 +321,14 @@ function warranty() {
 
 function deleteCurr() {
     runAction("delete");
+}
+
+function setTodayCompleted() {
+    d = new Date($.now());
+    $("#admorder_date_completed").val(d.toISOString().substr(0, 19));
+}
+
+function setTodayConfirmed() {
+    d = new Date($.now());
+    $("#admorder_date_confirmed").val(d.toISOString().substr(0, 19));
 }
