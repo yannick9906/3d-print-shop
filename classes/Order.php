@@ -201,15 +201,30 @@
          * @param int  $newstate
          * @param User $user
          */
-        public function sendEmails($oldstate, $newstate, $user) {
+        public function sendEmails($oldstate, $newstate) {
+            $user = User::fromUID($this->uID);
             if($user->canReceiveEmails()) {
-                if($oldstate == 1 && $newstate == 2) {
-
+                if($oldstate == 0 && $newstate == 1) {
+                    $subject = "Yannicks 3D Drucke - Ein Preisvorschlag für deine Bestellung({$this->oID}) ist verfügbar";
+                    $text = getEmailTextPrice($this, $user);
                 } elseif(($oldstate == 2 || $oldstate == 3) && $newstate == 4) {
-
+                    $subject = "Yannicks 3D Drucke - Deine Bestellung wird gedruckt";
+                    $text = getEmailTextPrint($this, $user);
                 } elseif($newstate == -2) {
+                    $subject = "Yannicks 3D Drucke - Deine Bestellung wurde abgelehnt";
+                    $text = getEmailTextFail($this, $user);
+                } else return;
+                $to = $user->getEmail();
+                $toname = $user->getRealname();
+                $header  = 'MIME-Version: 1.0' . "\r\n";
+                $header .= 'Content-type: multipart/alternative; charset="UTF-8"; boundary="b1_ad31a77529300ba7014d73b6127af5d2"' . "\r\n";
 
-                }
+                $header .= "To: $toname <$to>" . "\r\n";
+                $header .= 'From: Yannicks 3D Drucke <noreply@3d.yannickfelix.tk>' . "\r\n";
+                $header .= 'Bcc: yannick.felix1999@gmail.com' . "\r\n";
+
+                mail($to, $subject, $text, $header);
+                echo $text;
             }
         }
 
@@ -274,8 +289,8 @@
          * @param int  $state
          * @param User $user
          */
-        public function setState($state, $user) {
-            $this->sendEmails($this->state, $state, $user);
+        public function setState($state) {
+            $this->sendEmails($this->state, $state);
             $this->state = $state;
         }
 
@@ -378,7 +393,7 @@
         }
 
         /**
-         * @return date
+         * @return int
          */
         public function getDateCreated() {
             return $this->date_created;
@@ -403,5 +418,26 @@
          */
         public function setCost($cost) {
             $this->cost = $cost;
+        }
+
+        /**
+         * @return int
+         */
+        public function getTotalCost() {
+            return $this->total_cost;
+        }
+
+        /**
+         * @return float
+         */
+        public function getMaterialCost() {
+            return $this->material_cost;
+        }
+
+        /**
+         * @return int
+         */
+        public function getEnergyCost() {
+            return $this->energy_cost;
         }
     }

@@ -11,6 +11,7 @@
     require_once "classes/User.php";
     require_once "classes/Order.php";
     require_once "classes/FilamentType.php";
+    require_once "classes/emailtext.php";
 
     $action = $_GET["action"];
     $user = \print3d\User::checkSession();

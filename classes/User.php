@@ -56,7 +56,7 @@
         public static function fromUName($name) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_user WHERE username = :uname", [":uname" => $name]);
-            return new User($res->uID, $res->username, $res->passwd, $res->email, $res->realname, $res->level);
+            return new User($res->uID, $res->username, $res->passwd, $res->email, $res->realname, $res->level, $res->emails);
         }
 
         /**

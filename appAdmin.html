@@ -240,13 +240,23 @@
                 </select>
                 <label for="admorderstate">Status</label>
             </div>
-            <div class="col s12 m6">
+            <div class="col s10 m5">
                 <input id="admorder_date_confirmed" type="datetime-local">
                 <label for="admorder_date_confirmed">Datum Angommen</label>
             </div>
-            <div class="col s12 m6">
+            <div class="col s2 m1">
+                <a class="btn orange" style="padding: 0 1rem;" onclick="setTodayConfirmed()">
+                    <i class="mddi mddi-calendar-today"></i>
+                </a>
+            </div>
+            <div class="col s10 m5">
                 <input id="admorder_date_completed" type="datetime-local">
                 <label for="admorder_date_completed">Datum Fertig</label>
+            </div>
+            <div class="col s2 m1">
+                <a class="btn orange" style="padding: 0 1rem;" onclick="setTodayCompleted()">
+                    <i class="mddi mddi-calendar-today"></i>
+                </a>
             </div>
             <div class="input-field col s12 m4">
                 <input id="admorder_printtime" type="number">
