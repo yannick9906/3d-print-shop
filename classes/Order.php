@@ -130,6 +130,13 @@
                 [":uid" => $user->getUID(),":date" => date("Y-m-d H:i:s"),":fila" => $fID, ":title" => $title, ":url" => $url, ":comment" => $comment]);
         }
 
+        public function reorder($user) {
+            self::createNew($user, $this->order_name, $this->filamentType, $this->order_link, $this->comment);
+        }
+
+        /**
+         *
+         */
         public function saveChanges() {
             $pdo = new PDO_MYSQL();
             $this->material_weight = FilamentType::fromFID($this->filamentType)->getWeightFor($this->material_length);

@@ -91,22 +91,22 @@
             $toDo = $_GET["todo"];
             switch ($toDo) {
                 case "order":
-                    $order->setState(2, $user);
+                    $order->setState(2);
                     $order->saveChanges();
                     break;
                 case "reorder":
-                    //ToDo Make Reordering function
+                    $order->reorder($user);
                     break;
                 case "arrived":
-                    $order->setState(6, $user);
+                    $order->setState(6);
                     $order->saveChanges();
                     break;
                 case "warranty":
-                    $order->setState(8, $user);
+                    $order->setState(8);
                     $order->saveChanges();
                     break;
                 case "delete":
-                    $order->setState(7, $user);
+                    $order->setState(7);
                     $order->saveChanges();
                     break;
             }
@@ -120,7 +120,7 @@
             $order->setFilamentType($_POST["fila"]);
             $order->setOrderLink($_POST["url"]);
             $order->setComment($_POST["comment"]);
-            $order->setState($_POST["state"], $user);
+            $order->setState($_POST["state"]);
             $order->setPrecision($_POST["precision"]);
             $order->setPrintTime($_POST["printtime"]);
             $order->setDateConfirmed(strtotime($_POST["date_confirmed"]));
