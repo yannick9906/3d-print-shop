@@ -231,7 +231,6 @@
                 $header .= 'Bcc: yannick.felix1999@gmail.com' . "\r\n";
 
                 mail($to, $subject, $text, $header);
-                echo $text;
             }
         }
 

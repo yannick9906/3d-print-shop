@@ -101,6 +101,7 @@ function showAdmDetail(oid) {
                         $("#admorder_length").val(thisdata["order"]["material_length"]);
                         $("#admorder_add_cost").val(thisdata["order"]["fix_price_html"]);
                         $("#admorderurl").val(thisdata["order"]["order_link"]);
+                        $("#admorderlink").attr("href", thisdata["order"]["order_link"]);
                         Materialize.updateTextFields();
                         $('select').material_select();
                         updateAdminPreview();

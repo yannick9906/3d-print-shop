@@ -86,7 +86,7 @@
         } else echo json_encode(["success" => false]);
     } elseif($action == "completeOrderAction") {
         $oid = $_GET["oID"];
-        if(is_numeric($oid) && $user->getRole() == 2) {
+        if(is_numeric($oid)) {
             $order = \print3d\Order::fromOID($oid);
             $toDo = $_GET["todo"];
             switch ($toDo) {
