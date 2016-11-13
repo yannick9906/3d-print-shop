@@ -17,7 +17,7 @@
         private $oID, $uID, $filamentType;
         private $date_created, $date_confirmed, $date_completed;
         private $state, $comment, $precision;
-        private $order_name, $order_link;
+        private $order_name, $order_link, $order_livestream;
         private $material_length, $material_weight;
         private $print_time;
         private $total_cost, $material_cost, $energy_cost, $cost;
@@ -25,23 +25,24 @@
         /**
          * Order constructor.
          *
-         * @param int $oID
-         * @param int $uID
-         * @param int $filamentType
-         * @param date $date_created
-         * @param date $date_confirmed
-         * @param date $date_completed
-         * @param int $state
+         * @param int    $oID
+         * @param int    $uID
+         * @param int    $filamentType
+         * @param date   $date_created
+         * @param date   $date_confirmed
+         * @param date   $date_completed
+         * @param int    $state
          * @param string $comment
-         * @param int $precision
+         * @param int    $precision
          * @param string $order_name
          * @param string $order_link
-         * @param int $material_length
-         * @param int $material_weight
-         * @param int $print_time
-         * @param int $cost
+         * @param int    $material_length
+         * @param int    $material_weight
+         * @param int    $print_time
+         * @param int    $cost
+         * @param string $order_livestream
          */
-        public function __construct($oID, $uID, $filamentType, $date_created, $date_confirmed, $date_completed, $state, $comment, $precision, $order_name, $order_link, $material_length, $material_weight, $print_time, $cost) {
+        public function __construct($oID, $uID, $filamentType, $date_created, $date_confirmed, $date_completed, $state, $comment, $precision, $order_name, $order_link, $material_length, $material_weight, $print_time, $cost, $order_livestream) {
             $this->oID = $oID;
             $this->uID = $uID;
             $this->filamentType = $filamentType;
@@ -65,6 +66,7 @@
             $this->material_cost = FilamentType::fromFID($filamentType)->getPriceFor($material_length);
             $this->energy_cost = FilamentType::fromFID($filamentType)->getEnergyPrice($print_time);
             $this->total_cost = $this->energy_cost + $this->material_cost + $this->cost;
+            $this->order_livestream = $order_livestream;
         }
 
         /**
@@ -74,7 +76,7 @@
         public static function fromOID($oid) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_orders WHERE oID = :oid",[":oid" => $oid]);
-            return new Order($res->oID, $res->uID, $res->filamenttype, $res->date_created, $res->date_confirmed, $res->date_completed, $res->state, $res->comment, $res->precision, $res->order_name, $res->order_link, $res->material_length, $res->material_weight, $res->print_time, $res->fixprice);
+            return new Order($res->oID, $res->uID, $res->filamenttype, $res->date_created, $res->date_confirmed, $res->date_completed, $res->state, $res->comment, $res->precision, $res->order_name, $res->order_link, $res->material_length, $res->material_weight, $res->print_time, $res->fixprice, $res->order_livestream);
         }
 
         /**
@@ -143,8 +145,8 @@
             $date_created = date("Y-m-d H:i:s", $this->date_created);
             if($this->date_confirmed == 0) $date_confirmed = null; else $date_confirmed =  date("Y-m-d H:i:s", $this->date_confirmed);
             if($this->date_completed == 0) $date_completed = null; else $date_completed =  date("Y-m-d H:i:s", $this->date_completed);
-            $pdo->query("UPDATE print3d_orders SET date_created = :date_created, date_confirmed = :date_confirmed, date_completed = :date_completed, state = :state, filamenttype = :fiD, order_name = :order_name, order_link = :order_link, material_length = :length, material_weight = :weight, print_time = :time, comment = :comment, `precision` = :precision, fixprice = :fix WHERE oID = :oid",
-                [":date_created" => $date_created, ":date_confirmed" => $date_confirmed, ":date_completed" => $date_completed, ":state" => $this->state, ":fiD" => $this->filamentType, ":order_name" => $this->order_name, ":order_link" => $this->order_link, ":length" => $this->material_length, ":weight" => $this->material_weight, ":time" => $this->print_time, ":comment" => $this->comment, ":precision" => $this->precision, ":oid" => $this->oID, ":fix" => $this->cost]);
+            $pdo->query("UPDATE print3d_orders SET date_created = :date_created, date_confirmed = :date_confirmed, date_completed = :date_completed, state = :state, filamenttype = :fiD, order_name = :order_name, order_link = :order_link, material_length = :length, material_weight = :weight, print_time = :time, comment = :comment, `precision` = :precision, fixprice = :fix, order_livestream = :live WHERE oID = :oid",
+                [":date_created" => $date_created, ":date_confirmed" => $date_confirmed, ":date_completed" => $date_completed, ":state" => $this->state, ":fiD" => $this->filamentType, ":order_name" => $this->order_name, ":order_link" => $this->order_link, ":length" => $this->material_length, ":weight" => $this->material_weight, ":time" => $this->print_time, ":comment" => $this->comment, ":precision" => $this->precision, ":oid" => $this->oID, ":fix" => $this->cost, ":live" => $this->order_livestream]);
             
         }
 
@@ -178,7 +180,7 @@
                 "date_confirmed_html" => str_replace("+02:00","",str_replace("+01:00","",date(DATE_W3C, $this->date_confirmed))),
                 "date_completed" => $date_completed,
                 "date_completed_html" => str_replace("+02:00","",str_replace("+01:00","",date(DATE_W3C, $this->date_completed))),
-                "printtime" => gmdate("H\h i\m s\s", $this->print_time),
+                "printtime" => Util::seconds_to_time($this->print_time),
                 "printtime_plain" => $this->print_time,
                 "comment" => $this->comment,
                 "precision" => $this->precision,
@@ -199,14 +201,14 @@
                 "statetext" => $this->STATETEXT[$this->state],
                 "style" => $style,
                 "style2" => $style2,
-                "printing" => $printing
+                "printing" => $printing,
+                "order_livestream" => $this->order_livestream
             ];
         }
 
         /**
          * @param int  $oldstate
          * @param int  $newstate
-         * @param User $user
          */
         public function sendEmails($oldstate, $newstate) {
             $user = User::fromUID($this->uID);
@@ -293,7 +295,6 @@
 
         /**
          * @param int  $state
-         * @param User $user
          */
         public function setState($state) {
             $this->sendEmails($this->state, $state);
@@ -445,5 +446,19 @@
          */
         public function getEnergyCost() {
             return $this->energy_cost;
+        }
+
+        /**
+         * @return string
+         */
+        public function getOrderLivestream() {
+            return $this->order_livestream;
+        }
+
+        /**
+         * @param string $order_livestream
+         */
+        public function setOrderLivestream($order_livestream) {
+            $this->order_livestream = $order_livestream;
         }
     }

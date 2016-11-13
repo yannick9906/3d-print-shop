@@ -9,8 +9,8 @@ function showDetail(oid) {
     mode = "details";
     autoUpdate = false;
     currDetail = oid;
-    $("#menu-back").fadeIn();
     $("#menu-back-d").fadeIn();
+    $("#menu-back").fadeIn();
     $("#menu-norm").fadeOut();
     $("#detail_img").attr("src", "http://www.the-irf.com/assets/content/animation/loading2.gif");
     $("#detail_img").css("padding", "30%");
@@ -38,6 +38,7 @@ function showDetail(oid) {
                 $("#detail-additional-cost").html(data["order"]["fix_price"]);
                 setButtonsForState(parseInt(data["order"]["state"]));
                 var link = data["order"]["order_link"];
+                var livelink = data["order"]["order_livestream"];
                 if (link.contains("thingiverse")) {
                     detail_link = $("#detail_link");
                     detail_link.html("Thingiverse");
@@ -50,6 +51,12 @@ function showDetail(oid) {
                             }).fadeIn(400);
                         }
                     });
+                } else if(link.contains(".png") || link.contains(".jpg") || link.contains(".jpeg")) {
+                    $("#detail_img").attr("src", link);
+                    $("#detail_img").css("padding", "0");
+                    detail_link = $("#detail_link");
+                    detail_link.html("");
+                    detail_link.attr("href", link);
                 } else {
                     $("#detail_img").attr("src", "http://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg");
                     $("#detail_img").css("padding", "0");
@@ -57,10 +64,17 @@ function showDetail(oid) {
                     detail_link.html("Link zum Objekt");
                     detail_link.attr("href", link);
                 }
+                console.log(livelink);
+                if(livelink.contains("http")) {
+                    detail_link = $("#detail_link");
+                    detail_link.html("Livestream");
+                    detail_link.attr("href", livelink);
+                }
             }
         });
     });
 }
+
 
 function showAdmDetail(oid) {
     lastmode = mode;
@@ -101,6 +115,7 @@ function showAdmDetail(oid) {
                         $("#admorder_length").val(thisdata["order"]["material_length"]);
                         $("#admorder_add_cost").val(thisdata["order"]["fix_price_html"]);
                         $("#admorderurl").val(thisdata["order"]["order_link"]);
+                        $("#admorderlive").val(thisdata["order"]["order_livestream"]);
                         $("#admorderlink").attr("href", thisdata["order"]["order_link"]);
                         Materialize.updateTextFields();
                         $('select').material_select();
@@ -113,17 +128,18 @@ function showAdmDetail(oid) {
 }
 
 function confirmEdit() {
-    title = $("#admordertitle").val();
-    fila = $("#admorderfilament").val();
-    url = $("#admorderurl").val();
-    comment = $("#admordercomment").val();
-    state = $("#admorderstate").val();
-    precision = $("#admorderprecision").val();
-    printtime = $("#admorder_printtime").val();
-    date_confirmed = $("#admorder_date_confirmed").val();
-    date_completed = $("#admorder_date_completed").val();
-    length = $("#admorder_length").val();
-    addcost = $("#admorder_add_cost").val();
+    var title = $("#admordertitle").val();
+    var fila = $("#admorderfilament").val();
+    var url = $("#admorderurl").val();
+    var comment = $("#admordercomment").val();
+    var state = $("#admorderstate").val();
+    var precision = $("#admorderprecision").val();
+    var printtime = $("#admorder_printtime").val();
+    var date_confirmed = $("#admorder_date_confirmed").val();
+    var date_completed = $("#admorder_date_completed").val();
+    var length = $("#admorder_length").val();
+    var addcost = $("#admorder_add_cost").val();
+    var live = $("#admorderlive").val();
     data = {
         title: title,
         fila: fila,
@@ -135,7 +151,8 @@ function confirmEdit() {
         date_confirmed: date_confirmed,
         date_completed: date_completed,
         length: length,
-        addcost: addcost
+        addcost: addcost,
+        livestream: live
     };
     console.log(data);
     if(fila != null && precision != null && state != null) {

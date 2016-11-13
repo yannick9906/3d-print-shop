@@ -95,5 +95,5 @@ function updateSchedueler() {
     if(autoUpdate == true) {
         update();
     }
-    window.setTimeout("updateSchedueler()", 1000);
+    window.setTimeout("updateSchedueler()", 2500);
 }

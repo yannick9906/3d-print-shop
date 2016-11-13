@@ -9,6 +9,7 @@
 
     require_once "classes/PDO_MYSQL.php";
     require_once "classes/User.php";
+    require_once "classes/Util.php";
     require_once "classes/Order.php";
     require_once "classes/FilamentType.php";
     require_once "classes/emailtext.php";
@@ -127,6 +128,7 @@
             $order->setDateCompleted(strtotime($_POST["date_completed"]));
             $order->setMaterialLength($_POST["length"]);
             $order->setCost($_POST["addcost"]);
+            $order->setOrderLivestream($_POST["livestream"]);
             $order->saveChanges();
             echo json_encode(["success" => true]);
             exit;

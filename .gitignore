@@ -4,4 +4,8 @@ lib
 pics
 email.html
 moovit.html
+marcel.html
+moovit2.html
 adminer-4.2.4-mysql.php
+moovit/*
+uploads/*
