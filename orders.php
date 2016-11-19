@@ -52,6 +52,13 @@
             array_push($json_array["filaments"], $filament->asArray());
         }
         echo json_encode($json_array);
+    } elseif($action == "getFilamentsAdmin") {
+        $filaments = \print3d\FilamentType::getAllFilaments();
+        $json_array = ["filaments" => []];
+        foreach ($filaments as $filament) {
+            array_push($json_array["filaments"], $filament->asArray());
+        }
+        echo json_encode($json_array);
     } elseif($action == "getThingiverseImg") {
         $link = $_GET["link"];
         $html = file_get_contents($link);

@@ -92,7 +92,7 @@ function showAdmDetail(oid) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else {
                 thisdata = data;
-                $.getJSON("orders.php?action=getFilaments", null, function(data) {
+                $.getJSON("orders.php?action=getFilamentsAdmin", null, function(data) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
                         var filaments = data["filaments"];

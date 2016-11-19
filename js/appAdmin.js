@@ -12,7 +12,7 @@ var oldData;
 
 $(document).ready(function () {
     filaTmplt = Handlebars.compile(`
-        <option value='{{fID}}' class="circle left" data-icon="../new/pics/{{filamentcolorcode}}-1.png">{{price}} €/kg - {{filamentcolorname}}</option>
+        <option value='{{fID}}' class="circle left" data-icon="../new/pics/{{filamentcolorcode}}-1.png">{{price}} €/kg - {{filamentcolorname}} /{{active}}</option>
      `);
     filaListTmplt = Handlebars.compile(`
             <ul class="{{style}}">
