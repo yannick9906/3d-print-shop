@@ -128,7 +128,6 @@
             $order->setFilamentType($_POST["fila"]);
             $order->setOrderLink($_POST["url"]);
             $order->setComment($_POST["comment"]);
-            $order->setState($_POST["state"]);
             $order->setPrecision($_POST["precision"]);
             $order->setPrintTime($_POST["printtime"]);
             $order->setDateConfirmed(strtotime($_POST["date_confirmed"]));
@@ -136,6 +135,7 @@
             $order->setMaterialLength($_POST["length"]);
             $order->setCost($_POST["addcost"]);
             $order->setOrderLivestream($_POST["livestream"]);
+            $order->setState($_POST["state"]);
             $order->saveChanges();
             echo json_encode(["success" => true]);
             exit;

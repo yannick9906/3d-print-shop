@@ -226,7 +226,7 @@
                 $to = $user->getEmail();
                 $toname = $user->getRealname();
                 $header  = 'MIME-Version: 1.0' . "\r\n";
-                $header .= 'Content-type: multipart/alternative; charset="UTF-8"; boundary="b1_ad31a77529300ba7014d73b6127af5d2"' . "\r\n";
+                $header .= 'Content-type: text/html; charset="UTF-8"' . "\r\n";
 
                 $header .= "To: $toname <$to>" . "\r\n";
                 $header .= 'From: Yannicks 3D Drucke <noreply@3d.yannickfelix.tk>' . "\r\n";

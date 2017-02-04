@@ -18,9 +18,6 @@ namespace print3d {
         $date = date("d. M Y - H:i:s",$order->getDateCreated());
         $cost = money_format("%i", $order->getTotalCost()/100);
         return <<<END
---b1_ad31a77529300ba7014d73b6127af5d2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
     <head>
@@ -28,7 +25,7 @@ Content-Transfer-Encoding: 8bit
         
                 
     </head>
-    <body style="background-color: #ff9800;" bgcolor="#ff9800">
+    <body style="background-color: #ff9800; font-family: 'Roboto',Arial;" bgcolor="#ff9800">
 <style type="text/css">
 .btn:hover { box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15) !important; }
 .btn:hover { background-color: #2bbbad !important; }
@@ -49,13 +46,13 @@ Content-Transfer-Encoding: 8bit
             "description": "Preisangebot: {$cost} &euro;"
         }
         </script>
-        <div style="position: absolute; top: 20px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto'; font-size: 20px; font-weight: bold; padding: 10px;" align="center">
+        <div style="position: absolute; top: 20px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto',Arial; font-size: 20px; font-weight: bold; padding: 10px;" align="center">
             Yannicks 3D Drucke
         </div>
-        <div style="position: absolute; top: 80px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto'; font-size: 20px; padding: 10px;" align="center">
+        <div style="position: absolute; top: 80px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto',Arial; font-size: 20px; padding: 10px;" align="center">
             Ein Preisangebot ist verf&uuml;gbar
         </div>
-        <div style="position: absolute; top: 140px; left: 20%; right: 20%; background-color: white; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto'; font-size: 16px; font-weight: bold; padding: 10px;">
+        <div style="position: absolute; top: 140px; left: 20%; right: 20%; background-color: white; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto',Arial; font-size: 16px; font-weight: bold; padding: 10px;">
             Deine Bestellung
             <p style="font-size: 15px; font-weight: normal;">
                 Name: {$order->getOrderName()}<br>
@@ -67,8 +64,6 @@ Content-Transfer-Encoding: 8bit
         </div>
     </body>
 </html>
-
---b1_ad31a77529300ba7014d73b6127af5d2--
 END;
 
     }
@@ -82,9 +77,6 @@ END;
         $date = date("d. M Y - H:i:s",$order->getDateCreated());
         $cost = money_format("%i", $order->getTotalCost()/100);
         return <<<END
---b1_ad31a77529300ba7014d73b6127af5d2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
     <head>
@@ -92,19 +84,19 @@ Content-Transfer-Encoding: 8bit
         
                 
     </head>
-    <body style="background-color: #ff9800;" bgcolor="#ff9800">
+    <body style="background-color: #ff9800; font-family: 'Roboto',Arial;" bgcolor="#ff9800">
 <style type="text/css">
 .btn:hover { box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15) !important; }
 .btn:hover { background-color: #2bbbad !important; }
 .btn-large:hover { background-color: #2bbbad !important; }
 ></style>
-        <div style="position: absolute; top: 20px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto'; font-size: 20px; font-weight: bold; padding: 10px;" align="center">
+        <div style="position: absolute; top: 20px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto',Arial; font-size: 20px; font-weight: bold; padding: 10px;" align="center">
             Yannicks 3D Drucke
         </div>
-        <div style="position: absolute; top: 80px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto'; font-size: 20px; padding: 10px;" align="center">
+        <div style="position: absolute; top: 80px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto',Arial; font-size: 20px; padding: 10px;" align="center">
             Deine Bestellung druckt gerade
         </div>
-        <div style="position: absolute; top: 140px; left: 20%; right: 20%; background-color: white; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto'; font-size: 16px; font-weight: bold; padding: 10px;">
+        <div style="position: absolute; top: 140px; left: 20%; right: 20%; background-color: white; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto',Arial; font-size: 16px; font-weight: bold; padding: 10px;">
             Deine Bestellung
             <p style="font-size: 15px; font-weight: normal;">
                 Name: {$order->getOrderName()}<br>
@@ -116,8 +108,6 @@ Content-Transfer-Encoding: 8bit
         </div>
     </body>
 </html>
-
---b1_ad31a77529300ba7014d73b6127af5d2--
 END;
 
     }
@@ -131,9 +121,6 @@ END;
         $date = date("d. M Y - H:i:s",$order->getDateCreated());
         $cost = money_format("%i", $order->getTotalCost()/100);
         return <<<END
---b1_ad31a77529300ba7014d73b6127af5d2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
     <head>
@@ -141,19 +128,19 @@ Content-Transfer-Encoding: 8bit
         
                 
     </head>
-    <body style="background-color: #ff9800;" bgcolor="#ff9800">
+    <body style="background-color: #ff9800; font-family: 'Roboto',Arial;" bgcolor="#ff9800">
 <style type="text/css">
 .btn:hover { box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15) !important; }
 .btn:hover { background-color: #2bbbad !important; }
 .btn-large:hover { background-color: #2bbbad !important; }
 ></style>
-        <div style="position: absolute; top: 20px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto'; font-size: 20px; font-weight: bold; padding: 10px;" align="center">
+        <div style="position: absolute; top: 20px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto',Arial; font-size: 20px; font-weight: bold; padding: 10px;" align="center">
             Yannicks 3D Drucke
         </div>
-        <div style="position: absolute; top: 80px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto'; font-size: 20px; padding: 10px;" align="center">
+        <div style="position: absolute; top: 80px; left: 20%; right: 20%; background-color: white; text-align: center; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto',Arial; font-size: 20px; padding: 10px;" align="center">
             Deine Bestellung wurde abgelehnt, da sie nicht druckbar ist. Das tut uns leid :/
         </div>
-        <div style="position: absolute; top: 140px; left: 20%; right: 20%; background-color: white; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto'; font-size: 16px; font-weight: bold; padding: 10px;">
+        <div style="position: absolute; top: 140px; left: 20%; right: 20%; background-color: white; border-radius: 2px; box-shadow: 0px 5px 10px rgba(0,0,0,0.3); font-family: 'Roboto', Arial; font-size: 16px; font-weight: bold; padding: 10px;">
             Deine Bestellung
             <p style="font-size: 15px; font-weight: normal;">
                 Name: {$order->getOrderName()}<br>
@@ -165,8 +152,6 @@ Content-Transfer-Encoding: 8bit
         </div>
     </body>
 </html>
-
---b1_ad31a77529300ba7014d73b6127af5d2--
 END;
 
     }
