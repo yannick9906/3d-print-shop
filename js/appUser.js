@@ -136,9 +136,10 @@ function toNewOrder() {
                 let filaments = data["filaments"];
                 console.log(data);
                 $("#neworderfilament").html("<option value='' disabled selected>Wähle ein Material</option>");
-                filaments.forEach(function (element, index, array) {
+                for(let i = 0; i < filaments.length; i++) {
+                    let element = filaments[i]
                     $("#neworderfilament").append(filaTmplt(element));
-                });
+                }
                 Materialize.updateTextFields();
                 $('select').material_select();
             }

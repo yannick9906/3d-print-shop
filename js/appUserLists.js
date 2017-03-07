@@ -9,7 +9,9 @@ function update() {
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#loading").fadeIn(100);
                 $("#orders").html("");
-                data["orders"].forEach(function (element, index, array) {
+                for(let i = 0; i < data["filaments"].length; i++) {
+                    let element = data["filaments"][i]
+
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
                         let link = element.order_pic;
@@ -23,7 +25,7 @@ function update() {
                         let html = listTmplt(element);
                         $("#orders").append(html);
                     }
-                });
+                }
                 oldData = data;
             }
             $("#loading").fadeOut(100);
@@ -34,7 +36,9 @@ function update() {
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#loading").fadeIn(100);
                 $("#orders").html("");
-                data["orders"].forEach(function (element, index, array) {
+                for(let i = 0; i < data["filaments"].length; i++) {
+                    let element = data["filaments"][i]
+
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
                         let link = element.order_pic;
@@ -48,7 +52,7 @@ function update() {
                         let html = listTmplt(element);
                         $("#orders").append(html);
                     }
-                });
+                }
                 oldData = data;
             }
             $("#loading").fadeOut(100);

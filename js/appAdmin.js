@@ -19,7 +19,7 @@ let swRegistration = null;
 function urlB64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
+        .replace(/-/g, '+')
         .replace(/_/g, '/');
 
     const rawData = window.atob(base64);
@@ -402,7 +402,8 @@ function toNewOrder() {
                 let filaments = data["filaments"];
                 console.log(data);
                 $("#neworderfilament").html("<option value='' disabled selected>Wähle ein Material</option>");
-                filaments.forEach(function (element, index, array) {
+                for(let i = 0; i < filaments.length; i++) {
+                    let element = filaments[i]
                     $("#neworderfilament").append(filaTmplt(element));
                 });
                 Materialize.updateTextFields();

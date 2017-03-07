@@ -9,7 +9,9 @@ function update() {
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#loading").fadeIn(100);
                 $("#orders").html("");
-                data["orders"].forEach(function (element, index, array) {
+                for(let i = 0; i < data["orders"].length; i++) {
+                    let element = data["orders"][i]
+
                     let link = element.order_pic;
                     let todisplay = "";
                     if(link.toLowerCase().contains(".png") || link.toLowerCase().contains(".jpg") || link.toLowerCase().contains(".jpeg")) {
@@ -20,7 +22,7 @@ function update() {
                     element.pic = todisplay;
                     let html = listTmplt(element);
                     $("#orders").append(html);
-                });
+                }
                 oldData = data;
             }
             $("#loading").fadeOut(100);
@@ -31,7 +33,9 @@ function update() {
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#loading").fadeIn(100);
                 $("#orders").html("");
-                data["orders"].forEach(function (element, index, array) {
+                for(let i = 0; i < data["orders"].length; i++) {
+                    let element = data["orders"][i]
+
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
                         let link = element.order_pic;
@@ -45,7 +49,7 @@ function update() {
                         let html = listTmplt(element);
                         $("#orders").append(html);
                     }
-                });
+                }
                 oldData = data;
             }
             $("#loading").fadeOut(100);
@@ -56,7 +60,9 @@ function update() {
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#loading").fadeIn(100);
                 $("#orders").html("");
-                data["orders"].forEach(function (element, index, array) {
+                for(let i = 0; i < data["orders"].length; i++) {
+                    let element = data["orders"][i]
+
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
                         let link = element.order_pic;
@@ -70,7 +76,7 @@ function update() {
                         let html = listTmpltMore(element);
                         $("#orders").append(html);
                     }
-                });
+                }
                 oldData = data;
             }
             $("#loading").fadeOut(100);
@@ -81,7 +87,9 @@ function update() {
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#orders").html("");
                 $("#loading").fadeIn(100);
-                data["orders"].forEach(function (element, index, array) {
+                for(let i = 0; i < data["orders"].length; i++) {
+                    let element = data["orders"][i]
+
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
                         let link = element.order_pic;
@@ -95,7 +103,7 @@ function update() {
                         let html = listTmpltMore(element);
                         $("#orders").append(html);
                     }
-                });
+                }
                 oldData = data;
             }
             $("#loading").fadeOut(100);
@@ -106,13 +114,15 @@ function update() {
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#orders").html("");
                 $("#loading").fadeIn(100);
-                data["filaments"].forEach(function (element, index, array) {
+                for(let i = 0; i < data["filaments"].length; i++) {
+                    let element = data["filaments"][i]
+
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
                         html = filaListTmplt(element);
                         $("#orders").append(html);
                     }
-                });
+                }
                 oldData = data;
             }
             $("#loading").fadeOut(100);

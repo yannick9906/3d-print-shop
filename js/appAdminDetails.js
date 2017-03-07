@@ -140,7 +140,7 @@ function confirmEdit() {
     var length = $("#admorder_length").val();
     var addcost = $("#admorder_add_cost").val();
     var live = $("#admorderlive").val();
-    data = {
+    let data = {
         title: title,
         fila: fila,
         url: url,
@@ -158,7 +158,7 @@ function confirmEdit() {
     if(fila != null && precision != null && state != null) {
         if(title != "" && url != "" && comment != "") {
             $.post("orders.php?action=updateOrder&oid="+currDetail, data, function(data) {
-                json = JSON.parse(data);
+                let json = JSON.parse(data);
                 if(json["success"]) {
                     Materialize.toast("Die Bestellung wurde aktualisiert", 5000, "green");
                     back();
@@ -208,7 +208,7 @@ function showFila(fid) {
 }
 
 function confirmFilaEdit() {
-    data = {
+    let data = {
         diameter: $("#filaDiameter").val(),
         colorcode: $("#filaColor").val(),
         colorname: $("#filaName").val(),
@@ -219,7 +219,7 @@ function confirmFilaEdit() {
     console.log(data);
     if(data["diameter"] != null && data["colorcode"] != null && data["colorname"] != null && data["price"] != null && data["saleprice"] != null) {
         $.post("filaments.php?action=updateFila&fid="+currDetail, data, function(data) {
-            json = JSON.parse(data);
+            let json = JSON.parse(data);
             if(json["success"]) {
                 Materialize.toast("Die Bestellung wurde aktualisiert", 5000, "green");
                 back();
@@ -309,7 +309,7 @@ function runAction(action) {
 }
 
 function updateAdminPreview() {
-    link = $("#admorderurl").val();
+    let link = $("#admorderurl").val();
     if(link.contains("thingiverse")) {
         $("#admpreview").attr("src", "http://www.the-irf.com/assets/content/animation/loading2.gif");
         $.getJSON("orders.php?action=getThingiverseImg", {link: link}, function (data) {
