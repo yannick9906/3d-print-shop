@@ -13,26 +13,32 @@ $(document).ready(function () {
         <option value='{{fID}}' class="circle left" data-icon="../new/pics/{{filamentcolorcode}}-1.png">{{price}} €/kg - {{filamentcolorname}}</option>
      `);
      listTmplt = Handlebars.compile(`
-        <ul class="{{style}}">
-            <li class="collection-item avatar {{style2}}">
-                <i class="circle mddi mddi-{{{stateicon}}} {{statecolor}}"></i>
-                <span class="title"><b>{{order_name}}</b></span>
-                <p>
-                    <i class="mddi mddi-altimeter grey-text text-darken-1"></i> 0,{{precision}} mm<br/><span class="bg badge {{statecolor}}">{{statetext}}</span>
-                    <i class="mddi mddi-format-color-fill grey-text text-darken-1"></i> {{filamentcolorname}}<br/>
-                    <i class="mddi mddi-weight grey-text text-darken-1"></i> {{material_weight}} g<br/>
-                    <i class="mddi mddi-clock-out  grey-text text-darken-1"></i> {{date_confirmed}}<br/>
-                    <i class="mddi mddi-clock-fast grey-text text-darken-1"></i> {{date_completed}}<br/>
-                </p>
-                <span class="secondary-content">
-                    <a href="#" onclick="showDetail({{oID}})">
-                        <i class="mddi mddi-information-outline grey-text text-darken-1"></i>
-                    </a>
-                    <span class="grey-text text-darken-1 light-bold" style="font-size: 22px; vertical-align: top; line-height: 26px;">{{complete_price}}<i class="mddi mddi-currency-eur"></i></span>
-                </span>
-                {{{printing}}}
-            </li>
-        </ul>
+        <div class="col s12">
+            <div class="card horizontal">
+                <div class="card-image">
+                    <img id="pic{{oID}}" src="{{pic}}" width="30%">
+                </div>
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <span class="orange-text text-darken-2" style="font-size: 16px;"><b>{{order_name}}</b></span>
+                        <span class="grey-text text-darken-1 light-bold right" style="font-size: 22px; vertical-align: top; line-height: 26px;">{{complete_price}}<i class="mddi mddi-currency-eur"></i></span>
+                        <p style="margin-top: 5px;">
+                            <i class="mddi mddi-altimeter grey-text text-darken-1"></i> <b>Schichtdicke:</b> 0,{{precision}} mm<span class="bg badge {{statecolor}}">{{statetext}}</span><br/>
+                            <i class="mddi mddi-format-color-fill grey-text text-darken-1"></i> <b>Material:</b> {{filamentcolorname}}<br/>
+                            <i class="mddi mddi-weight grey-text text-darken-1"></i> <b>Gewicht:</b> {{material_weight}} g<br/>
+                            <i class="mddi mddi-clock-out  grey-text text-darken-1"></i> <b>Angenommen am</b> {{date_confirmed}}<br/>
+                            <i class="mddi mddi-clock-fast grey-text text-darken-1"></i> <b>Voraus. fertig am</b> {{date_completed}}<br/>
+                        </p>
+                        {{{printing}}}
+                    </div>
+                    <div class="card-action">
+                        <a href="#" onclick="showDetail({{oID}})">
+                            <i class="mddi mddi-information-outline"></i> Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     `);
     String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
     updateSchedueler();

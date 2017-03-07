@@ -9,6 +9,134 @@ var mode = "AllNewOrders";
 var lastmode = "AllNewOrders";
 var autoUpdate = true;
 var oldData;
+const applicationServerPublicKey = 'BK6fuQbSiR92pPBwncgBVAO3a3-hFKQsFwBStwNyhqcZd_6DQ7gFIciJ2OOXc12bvoA4U-Xhs0oBn74fsymKiOs';
+
+const pushButton = document.querySelector('.js-push-btn');
+
+let isSubscribed = false;
+let swRegistration = null;
+
+function urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+    console.log('Service Worker and Push is supported');
+
+    navigator.serviceWorker.register('/new/serviceworker.js')
+        .then(function(swReg) {
+            console.log('Service Worker is registered', swReg);
+
+            swRegistration = swReg;
+        })
+        .catch(function(error) {
+            console.error('Service Worker Error', error);
+        });
+} else {
+    console.warn('Push messaging is not supported');
+    pushButton.textContent = 'Push Not Supported';
+}
+
+function initialiseUI() {
+    console.log(pushButton);
+    pushButton.addEventListener('click', function() {
+        pushButton.disabled = true;
+        if (isSubscribed) {
+            // TODO: Unsubscribe user
+        } else {
+            subscribeUser();
+        }
+    });
+
+    // Set the initial subscription value
+    swRegistration.pushManager.getSubscription()
+        .then(function(subscription) {
+            isSubscribed = !(subscription === null);
+
+            updateSubscriptionOnServer(subscription);
+
+            if (isSubscribed) {
+                console.log('User IS subscribed.');
+            } else {
+                console.log('User is NOT subscribed.');
+            }
+
+            updateBtn();
+        });
+}
+
+function subscribeUser() {
+    const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+    swRegistration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: applicationServerKey
+    })
+        .then(function(subscription) {
+            console.log('User is subscribed.');
+
+            updateSubscriptionOnServer(subscription);
+
+            isSubscribed = true;
+
+            updateBtn();
+        })
+        .catch(function(err) {
+            console.log('Failed to subscribe the user: ', err);
+            updateBtn();
+        });
+}
+
+function updateBtn() {
+    if (Notification.permission === 'denied') {
+        pushButton.textContent = 'Push Messaging Blocked.';
+        pushButton.disabled = true;
+        updateSubscriptionOnServer(null);
+        return;
+    }
+
+    if (isSubscribed) {
+        pushButton.textContent = 'Benarichtigungen deaktivieren';
+    } else {
+        pushButton.textContent = 'Benarichtigungen aktivieren';
+    }
+
+    pushButton.disabled = false;
+}
+
+function updateSubscriptionOnServer(subscription) {
+
+
+    const subscriptionJson = document.querySelector('.js-subscription-json');
+    const subscriptionDetails =
+        document.querySelector('.js-subscription-details');
+
+    if (subscription) {
+        subscriptionJson.textContent = JSON.stringify(subscription);
+        subscriptionDetails.classList.remove('is-invisible');
+    } else {
+        subscriptionDetails.classList.add('is-invisible');
+    }
+}
+
+navigator.serviceWorker.register('/new/serviceworker.js')
+    .then(function(swReg) {
+        console.log('Service Worker is registered', swReg);
+
+        swRegistration = swReg;
+        initialiseUI();
+    })
+
 
 $(document).ready(function () {
     filaTmplt = Handlebars.compile(`
@@ -34,52 +162,64 @@ $(document).ready(function () {
             </ul>
     `);
     listTmplt = Handlebars.compile(`
-        <ul class="{{style}}">
-            <li class="collection-item avatar {{style2}}">
-                <i class="circle mddi mddi-{{{stateicon}}} {{statecolor}}"></i>
-                <span class="title"><b>{{order_name}}</b></span>
-                <p>
-                    <i class="mddi mddi-altimeter grey-text text-darken-1"></i> 0,{{precision}} mm<br/><span class="bg badge {{statecolor}}">{{statetext}}</span>
-                    <i class="mddi mddi-format-color-fill grey-text text-darken-1"></i> {{filamentcolorname}}<br/>
-                    <i class="mddi mddi-weight grey-text text-darken-1"></i> {{material_weight}} g<br/>
-                    <i class="mddi mddi-clock-out  grey-text text-darken-1"></i> {{date_confirmed}}<br/>
-                    <i class="mddi mddi-clock-fast grey-text text-darken-1"></i> {{date_completed}}<br/>
-                </p>
-                <span class="secondary-content">
-                    <a href="#" onclick="showDetail({{oID}})">
-                        <i class="mddi mddi-information-outline grey-text text-darken-1"></i>
-                    </a>
-                    <span class="grey-text text-darken-1 light-bold" style="font-size: 22px; vertical-align: top; line-height: 26px;">{{complete_price}}<i class="mddi mddi-currency-eur"></i></span>
-                </span>
-                {{{printing}}}
-            </li>
-        </ul>
+        <div class="col s12">
+            <div class="card horizontal">
+                <div class="card-image">
+                    <img id="pic{{oID}}" src="{{pic}}" width="30%">
+                </div>
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <span class="orange-text text-darken-2" style="font-size: 16px;"><b>{{order_name}}</b></span>
+                        <span class="grey-text text-darken-1 light-bold right" style="font-size: 22px; vertical-align: top; line-height: 26px;">{{complete_price}}<i class="mddi mddi-currency-eur"></i></span>
+                        <p style="margin-top: 5px;">
+                            <i class="mddi mddi-altimeter grey-text text-darken-1"></i> <b>Schichtdicke:</b> 0,{{precision}} mm<span class="bg badge {{statecolor}}">{{statetext}}</span><br/>
+                            <i class="mddi mddi-format-color-fill grey-text text-darken-1"></i> <b>Material:</b> {{filamentcolorname}}<br/>
+                            <i class="mddi mddi-weight grey-text text-darken-1"></i> <b>Gewicht:</b> {{material_weight}} g<br/>
+                            <i class="mddi mddi-clock-out  grey-text text-darken-1"></i> <b>Angenommen am</b> {{date_confirmed}}<br/>
+                            <i class="mddi mddi-clock-fast grey-text text-darken-1"></i> <b>Voraus. fertig am</b> {{date_completed}}<br/>
+                        </p>
+                        {{{printing}}}
+                    </div>
+                    <div class="card-action">
+                        <a href="#" onclick="showDetail({{oID}})">
+                            <i class="mddi mddi-information-outline"></i> Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     `);
     listTmpltMore = Handlebars.compile(`
-        <ul class="{{style}}">
-            <li class="collection-item avatar {{style2}}">
-                <i class="circle mddi mddi-{{{stateicon}}} {{statecolor}}"></i>
-                <span class="title"><b>{{order_name}}</b></span>
-                <p>
-                    <i class="mddi mddi-account grey-text text-darken-1"></i> {{realname}} <br/><span class="bg badge {{statecolor}}">{{statetext}}</span>
-                    <i class="mddi mddi-altimeter grey-text text-darken-1"></i> 0,{{precision}} mm<br/>
-                    <i class="mddi mddi-format-color-fill grey-text text-darken-1"></i> {{filamentcolorname}}<br/>
-                    <i class="mddi mddi-weight grey-text text-darken-1"></i> {{material_weight}} g<br/>
-                    <i class="mddi mddi-clock-out  grey-text text-darken-1"></i> {{date_confirmed}}<br/>
-                    <i class="mddi mddi-clock-fast grey-text text-darken-1"></i> {{date_completed}}<br/>
-                </p>
-                <span class="secondary-content">
-                    <a href="#" onclick="showDetail({{oID}})">
-                        <i class="mddi mddi-information-outline grey-text text-darken-1"></i>
-                    </a>
-                    <a href="#" onclick="showAdmDetail({{oID}})">
-                        <i class="mddi mddi-pencil grey-text text-darken-1"></i>
-                    </a>
-                    <span class="grey-text text-darken-1 light-bold" style="font-size: 22px; vertical-align: top; line-height: 26px;">{{complete_price}}<i class="mddi mddi-currency-eur"></i></span>
-                </span>
-                {{{printing}}}
-            </li>
-        </ul>
+        <div class="col s12">
+            <div class="card horizontal">
+                <div class="card-image" style="max-width: 35%; width: 35%;">
+                    <img id="pic{{oID}}" src="{{pic}}">
+                </div>
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <span class="orange-text text-darken-2" style="font-size: 16px;"><b>{{order_name}}</b></span>
+                        <span class="grey-text text-darken-1 light-bold right" style="font-size: 22px; vertical-align: top; line-height: 26px;">{{complete_price}}<i class="mddi mddi-currency-eur"></i></span>
+                        <p style="margin-top: 5px;">
+                            <i class="mddi mddi-account grey-text text-darken-1"></i><b> Account:</b> {{realname}} <span class="bg badge {{statecolor}}">{{statetext}}</span><br/>
+                            <i class="mddi mddi-altimeter grey-text text-darken-1"></i> <b>Schichtdicke:</b> 0,{{precision}} mm<br/>
+                            <i class="mddi mddi-format-color-fill grey-text text-darken-1"></i> <b>Material:</b> {{filamentcolorname}}<br/>
+                            <i class="mddi mddi-weight grey-text text-darken-1"></i> <b>Gewicht:</b> {{material_weight}} g<br/>
+                            <i class="mddi mddi-clock-out  grey-text text-darken-1"></i> <b>Angenommen am</b> {{date_confirmed}}<br/>
+                            <i class="mddi mddi-clock-fast grey-text text-darken-1"></i> <b>Voraus. fertig am</b> {{date_completed}}<br/>
+                        </p>
+                        {{{printing}}}
+                    </div>
+                    <div class="card-action">
+                        <a href="#" onclick="showDetail({{oID}})">
+                            <i class="mddi mddi-information-outline"></i> Details
+                        </a>
+                        <a href="#" onclick="showAdmDetail({{oID}})">
+                            <i class="mddi mddi-pencil"></i> Bearbeiten
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     `);
     String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
     updateSchedueler();

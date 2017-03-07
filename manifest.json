@@ -1,7 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "3D Print",
+  "name": "Yannicks 3D Drucke",
+  "short_name": "3D Print",
   "description": "Yannicks 3D Drucke",
   "version": "3.0.0b",
   "icons": [
@@ -19,5 +20,11 @@
   "developer": "Yannick F&#233;lix",
   "theme_color": "#ff9800",
   "background_color": "#ff9800",
-  "chrome": { "navigation": true }
+  "chrome": { "navigation": false },
+  "permissions": [
+    "notifications"
+  ],
+  "web_accessible_resources": [
+    "printer3d.png"
+  ]
 }

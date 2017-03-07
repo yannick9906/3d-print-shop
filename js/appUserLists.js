@@ -12,7 +12,15 @@ function update() {
                 data["orders"].forEach(function (element, index, array) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
-                        html = listTmplt(element);
+                        let link = element.order_pic;
+                        let todisplay = "";
+                        if(link.toLowerCase().contains(".png") || link.toLowerCase().contains(".jpg") || link.toLowerCase().contains(".jpeg")) {
+                            todisplay = link;
+                        } else {
+                            todisplay = "https://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg"
+                        }
+                        element.pic = todisplay;
+                        let html = listTmplt(element);
                         $("#orders").append(html);
                     }
                 });
@@ -29,7 +37,15 @@ function update() {
                 data["orders"].forEach(function (element, index, array) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
-                        html = listTmplt(element);
+                        let link = element.order_pic;
+                        let todisplay = "";
+                        if(link.toLowerCase().contains(".png") || link.toLowerCase().contains(".jpg") || link.toLowerCase().contains(".jpeg")) {
+                            todisplay = link;
+                        } else {
+                            todisplay = "https://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg"
+                        }
+                        element.pic = todisplay;
+                        let html = listTmplt(element);
                         $("#orders").append(html);
                     }
                 });

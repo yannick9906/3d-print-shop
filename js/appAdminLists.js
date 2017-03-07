@@ -10,11 +10,16 @@ function update() {
                 $("#loading").fadeIn(100);
                 $("#orders").html("");
                 data["orders"].forEach(function (element, index, array) {
-                    if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
-                    else {
-                        html = listTmplt(element);
-                        $("#orders").append(html);
+                    let link = element.order_pic;
+                    let todisplay = "";
+                    if(link.toLowerCase().contains(".png") || link.toLowerCase().contains(".jpg") || link.toLowerCase().contains(".jpeg")) {
+                        todisplay = link;
+                    } else {
+                        todisplay = "https://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg"
                     }
+                    element.pic = todisplay;
+                    let html = listTmplt(element);
+                    $("#orders").append(html);
                 });
                 oldData = data;
             }
@@ -29,7 +34,15 @@ function update() {
                 data["orders"].forEach(function (element, index, array) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
-                        html = listTmplt(element);
+                        let link = element.order_pic;
+                        let todisplay = "";
+                        if(link.toLowerCase().contains(".png") || link.toLowerCase().contains(".jpg") || link.toLowerCase().contains(".jpeg")) {
+                            todisplay = link;
+                        } else {
+                            todisplay = "https://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg"
+                        }
+                        element.pic = todisplay;
+                        let html = listTmplt(element);
                         $("#orders").append(html);
                     }
                 });
@@ -46,7 +59,15 @@ function update() {
                 data["orders"].forEach(function (element, index, array) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
-                        html = listTmpltMore(element);
+                        let link = element.order_pic;
+                        let todisplay = "";
+                        if(link.toLowerCase().contains(".png") || link.toLowerCase().contains(".jpg") || link.toLowerCase().contains(".jpeg")) {
+                            todisplay = link;
+                        } else {
+                            todisplay = "https://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg"
+                        }
+                        element.pic = todisplay;
+                        let html = listTmpltMore(element);
                         $("#orders").append(html);
                     }
                 });
@@ -63,7 +84,15 @@ function update() {
                 data["orders"].forEach(function (element, index, array) {
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
-                        html = listTmpltMore(element);
+                        let link = element.order_pic;
+                        let todisplay = "";
+                        if(link.toLowerCase().contains(".png") || link.toLowerCase().contains(".jpg") || link.toLowerCase().contains(".jpeg")) {
+                            todisplay = link;
+                        } else {
+                            todisplay = "https://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg"
+                        }
+                        element.pic = todisplay;
+                        let html = listTmpltMore(element);
                         $("#orders").append(html);
                     }
                 });
@@ -95,5 +124,5 @@ function updateSchedueler() {
     if(autoUpdate == true) {
         update();
     }
-    window.setTimeout("updateSchedueler()", 2500);
+    window.setTimeout("updateSchedueler()", 3000);
 }

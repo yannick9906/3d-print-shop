@@ -24,4 +24,19 @@
             if($array["days"] == 1) return $array["days"]." Tag ".$array["hours"]."h ".$array["minutes"]."m ".$array["seconds"]."s";
             else return $array["days"]." Tage ".$array["hours"]."h ".$array["minutes"]."m ".$array["seconds"]."s";
         }
+
+        public static function getThingiverse($link) {
+            $html = file_get_contents($link);
+
+            $doc = new \DOMDocument();
+            $doc->loadHTML($html);
+            $tags = $doc->getElementsByTagName('img');
+
+            foreach ($tags as $tag) {
+                if(strpos($tag->getAttribute('src'), "renders") && !(strpos($tag->getAttribute('src'), "thumb_small"))) {
+                    $src = $tag->getAttribute("src");
+                    return $src;
+                }
+            }
+        }
     }

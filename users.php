@@ -68,4 +68,6 @@
                 exit;
             }
         }
+    } else if($action == "setPushMessaging") {
+
     }

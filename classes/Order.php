@@ -17,7 +17,7 @@
         private $oID, $uID, $filamentType;
         private $date_created, $date_confirmed, $date_completed;
         private $state, $comment, $precision;
-        private $order_name, $order_link, $order_livestream;
+        private $order_name, $order_link, $order_livestream, $order_pic;
         private $material_length, $material_weight;
         private $print_time;
         private $total_cost, $material_cost, $energy_cost, $cost;
@@ -41,8 +41,9 @@
          * @param int    $print_time
          * @param int    $cost
          * @param string $order_livestream
+         * @param string $order_pic
          */
-        public function __construct($oID, $uID, $filamentType, $date_created, $date_confirmed, $date_completed, $state, $comment, $precision, $order_name, $order_link, $material_length, $material_weight, $print_time, $cost, $order_livestream) {
+        public function __construct($oID, $uID, $filamentType, $date_created, $date_confirmed, $date_completed, $state, $comment, $precision, $order_name, $order_link, $material_length, $material_weight, $print_time, $cost, $order_livestream, $order_pic) {
             $this->oID = $oID;
             $this->uID = $uID;
             $this->filamentType = $filamentType;
@@ -67,6 +68,7 @@
             $this->energy_cost = FilamentType::fromFID($filamentType)->getEnergyPrice($print_time);
             $this->total_cost = $this->energy_cost + $this->material_cost + $this->cost;
             $this->order_livestream = $order_livestream;
+            $this->order_pic = $order_pic;
         }
 
         /**
@@ -76,7 +78,7 @@
         public static function fromOID($oid) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_orders WHERE oID = :oid",[":oid" => $oid]);
-            return new Order($res->oID, $res->uID, $res->filamenttype, $res->date_created, $res->date_confirmed, $res->date_completed, $res->state, $res->comment, $res->precision, $res->order_name, $res->order_link, $res->material_length, $res->material_weight, $res->print_time, $res->fixprice, $res->order_livestream);
+            return new Order($res->oID, $res->uID, $res->filamenttype, $res->date_created, $res->date_confirmed, $res->date_completed, $res->state, $res->comment, $res->precision, $res->order_name, $res->order_link, $res->material_length, $res->material_weight, $res->print_time, $res->fixprice, $res->order_livestream, $res->order_pic);
         }
 
         /**
@@ -128,8 +130,9 @@
          */
         public static function createNew($user, $title, $fID, $url, $comment) {
             $pdo = new PDO_MYSQL();
-            $pdo->query("INSERT INTO print3d_orders(uID, date_created, state, filamenttype, order_name, order_link, comment) VALUES (:uid, :date, 0, :fila, :title, :url, :comment)",
-                [":uid" => $user->getUID(),":date" => date("Y-m-d H:i:s"),":fila" => $fID, ":title" => $title, ":url" => $url, ":comment" => $comment]);
+            if(strpos($url, "thingiverse.com") !== false) $order_pic = Util::getThingiverse($url);
+            $pdo->query("INSERT INTO print3d_orders(uID, date_created, state, filamenttype, order_name, order_link, comment, order_pic) VALUES (:uid, :date, 0, :fila, :title, :url, :comment, :pic)",
+                [":uid" => $user->getUID(),":date" => date("Y-m-d H:i:s"),":fila" => $fID, ":title" => $title, ":url" => $url, ":comment" => $comment, ":pic" => $order_pic]);
         }
 
         public function reorder($user) {
@@ -141,12 +144,13 @@
          */
         public function saveChanges() {
             $pdo = new PDO_MYSQL();
+            if($this->order_pic == "" && strpos($this->order_link, "thingiverse.com") !== false) $this->order_pic = Util::getThingiverse($this->order_link);
             $this->material_weight = FilamentType::fromFID($this->filamentType)->getWeightFor($this->material_length);
             $date_created = date("Y-m-d H:i:s", $this->date_created);
             if($this->date_confirmed == 0) $date_confirmed = null; else $date_confirmed =  date("Y-m-d H:i:s", $this->date_confirmed);
             if($this->date_completed == 0) $date_completed = null; else $date_completed =  date("Y-m-d H:i:s", $this->date_completed);
-            $pdo->query("UPDATE print3d_orders SET date_created = :date_created, date_confirmed = :date_confirmed, date_completed = :date_completed, state = :state, filamenttype = :fiD, order_name = :order_name, order_link = :order_link, material_length = :length, material_weight = :weight, print_time = :time, comment = :comment, `precision` = :precision, fixprice = :fix, order_livestream = :live WHERE oID = :oid",
-                [":date_created" => $date_created, ":date_confirmed" => $date_confirmed, ":date_completed" => $date_completed, ":state" => $this->state, ":fiD" => $this->filamentType, ":order_name" => $this->order_name, ":order_link" => $this->order_link, ":length" => $this->material_length, ":weight" => $this->material_weight, ":time" => $this->print_time, ":comment" => $this->comment, ":precision" => $this->precision, ":oid" => $this->oID, ":fix" => $this->cost, ":live" => $this->order_livestream]);
+            $pdo->query("UPDATE print3d_orders SET date_created = :date_created, date_confirmed = :date_confirmed, date_completed = :date_completed, state = :state, filamenttype = :fiD, order_name = :order_name, order_link = :order_link, material_length = :length, material_weight = :weight, print_time = :time, comment = :comment, `precision` = :precision, fixprice = :fix, order_livestream = :live, order_pic = :pic WHERE oID = :oid",
+                [":date_created" => $date_created, ":date_confirmed" => $date_confirmed, ":date_completed" => $date_completed, ":state" => $this->state, ":fiD" => $this->filamentType, ":order_name" => $this->order_name, ":order_link" => $this->order_link, ":length" => $this->material_length, ":weight" => $this->material_weight, ":time" => $this->print_time, ":comment" => $this->comment, ":precision" => $this->precision, ":oid" => $this->oID, ":fix" => $this->cost, ":live" => $this->order_livestream, ":pic" => $this->order_pic]);
             
         }
 
@@ -168,6 +172,7 @@
                 $date_confirmed = date("d. M Y - H:i:s",$this->date_confirmed);
                 $date_completed = "Warte auf Einschätzung";
             }
+            if($this->order_pic == null) $this->order_pic = "";
 
             return [
                 "oID" => $this->oID,
@@ -202,7 +207,8 @@
                 "style" => $style,
                 "style2" => $style2,
                 "printing" => $printing,
-                "order_livestream" => $this->order_livestream
+                "order_livestream" => $this->order_livestream,
+                "order_pic" => $this->order_pic
             ];
         }
 

@@ -5,7 +5,8 @@
      * Date: 28.04.2016
      * Time: 21:54
      */
-    //error_reporting(E_ALL);
+    error_reporting(E_ALL);
+    ini_set("error_reporting", "on");
 
     require_once "classes/PDO_MYSQL.php";
     require_once "classes/User.php";
@@ -60,20 +61,7 @@
         }
         echo json_encode($json_array);
     } elseif($action == "getThingiverseImg") {
-        $link = $_GET["link"];
-        $html = file_get_contents($link);
-
-        $doc = new DOMDocument();
-        $doc->loadHTML($html);
-
-        $tags = $doc->getElementsByTagName('img');
-
-        foreach ($tags as $tag) {
-            if(strpos($tag->getAttribute('src'), "renders") && !(strpos($tag->getAttribute('src'), "thumb_small"))) {
-                echo json_encode(["link" => $tag->getAttribute("src")]);
-                exit;
-            }
-        }
+        echo json_encode(["link" => \print3d\Util::getThingiverse($_GET["link"])]);
     } elseif($action == "getAllNewOrders") {
         if($user->getRole() == 2) {
             $orders = \print3d\Order::getAllOpenOrders();
