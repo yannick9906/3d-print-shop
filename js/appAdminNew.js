@@ -3,7 +3,7 @@
  */
 
 function updatePreview() {
-    link = $("#neworderurl").val();
+    let link = $("#neworderurl").val();
     if(link.contains("thingiverse")) {
         $("#preview").attr("src", "http://www.the-irf.com/assets/content/animation/loading2.gif");
         $.getJSON("orders.php?action=getThingiverseImg", {link: link}, function (data) {
@@ -16,16 +16,16 @@ function updatePreview() {
 }
 
 function sendNewOrder() {
-    title = $("#newordertitle").val();
-    fila = $("#neworderfilament").val();
-    url = $("#neworderurl").val();
-    comment = $("#newordercomment").val();
-    data = {title: title, fila: fila, url: url, comment: comment};
+    let title = $("#newordertitle").val();
+    let fila = $("#neworderfilament").val();
+    let url = $("#neworderurl").val();
+    let comment = $("#newordercomment").val();
+    let data = {title: title, fila: fila, url: url, comment: comment};
     console.log(data);
     if(fila != null) {
         if(title != "" && url != "" && comment != "") {
             $.post("orders.php?action=newOrder", data, function(data) {
-                json = JSON.parse(data);
+                let json = JSON.parse(data);
                 if(json["success"]) {
                     Materialize.toast("Deine Bestellung wurde abgeschickt<br/>Du erhälst eine Email, sobald ein Preisvorschlag verfügbar ist", 5000, "green");
                     back();
@@ -72,7 +72,7 @@ function toNewFila() {
 }
 
 function sendNewFila() {
-    data = {
+    let data = {
         diameter: $("#filaDiameter").val(),
         colorcode: $("#filaColor").val(),
         colorname: $("#filaName").val(),
@@ -83,7 +83,7 @@ function sendNewFila() {
     console.log(data);
     if(data["diameter"] != null && data["colorcode"] != null && data["colorname"] != null && data["price"] != null && data["saleprice"] != null) {
         $.post("filaments.php?action=newFilament", data, function(data) {
-            json = JSON.parse(data);
+            let json = JSON.parse(data);
             if(json["success"]) {
                 Materialize.toast("Material erstellt", 5000, "green");
                 back();

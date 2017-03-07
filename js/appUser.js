@@ -1,12 +1,12 @@
 /**
  * Created by yanni on 28.04.2016.
  */
-var listTmplt;
-var filaTmplt;
-var mode = "NewOrders";
-var lastmode = "NewOrders";
-var autoUpdate = true;
-var oldData;
+let listTmplt;
+let filaTmplt;
+let mode = "NewOrders";
+let lastmode = "NewOrders";
+let autoUpdate = true;
+let oldData;
 
 $(document).ready(function () {
      filaTmplt = Handlebars.compile(`
@@ -100,7 +100,7 @@ function toUserSettings() {
         $.getJSON("users.php?action=getOwnUserData", null, function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else {
-                var user = data["user"];
+                let user = data["user"];
                 $("#usrname").val(user["usrname"]);
                 $("#realname").val(user["realname"]);
                 $("#email").val(user["email"]);
@@ -133,7 +133,7 @@ function toNewOrder() {
         $.getJSON("orders.php?action=getFilaments", null, function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else {
-                var filaments = data["filaments"];
+                let filaments = data["filaments"];
                 console.log(data);
                 $("#neworderfilament").html("<option value='' disabled selected>Wähle ein Material</option>");
                 filaments.forEach(function (element, index, array) {

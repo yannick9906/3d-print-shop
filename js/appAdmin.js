@@ -1,14 +1,14 @@
 /**
  * Created by yanni on 28.04.2016.
  */
-var listTmplt;
-var listTmpltMore;
-var filaTmplt;
-var filaListTmplt;
-var mode = "AllNewOrders";
-var lastmode = "AllNewOrders";
-var autoUpdate = true;
-var oldData;
+let listTmplt;
+let listTmpltMore;
+let filaTmplt;
+let filaListTmplt;
+let mode = "AllNewOrders";
+let lastmode = "AllNewOrders";
+let autoUpdate = true;
+let oldData;
 const applicationServerPublicKey = 'BK6fuQbSiR92pPBwncgBVAO3a3-hFKQsFwBStwNyhqcZd_6DQ7gFIciJ2OOXc12bvoA4U-Xhs0oBn74fsymKiOs';
 
 const pushButton = document.querySelector('.js-push-btn');
@@ -360,7 +360,7 @@ function toUserSettings() {
         $.getJSON("users.php?action=getOwnUserData", null, function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else {
-                var user = data["user"];
+                let user = data["user"];
                 $("#usrname").val(user["usrname"]);
                 $("#realname").val(user["realname"]);
                 $("#email").val(user["email"]);
@@ -399,7 +399,7 @@ function toNewOrder() {
         $.getJSON("orders.php?action=getFilaments", null, function(data) {
             if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
             else {
-                var filaments = data["filaments"];
+                let filaments = data["filaments"];
                 console.log(data);
                 $("#neworderfilament").html("<option value='' disabled selected>Wähle ein Material</option>");
                 filaments.forEach(function (element, index, array) {

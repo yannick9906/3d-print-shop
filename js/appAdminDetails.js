@@ -37,8 +37,8 @@ function showDetail(oid) {
                 $("#detail-total-cost").html(data["order"]["complete_price"]);
                 $("#detail-additional-cost").html(data["order"]["fix_price"]);
                 setButtonsForState(parseInt(data["order"]["state"]));
-                var link = data["order"]["order_link"];
-                var livelink = data["order"]["order_livestream"];
+                let link = data["order"]["order_link"];
+                let livelink = data["order"]["order_livestream"];
                 if (link.contains("thingiverse")) {
                     detail_link = $("#detail_link");
                     detail_link.html("Thingiverse");

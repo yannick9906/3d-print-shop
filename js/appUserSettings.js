@@ -3,12 +3,12 @@
  */
 
 function updatePasswd() {
-    var passwd1  = $("#passwd1").val();
-    var passwd2  = $("#passwd2").val();
+    let passwd1  = $("#passwd1").val();
+    let passwd2  = $("#passwd2").val();
 
     if(passwd1 == passwd2) {
-        var passwd = md5(passwd1);
-        data = {
+        let passwd = md5(passwd1);
+        let data = {
             passwd: passwd
         };
         $.post("users.php?action=updatePass", data, function(data) {
@@ -28,10 +28,10 @@ function updatePasswd() {
 }
 
 function updateEmail() {
-    var email  = $("#email").val();
-    var emails = $("#recv-emails").is(":checked");
+    let email  = $("#email").val();
+    let emails = $("#recv-emails").is(":checked");
 
-    data = {
+    let data = {
         email: email,
         emails: emails
     };

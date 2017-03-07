@@ -27,17 +27,16 @@ function doLogout() {
 }
 
 function login() {
-    var usrname  = $("#l_usrname").val();
-    var passwd1  = $("#l_passwd").val();
+    let usrname  = $("#l_usrname").val();
+    let passwd1  = $("#l_passwd").val();
 
-    var passwd = md5(passwd1);
-    data = {
+    let passwd = md5(passwd1);
+    let data = {
         usrname: usrname,
         passwd: passwd
     };
     $.post("userLogin.php?action=login", data, function(data) {
         data = JSON.parse(data);
-        var field = $("#usrname");
         if(data["success"] == 1) {
             Materialize.toast('Login erfolgreich', 2000, 'green');
             window.location.href = data["forwardTo"];
@@ -55,15 +54,15 @@ function login() {
 }
 
 function register() {
-    var usrname  = $("#usrname").val();
-    var passwd1  = $("#passwd").val();
-    var passwd2  = $("#passwd2").val();
-    var email    = $("#email").val();
-    var realname = $("#realname").val();
+    let usrname  = $("#usrname").val();
+    let passwd1  = $("#passwd").val();
+    let passwd2  = $("#passwd2").val();
+    let email    = $("#email").val();
+    let realname = $("#realname").val();
 
     if(passwd1 == passwd2) {
-        var passwd = md5(passwd1);
-        data = {
+        let passwd = md5(passwd1);
+        let data = {
             usrname: usrname,
             passwd: passwd,
             email: email,
@@ -71,7 +70,7 @@ function register() {
         };
         $.post("userLogin.php?action=register", data, function(data) {
             data = JSON.parse(data);
-            var field = $("#usrname");
+            let field = $("#usrname");
             if(data["success"] == 1) {
                 Materialize.toast('Registrierung erfolgreich', 2000, 'green');
                 Materialize.toast('Sobald dein Account aktiviert wurde,<br/>kannst du dich anmelden.', 10000, 'green');
@@ -95,7 +94,7 @@ function register() {
 }
 
 function checkUsrname() {
-    var field = $("#usrname");
+    let field = $("#usrname");
     $.getJSON("userLogin.php?action=validateUsername&username="+field.val(), null, function(data) {
         if(field.val() == "") {
             field.removeClass("invalid");

@@ -1,7 +1,7 @@
 /**
  * Created by yanni on 02.05.2016.
  */
-var currDetail = 0;
+let currDetail = 0;
 
 function showDetail(oid) {
     lastmode = mode;
@@ -36,10 +36,10 @@ function showDetail(oid) {
                 $("#detail-total-cost").html(data["order"]["complete_price"]);
                 $("#detail-additional-cost").html(data["order"]["fix_price"]);
                 setButtonsForState(parseInt(data["order"]["state"]));
-                var link = data["order"]["order_link"];
-                var livelink = data["order"]["order_livestream"];
+                let link = data["order"]["order_link"];
+                let livelink = data["order"]["order_livestream"];
                 if (link.contains("thingiverse")) {
-                    detail_link = $("#detail_link");
+                    let detail_link = $("#detail_link");
                     detail_link.html("Thingiverse");
                     detail_link.attr("href", link);
                     $.getJSON("orders.php?action=getThingiverseImg", {link: link}, function (data) {
@@ -53,19 +53,19 @@ function showDetail(oid) {
                 } else if(link.contains(".png") || link.contains(".jpg") || link.contains(".jpeg")) {
                     $("#detail_img").attr("src", link);
                     $("#detail_img").css("padding", "0");
-                    detail_link = $("#detail_link");
+                    let detail_link = $("#detail_link");
                     detail_link.html("");
                     detail_link.attr("href", link);
                 } else {
                     $("#detail_img").attr("src", "http://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg");
                     $("#detail_img").css("padding", "0");
-                    detail_link = $("#detail_link");
+                    let detail_link = $("#detail_link");
                     detail_link.html("Link zum Objekt");
                     detail_link.attr("href", link);
                 }
                 console.log(livelink);
                 if(livelink.contains("http") && parseInt(data["order"]["state"]) == 3) {
-                    detail_link = $("#detail_link");
+                    let detail_link = $("#detail_link");
                     detail_link.html("Livestream");
                     detail_link.attr("href", livelink);
                 }
