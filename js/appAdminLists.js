@@ -99,6 +99,7 @@ function update() {
                         } else {
                             todisplay = "https://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg"
                         }
+                        if(element.state < 4) element.complete_price = "~"+element.complete_price;
                         element.pic = todisplay;
                         let html = listTmpltMore(element);
                         $("#orders").append(html);

@@ -164,8 +164,8 @@ $(document).ready(function () {
     listTmplt = Handlebars.compile(`
         <div class="col s12">
             <div class="card horizontal">
-                <div class="card-image">
-                    <img id="pic{{oID}}" src="{{pic}}" width="30%">
+                <div class="card-image" style="max-width: 35%; width: 35%;">
+                    <img id="pic{{oID}}" src="{{pic}}">
                 </div>
                 <div class="card-stacked">
                     <div class="card-content">
@@ -405,7 +405,7 @@ function toNewOrder() {
                 for(let i = 0; i < filaments.length; i++) {
                     let element = filaments[i]
                     $("#neworderfilament").append(filaTmplt(element));
-                });
+                }
                 Materialize.updateTextFields();
                 $('select').material_select();
             }

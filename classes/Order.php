@@ -158,8 +158,8 @@
             $printing = "";
             $style = "";
             $style2 = "";
-            if($this->state == 3) $printing = "<div class=\"progress\"><div class=\"indeterminate\"></div></div>";
-            if($this->state == 4) $printing = "<div class=\"progress\"><div class=\"determinate\" style=\"width: 100%;\"></div></div>";
+            if($this->state == 3) $printing = "<div class=\"progress\" style='margin-bottom: -10px;'><div class=\"indeterminate\"></div></div>";
+            if($this->state == 4) $printing = "<div class=\"progress\" style='margin-bottom: -10px;'><div class=\"determinate\" style=\"width: 100%;\"></div></div>";
             if($this->state == -2 or $this->state == 6 or $this->state == 7) {$style = "collection"; $style2 = "grey lighten-3";} else $style = "collection z-depth-1";
             setlocale(LC_MONETARY, "de_DE");
             if($this->date_confirmed != 0 && $this->date_completed != 0) {

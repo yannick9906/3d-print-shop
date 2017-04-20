@@ -9,8 +9,8 @@ function update() {
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#loading").fadeIn(100);
                 $("#orders").html("");
-                for(let i = 0; i < data["filaments"].length; i++) {
-                    let element = data["filaments"][i]
+                for(let i = 0; i < data["orders"].length; i++) {
+                    let element = data["orders"][i]
 
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
@@ -21,6 +21,7 @@ function update() {
                         } else {
                             todisplay = "https://www.lazerhorse.org/wp-content/uploads/2013/08/3D-Printing-Fail-Beautiful-Error.jpg"
                         }
+                        if(element.state < 4) element.complete_price = "~"+element.complete_price;
                         element.pic = todisplay;
                         let html = listTmplt(element);
                         $("#orders").append(html);
@@ -36,8 +37,8 @@ function update() {
             else if(!(JSON.stringify(oldData) == JSON.stringify(data))) {
                 $("#loading").fadeIn(100);
                 $("#orders").html("");
-                for(let i = 0; i < data["filaments"].length; i++) {
-                    let element = data["filaments"][i]
+                for(let i = 0; i < data["orders"].length; i++) {
+                    let element = data["orders"][i]
 
                     if(data["error"] == "NoLogin") window.location.href = "appLogin.html";
                     else {
