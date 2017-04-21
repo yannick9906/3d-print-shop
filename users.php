@@ -69,5 +69,10 @@
             }
         }
     } else if($action == "setPushMessaging") {
+        require_once "classes/passwd.php";
+        require_once "vendor/autoload.php";
 
+        $endpoint = json_decode($_POST["endpoint"]);
+        $user->addEndpoint($endpoint);
+        $user->saveChanges();
     }

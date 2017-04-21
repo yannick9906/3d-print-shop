@@ -9,7 +9,7 @@ let mode = "AllNewOrders";
 let lastmode = "AllNewOrders";
 let autoUpdate = true;
 let oldData;
-const applicationServerPublicKey = 'BK6fuQbSiR92pPBwncgBVAO3a3-hFKQsFwBStwNyhqcZd_6DQ7gFIciJ2OOXc12bvoA4U-Xhs0oBn74fsymKiOs';
+const applicationServerPublicKey = 'BOs6tpM5w5GQldYHXbzXlRjyVT1pKzcz/bKzKjSzdL9ACB2ua0VShEnDLfSpvJoedv5Sm7ErucHDDE7m/lp5lGg=';
 
 const pushButton = document.querySelector('.js-push-btn');
 
@@ -115,17 +115,16 @@ function updateBtn() {
 }
 
 function updateSubscriptionOnServer(subscription) {
-
-
-    const subscriptionJson = document.querySelector('.js-subscription-json');
-    const subscriptionDetails =
-        document.querySelector('.js-subscription-details');
-
-    if (subscription) {
-        subscriptionJson.textContent = JSON.stringify(subscription);
-        subscriptionDetails.classList.remove('is-invisible');
-    } else {
-        subscriptionDetails.classList.add('is-invisible');
+    if(subscription) {
+        $.post("users.php?action=setPushMessaging",{endpoint: JSON.stringify(subscription)},function(data) {
+            let title = "Push Benachrichtigung";
+            let options = {
+                body: 'Aktiviere Push-Benachrichtigungen...',
+                icon: '/new/printer-3d-196.png',
+                badge: '/new/printer-3d-196.png'
+            };
+            swRegistration.showNotification(title, options);
+        });
     }
 }
 

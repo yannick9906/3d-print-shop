@@ -192,11 +192,11 @@
                 "filamentID" => $this->filamentType,
                 "filamentcolorname" => FilamentType::fromFID($this->filamentType)->getColorname(),
                 "filamentcolorcode" => FilamentType::fromFID($this->filamentType)->getColorcode(),
-                "filamentprice" => money_format("%i", FilamentType::fromFID($this->filamentType)->getPrice()/100),
-                "complete_price" => money_format("%i", $this->total_cost/100),
-                "material_price" => money_format("%i", $this->material_cost/100),
-                "energy_price" => money_format("%i", $this->energy_cost/100),
-                "fix_price" => money_format("%i", $this->cost/100),
+                "filamentprice" => str_replace(" EUR", "", money_format("%i", FilamentType::fromFID($this->filamentType)->getPrice()/100)),
+                "complete_price" => str_replace(" EUR", "", money_format("%i", $this->total_cost/100)),
+                "material_price" => str_replace(" EUR", "", money_format("%i", $this->material_cost/100)),
+                "energy_price" => str_replace(" EUR", "", money_format("%i", $this->energy_cost/100)),
+                "fix_price" => str_replace(" EUR", "", money_format("%i", $this->cost/100)),
                 "fix_price_html" => $this->cost,
                 "material_weight" => $this->material_weight,
                 "material_length" => $this->material_length,
@@ -235,10 +235,14 @@
                 $header .= 'Content-type: text/html; charset="UTF-8"' . "\r\n";
 
                 $header .= "To: $toname <$to>" . "\r\n";
-                $header .= 'From: Yannicks 3D Drucke <noreply@3d.yannickfelix.tk>' . "\r\n";
+                $header .= 'From: Yannicks 3D Drucke <noreply@3d.yannickfelix.ml>' . "\r\n";
                 $header .= 'Bcc: yannick.felix1999@gmail.com' . "\r\n";
 
                 mail($to, $subject, $text, $header);
+            }
+            require_once "Util.php";
+            if($oldstate == 0 && $newstate == 1 || (($oldstate == 2 || $oldstate == 3) && $newstate == 4) || $newstate < 0 || ($oldstate == 2 && $newstate == 3)) {
+                Util::sendPushNotifications($user, $this);
             }
         }
 

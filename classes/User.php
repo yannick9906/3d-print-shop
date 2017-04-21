@@ -17,6 +17,7 @@
         private $realname;
         private $role;
         private $emails;
+        private $endpoints;
 
         /**
          * User constructor.
@@ -29,7 +30,7 @@
          * @param int    $role
          * @param int    $emails
          */
-        public function __construct($uID, $username, $passwdHash, $email, $realname, $role, $emails) {
+        public function __construct($uID, $username, $passwdHash, $email, $realname, $role, $emails, $endpoints) {
             $this->uID = $uID;
             $this->username = $username;
             $this->passwdHash = $passwdHash;
@@ -37,6 +38,7 @@
             $this->realname = $realname;
             $this->role = $role;
             $this->emails = $emails == 1;
+            $this->endpoints = json_decode($endpoints);
         }
 
         /**
@@ -46,7 +48,7 @@
         public static function fromUID($uID) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_user WHERE uID = :uid", [":uid" => $uID]);
-            return new User($res->uID, $res->username, $res->passwd, $res->email, $res->realname, $res->level, $res->emails);
+            return new User($res->uID, $res->username, $res->passwd, $res->email, $res->realname, $res->level, $res->emails, $res->pushkey);
         }
 
         /**
@@ -56,7 +58,7 @@
         public static function fromUName($name) {
             $pdo = new PDO_MYSQL();
             $res = $pdo->query("SELECT * FROM print3d_user WHERE username = :uname", [":uname" => $name]);
-            return new User($res->uID, $res->username, $res->passwd, $res->email, $res->realname, $res->level, $res->emails);
+            return new User($res->uID, $res->username, $res->passwd, $res->email, $res->realname, $res->level, $res->emails, $res->pushkey);
         }
 
         /**
@@ -97,8 +99,8 @@
         public function saveChanges() {
             $pdo = new PDO_MYSQL();
             $emails = ($this->emails == true) ? 1 : 0;
-            $pdo->query("UPDATE print3d_user SET email = :Email, passwd = :Passwd, username = :Username, level = :lvl, realname = :Realname, emails = :emails WHERE uID = :uID LIMIT 1",
-                [":Email" => $this->email, ":Passwd" => $this->passwdHash, ":Username" => $this->username, ":uID" => $this->uID, ":lvl" => $this->role, ":Realname" => $this->realname, ":emails" => $emails]);
+            $pdo->query("UPDATE print3d_user SET email = :Email, passwd = :Passwd, username = :Username, level = :lvl, realname = :Realname, emails = :emails, pushkey = :endp WHERE uID = :uID LIMIT 1",
+                [":Email" => $this->email, ":Passwd" => $this->passwdHash, ":Username" => $this->username, ":uID" => $this->uID, ":lvl" => $this->role, ":Realname" => $this->realname, ":emails" => $emails, ":endp" => json_encode($this->endpoints)]);
         }
 
         /**
@@ -250,5 +252,15 @@
          */
         public function setReceivingEmails($emails) {
             $this->emails = $emails;
+        }
+
+        public function addEndpoint($endpoint) {
+            require_once "Util.php";
+            array_push($this->endpoints, $endpoint);
+            Util::sendPushNotification($endpoint);
+        }
+
+        public function getEndpoints() {
+            return $this->endpoints;
         }
     }

@@ -5,8 +5,8 @@
      * Date: 28.04.2016
      * Time: 21:54
      */
-    error_reporting(E_ALL);
-    ini_set("error_reporting", "on");
+    //error_reporting(E_ALL);
+    //ini_set("error_reporting", "on");
 
     require_once "classes/PDO_MYSQL.php";
     require_once "classes/User.php";
@@ -109,6 +109,8 @@
             echo json_encode(["success" => true]);
         } else echo json_encode(["success" => false]);
     } elseif($action == "updateOrder") {
+        require_once "classes/passwd.php";
+        require_once "vendor/autoload.php";
         $oid = $_GET["oid"];
         if(is_numeric($oid) && $user->getRole() == 2) {
             $order = \print3d\Order::fromOID($oid);
